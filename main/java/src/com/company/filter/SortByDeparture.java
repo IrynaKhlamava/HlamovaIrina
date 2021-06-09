@@ -1,0 +1,17 @@
+package com.company.filter;
+
+import com.company.model.Guest;
+
+import java.util.Comparator;
+
+
+public class SortByDeparture implements Comparator<Guest> {
+
+    @Override
+    public int compare(Guest guest1, Guest guest2) {
+        //if (guest1.getDateCheckOut().after(guest2.getDateCheckOut())) return 1;
+       //if (guest1.getDateCheckOut().before(guest2.getDateCheckOut())) return -1;
+        return 0;
+
+    }
+}
