@@ -9,11 +9,7 @@ import java.util.List;
 
 public interface IRoomDao extends GenericDao<Room> {
 
-    Room addRoom(Integer number, Integer capacity, RoomStatus roomStatus, Double priceRoom, RoomComfort comfort, List<Guest> guests);
-
-    List<Room> getAllFreeRoom();
-
-    void changeStatus(Integer roomNum, RoomStatus roomStatus);
+   void changeStatus(Integer roomNum, RoomStatus roomStatus);
 
     void changePrice(Integer roomNum, Double price);
 

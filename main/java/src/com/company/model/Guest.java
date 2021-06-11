@@ -1,5 +1,7 @@
 package com.company.model;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 
@@ -8,30 +10,29 @@ public class Guest extends AEntity {
     private String name;
     private Long id;
     private Integer daysOfStay;
-    private Date dateCheckIn;
-    private Date dateCheckOut;
-    private double addServices;
-    private List<AdditionalServices> listAddServices = new ArrayList<>();
+    private LocalDate dateCheckIn;
+    private LocalDate dateCheckOut;
+    private List<Service> listServices = new ArrayList<>();
 
     public Guest(String name, Integer daysOfStay) {
         this.name = name;
         this.daysOfStay = daysOfStay;
     }
 
-    public Date getDateCheckOut() {
+    public LocalDate getDateCheckOut() {
         return dateCheckOut;
     }
 
-    public void setDateCheckOut(Date dateDateCheckOut) {
+    public void setDateCheckOut(LocalDate dateDateCheckOut) {
         this.dateCheckOut = dateDateCheckOut;
     }
 
-    public List<AdditionalServices> getListAddServices() {
-        return listAddServices;
+    public List<Service> getListServices() {
+        return listServices;
     }
 
-    public void setListAddServices(List<AdditionalServices> listAddServices) {
-        this.listAddServices = listAddServices;
+    public void setListServices(List<Service> listServices) {
+        this.listServices = listServices;
     }
 
     public String getName() {
@@ -50,12 +51,12 @@ public class Guest extends AEntity {
         this.id = id;
     }
 
-    public Date getDateCheckIn() {
+    public LocalDate getDateCheckIn() {
         return dateCheckIn;
     }
 
     public void setDateCheckIn() {
-        this.dateCheckIn = new Date();
+        this.dateCheckIn = LocalDate.now();
     }
 
     public Integer getDaysOfStay() {
@@ -64,38 +65,6 @@ public class Guest extends AEntity {
 
     public void setDaysOfStay(Integer daysOfStay) {
         this.daysOfStay = daysOfStay;
-    }
-
-       /* public void calcDateCheckOut(Guest guest) {
-            Calendar instance = Calendar.getInstance();
-            instance.setTime(guest.getDateCheckIn()); //устанавливаем дату, с которой будет производить операции
-            instance.add(Calendar.DAY_OF_MONTH, guest.getDaysOfStay());// прибавляем 3 дня к установленной дате
-            Date dateDateCheckOut = instance.getTime(); // получаем изменен
-            guest.setDateCheckOut(dateDateCheckOut);
-        }
-
-        */
-
-
-    public double getAddServices() {
-        return addServices;
-    }
-
-    public void setAddServices(double addServices) {
-        this.addServices += addServices;
-    }
-
-
-    @Override
-    public String toString() {
-        return "Guest{" +
-                "name='" + name + '\'' +
-                ", id=" + id +
-                ", daysOfStay=" + daysOfStay +
-                ", dateCheckIn=" + dateCheckIn +
-                ", dateCheckOut=" + dateCheckOut +
-                ", addServices=" + addServices +
-                '}';
     }
 
     @Override
@@ -107,13 +76,24 @@ public class Guest extends AEntity {
                 Objects.equals(id, guest.id) &&
                 Objects.equals(daysOfStay, guest.daysOfStay) &&
                 Objects.equals(dateCheckIn, guest.dateCheckIn) &&
-                Objects.equals(dateCheckOut, guest.dateCheckOut);
+                Objects.equals(dateCheckOut, guest.dateCheckOut) &&
+                Objects.equals(listServices, guest.listServices);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, id, daysOfStay, dateCheckIn, dateCheckOut);
+        return Objects.hash(name, id, daysOfStay, dateCheckIn, dateCheckOut, listServices);
     }
 
-
+    @Override
+    public String toString() {
+        return "Guest{" +
+                "name='" + name + '\'' +
+                ", id=" + id +
+                ", daysOfStay=" + daysOfStay +
+                ", dateCheckIn=" + dateCheckIn +
+                ", dateCheckOut=" + dateCheckOut +
+                ", listServices=" + listServices +
+                '}';
+    }
 }

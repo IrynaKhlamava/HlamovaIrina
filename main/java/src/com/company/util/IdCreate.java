@@ -6,6 +6,7 @@ public class IdCreate {
 
     private static Long roomId = 1L;
 
+    private static Long serviceId = 1L;
 
     public static Long createGuestId() {
         return guestId++;
@@ -15,5 +16,7 @@ public class IdCreate {
         return roomId++;
     }
 
-
+    public static Long createServiceId() {
+        return serviceId++;
+    }
 }

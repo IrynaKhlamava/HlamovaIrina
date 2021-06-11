@@ -2,35 +2,13 @@ package com.company.dao;
 
 import com.company.api.dao.IRoomDao;
 import com.company.model.*;
-import com.company.util.IdCreate;
+
 
 import java.util.*;
 
 public class RoomDao extends AbstractDao<Room> implements IRoomDao {
 
-    @Override
-    public Room addRoom(Integer number, Integer capacity, RoomStatus roomStatus, Double priceRoom, RoomComfort comfort, List<Guest> guests) {
-        Room room = new Room(number, capacity, roomStatus, priceRoom, comfort, guests);
-        room.setId(IdCreate.createRoomId());
-        room.setNumber(NumberRoom.getNewRoomNumber());
-        save(room);
-        return room;
-    }
-
-    @Override
-    public List<Room> getAllFreeRoom() {
-        List<Room> roomFree = new ArrayList<>();
-        List<Room> rooms = getAll();
-        for (Room room : rooms) {
-            if (room.getGuests().size() == 0) {
-                roomFree.add(room);
-            }
-        }
-        return roomFree;
-
-    }
-
-    @Override
+   @Override
     public void changeStatus(Integer roomNum, RoomStatus roomStatus) {
         List<Room> rooms = getAll();
         for (Room room : rooms) {
@@ -50,5 +28,14 @@ public class RoomDao extends AbstractDao<Room> implements IRoomDao {
         }
     }
 
-
+    @Override
+    public Room update(Room entity) {
+       Room room = getById(entity.getId());
+       room.setNumber(entity.getNumber());
+       room.setPriceRoom(entity.getPriceRoom());
+       room.setRoomStatus(entity.getRoomStatus());
+       room.setCapacity(entity.getCapacity());
+       room.setComfort(entity.getComfort());
+       return room;
+    }
 }

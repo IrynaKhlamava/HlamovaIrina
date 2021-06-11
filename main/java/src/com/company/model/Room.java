@@ -1,5 +1,6 @@
 package com.company.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -11,17 +12,16 @@ public class Room extends AEntity {
     private RoomComfort comfort;
     private List<Guest> guests;
 
-
-    public Room(Integer number, Integer capacity, RoomStatus roomStatus, Double priceRoom, RoomComfort comfort, List<Guest> guests) {
+    public Room(Integer number, Integer capacity, RoomStatus roomStatus, Double priceRoom, RoomComfort comfort) {
         this.number = number;
         this.capacity = capacity;
         this.roomStatus = roomStatus;
         this.priceRoom = priceRoom;
         this.comfort = comfort;
-        this.guests = guests;
+        //this.guests = guests;
+        this.guests = new ArrayList();
 
     }
-
 
     public Integer getNumber() {
         return number;

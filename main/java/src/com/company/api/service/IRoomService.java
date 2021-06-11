@@ -2,11 +2,16 @@ package com.company.api.service;
 
 import com.company.model.Guest;
 import com.company.model.Room;
+import com.company.model.RoomComfort;
+import com.company.model.RoomStatus;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 public interface IRoomService {
+
+    Room addRoom(Integer number, Integer capacity, RoomStatus roomStatus, Double priceRoom, RoomComfort comfort);
 
     void checkIn(Guest guest, Room room);
 
@@ -14,29 +19,30 @@ public interface IRoomService {
 
     Room getByRoomNumber(Integer roomNumber);
 
+    List<Room> getAllFreeRoom(List<Room> rooms);
+
     List<Room> sortRoomByCapacity();
 
     List<Room> sortRoomByPrice();
 
     List<Room> sortRoomByComfort();
 
-    List<Room> sortFreeRoomByPrice(List<Room> freeRoom);
+    List<Room> getFreeRoomSortByPrice();
 
-    List<Room> sortFreeRoomByCapacity(List<Room> freeRoom);
+    List<Room> getFreeRoomSortByCapacity();
 
-    List<Room> sortFreeRoomByComfort(List<Room> freeRoom);
+    List<Room> getFreeRoomSortByComfort();
 
-    void getAllGuestsAndRooms();
+    Map<Integer, List<Guest>> getAllGuestsAndRoomsSortByName();
 
     int availableRooms();
 
-    void getAllGuestsAndRoomsSortByDeparture();
+    Map<Integer, List<Guest>> getAllGuestsAndRoomsSortByDeparture();
 
-    List<Room> getFreeRoomsByDate(Date onDate);
+    List<Room> getFreeRoomsByDate(LocalDate onDate);
 
     double getBill(Guest guest);
 
-    void lastGuestsOfRoom(int roomNumber);
-
+    Map<String, List<LocalDate>> lastGuestsOfRoom(int roomNumber);
 
 }

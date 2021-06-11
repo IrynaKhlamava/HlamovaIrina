@@ -4,7 +4,9 @@ import com.company.api.dao.GenericDao;
 import com.company.model.AEntity;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public abstract class AbstractDao<T extends AEntity> implements GenericDao<T> {
 
@@ -40,19 +42,18 @@ public abstract class AbstractDao<T extends AEntity> implements GenericDao<T> {
         return new ArrayList<>(repository);
     }
 
-    @Override
-    public T update(T entity) {
-        /*T entity = getById(entity.getId());
-        entity.setName(entity.getName());
-        guest.setDaysOfStay(entity.getDaysOfStay());
-        return guest;*/
-        return null;
-    }
 
     @Override
     public int getTotalNumber() {
         return repository.size();
     }
 
+    @Override
+    public List<T> getAllSorted(Comparator<T> comparator) {
+        return getAll()
+                .stream()
+                .sorted(comparator)
+                .collect(Collectors.toList());
+    }
 
 }
