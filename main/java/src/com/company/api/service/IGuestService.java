@@ -1,6 +1,5 @@
 package com.company.api.service;
 
-import com.company.model.AdditionalServices;
 import com.company.model.Guest;
 import com.company.model.Service;
 

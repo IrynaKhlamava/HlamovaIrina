@@ -56,4 +56,13 @@ public abstract class AbstractDao<T extends AEntity> implements GenericDao<T> {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<T> getFilteredListSorted(List<T> filteredList, Comparator<T> comparator) {
+        return filteredList
+                .stream()
+                .sorted(comparator)
+                .collect(Collectors.toList());
+    }
+
+
 }

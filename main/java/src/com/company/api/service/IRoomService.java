@@ -19,7 +19,7 @@ public interface IRoomService {
 
     Room getByRoomNumber(Integer roomNumber);
 
-    List<Room> getAllFreeRoom(List<Room> rooms);
+    List<Room> getAllFreeRoom();
 
     List<Room> sortRoomByCapacity();
 

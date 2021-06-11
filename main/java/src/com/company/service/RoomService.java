@@ -59,8 +59,9 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public List<Room> getAllFreeRoom(List<Room> rooms) {
+    public List<Room> getAllFreeRoom() {
         List<Room> roomFree = new ArrayList<>();
+        List<Room> rooms = roomDao.getAll();
         for (Room room : rooms) {
             if (room.getGuests().size() == 0) {
                 roomFree.add(room);
@@ -82,17 +83,17 @@ public class RoomService implements IRoomService {
 
     @Override
     public List<Room> getFreeRoomSortByPrice() {
-        return getAllFreeRoom(roomDao.getAllSorted(new SortRoomByPrice()));
+        return roomDao.getFilteredListSorted(getAllFreeRoom(), new SortRoomByPrice());
     }
 
     @Override
     public List<Room> getFreeRoomSortByCapacity() {
-        return getAllFreeRoom(roomDao.getAllSorted(new SortRoomByCapacity()));
+        return roomDao.getFilteredListSorted(getAllFreeRoom(), new SortRoomByCapacity());
     }
 
     @Override
     public List<Room> getFreeRoomSortByComfort() {
-        return getAllFreeRoom(roomDao.getAllSorted(new SortRoomByComfort()));
+        return roomDao.getFilteredListSorted(getAllFreeRoom(), new SortRoomByComfort());
     }
 
     @Override

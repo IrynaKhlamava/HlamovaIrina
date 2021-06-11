@@ -20,4 +20,6 @@ public interface GenericDao<T extends AEntity> {
     int getTotalNumber();
 
     List<T> getAllSorted(Comparator<T> comparator);
+
+    List<T> getFilteredListSorted(List<T> filteredList, Comparator<T> comparator);
 }
