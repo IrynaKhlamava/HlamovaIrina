@@ -13,5 +13,9 @@ public interface IGuestService {
 
     List<Service> getAllServices(Guest guest);
 
+    List<Guest> sortGuestsByName();
 
-   }
+    List<Guest> sortGuestsByDeparture();
+
+
+}

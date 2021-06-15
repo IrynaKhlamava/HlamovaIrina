@@ -30,4 +30,10 @@ public class ServiceService implements IServiceService {
     public List<Service> getAllServicesSortByPrice(Guest guest) {
         return serviceDao.getFilteredListSorted(guest.getListServices(), new SortServicesByPrice());
     }
+
+    public List<Service> getAll() {
+        List<Service> services = serviceDao.getAll();
+        return services;
+    }
+
 }

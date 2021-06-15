@@ -12,14 +12,13 @@ public class Room extends AEntity {
     private RoomComfort comfort;
     private List<Guest> guests;
 
-    public Room(Integer number, Integer capacity, RoomStatus roomStatus, Double priceRoom, RoomComfort comfort) {
+    public Room(Integer number, Integer capacity, RoomStatus roomStatus, Double priceRoom, Integer comfort) {
         this.number = number;
         this.capacity = capacity;
         this.roomStatus = roomStatus;
         this.priceRoom = priceRoom;
-        this.comfort = comfort;
-        //this.guests = guests;
-        this.guests = new ArrayList();
+        this.comfort = getRoomComfortByNum(comfort);
+       this.guests = new ArrayList();
 
     }
 
@@ -65,6 +64,14 @@ public class Room extends AEntity {
 
     public void setComfort(RoomComfort comfort) {
         this.comfort = comfort;
+    }
+
+    public RoomComfort getRoomComfortByNum(Integer num){
+        for(RoomComfort roomComfort : RoomComfort.values()){
+            if(num == roomComfort.getValue())
+                return roomComfort;
+        }
+        return null;
     }
 
     @Override
