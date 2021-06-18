@@ -2,7 +2,8 @@ package com.company.ui.actions;
 
 import java.util.Scanner;
 
-public class AddService extends AbstractAction{
+public class AddService extends AbstractAction {
+
     @Override
     public void execute() {
         Scanner scanner = new Scanner(System.in);
@@ -10,11 +11,8 @@ public class AddService extends AbstractAction{
         String name = scanner.next();
         System.out.println("введите цену услуги");
         Double price = scanner.nextDouble();
-
-        //как получить гостя на которого услуга?
-        //hotelFacade.saveService(name, price, guest);
-
-
-
+        System.out.println("введите ID гостя");
+        Long guestId = scanner.nextLong();
+        hotelFacade.saveService(name, price, hotelFacade.getGuest(guestId));
     }
 }

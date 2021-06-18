@@ -1,5 +1,7 @@
 package com.company.ui.menu;
 
+import com.company.util.ScannerUtil;
+
 import java.util.Scanner;
 
 public class MenuController {
@@ -13,7 +15,6 @@ public class MenuController {
         this.navigator = navigator;
     }
 
-
     public void run() {
         builder.buildMenu();
         navigator.setCurrentMenu(builder.getRootMenu());
@@ -21,7 +22,7 @@ public class MenuController {
         while (!index.equals(0)) {
             navigator.printMenu();
             Scanner scanner = new Scanner(System.in);
-            navigator.navigate(scanner.nextInt());
+            navigator.navigate(ScannerUtil.readInteger());;
         }
     }
 }

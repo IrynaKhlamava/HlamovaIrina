@@ -17,9 +17,8 @@ public class Menu {
     }
 
     public List<MenuItem> getMenuItems() {
-        if (menuItems == null){
+        if (menuItems == null) {
             menuItems = new ArrayList<>();
-
         }
         return menuItems;
     }

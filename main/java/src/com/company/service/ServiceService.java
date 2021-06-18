@@ -2,6 +2,7 @@ package com.company.service;
 
 import com.company.api.dao.IServiceDao;
 import com.company.api.service.IServiceService;
+import com.company.filter.SortServicesByName;
 import com.company.filter.SortServicesByPrice;
 import com.company.model.Guest;
 import com.company.model.Service;
@@ -30,6 +31,16 @@ public class ServiceService implements IServiceService {
     public List<Service> getAllServicesSortByPrice(Guest guest) {
         return serviceDao.getFilteredListSorted(guest.getListServices(), new SortServicesByPrice());
     }
+
+    @Override
+    public List<Service> getServicesSortByName() {
+        return serviceDao.getFilteredListSorted(serviceDao.getAll(), new SortServicesByName());
+    }
+
+    @Override
+    public List<Service> getServicesSortByPrice() {
+        return serviceDao.getFilteredListSorted(serviceDao.getAll(), new SortServicesByPrice());
+     }
 
     public List<Service> getAll() {
         List<Service> services = serviceDao.getAll();

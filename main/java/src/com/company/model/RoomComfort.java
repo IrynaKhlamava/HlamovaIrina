@@ -18,5 +18,6 @@ public enum RoomComfort {
     public void setValue(int value) {
         this.value = value;
     }
+
 }
 

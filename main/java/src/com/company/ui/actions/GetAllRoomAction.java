@@ -1,6 +1,5 @@
 package com.company.ui.actions;
 
-
 public class GetAllRoomAction extends AbstractAction {
 
     @Override

@@ -22,7 +22,7 @@ public class RoomService implements IRoomService{
     }
 
     @Override
-    public Room addRoom(Integer number, Integer capacity, RoomStatus roomStatus, Double priceRoom, Integer comfort) {
+    public Room addRoom(Integer number, Integer capacity, RoomStatus roomStatus, Double priceRoom, RoomComfort comfort) {
         Room room = new Room(number, capacity, roomStatus, priceRoom, comfort);
         room.setId(IdCreate.createRoomId());
         room.setNumber(NumberRoom.getNewRoomNumber());
@@ -69,6 +69,26 @@ public class RoomService implements IRoomService{
         }
         return roomFree;
 
+    }
+
+    @Override
+    public void changeStatus(Integer roomNum, RoomStatus roomStatus) {
+        List<Room> rooms = getAll();
+        for (Room room : rooms) {
+            if (room.getNumber().equals(roomNum)) {
+                room.setRoomStatus(roomStatus);
+            }
+        }
+    }
+
+    @Override
+    public void changePrice(Integer roomNum, Double newPrice) {
+        List<Room> rooms = getAll();
+        for (Room room : rooms) {
+            if (room.getNumber().equals(roomNum)) {
+                room.setPriceRoom(newPrice);
+            }
+        }
     }
 
     @Override
@@ -203,4 +223,6 @@ public class RoomService implements IRoomService{
         List<Room> rooms = roomDao.getAll();
         return rooms;
     }
+
+
 }

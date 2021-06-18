@@ -17,5 +17,4 @@ public interface IGuestService {
 
     List<Guest> sortGuestsByDeparture();
 
-
 }

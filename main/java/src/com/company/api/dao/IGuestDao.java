@@ -4,5 +4,6 @@ import com.company.model.Guest;
 
 
 public interface IGuestDao extends GenericDao<Guest> {
-    
+
+    Guest update(Guest entity);
 }

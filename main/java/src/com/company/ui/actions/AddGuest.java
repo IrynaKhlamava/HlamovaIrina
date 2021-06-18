@@ -1,15 +1,15 @@
 package com.company.ui.actions;
 
-import java.util.Scanner;
+import com.company.util.ScannerUtil;
 
 public class AddGuest extends AbstractAction {
+
     @Override
     public void execute() {
-        Scanner scanner = new Scanner(System.in);
         System.out.println("введите ФИО гостя");
-        String name = scanner.nextLine();
+        String name = ScannerUtil.readString();
         System.out.println("введите планируемое колличество дней пребывания");
-        Integer daysOfStay = scanner.nextInt();
+        Integer daysOfStay = ScannerUtil.readInteger();
         hotelFacade.saveGuest(name, daysOfStay);
 
     }

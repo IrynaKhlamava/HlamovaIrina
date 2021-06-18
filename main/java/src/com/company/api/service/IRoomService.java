@@ -11,7 +11,7 @@ import java.util.Map;
 
 public interface IRoomService {
 
-    Room addRoom(Integer number, Integer capacity, RoomStatus roomStatus, Double priceRoom, Integer comfort);
+    Room addRoom(Integer number, Integer capacity, RoomStatus roomStatus, Double priceRoom, RoomComfort comfort);
 
     void checkIn(Guest guest, Room room);
 
@@ -20,6 +20,10 @@ public interface IRoomService {
     Room getByRoomNumber(Integer roomNumber);
 
     List<Room> getAllFreeRoom();
+
+    void changeStatus(Integer roomNum, RoomStatus roomStatus);
+
+    void changePrice(Integer roomNum, Double newPrice);
 
     List<Room> sortRoomByCapacity();
 

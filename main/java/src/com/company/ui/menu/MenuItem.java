@@ -14,11 +14,11 @@ public class MenuItem {
         this.nextMenu = nextMenu;
     }
 
-    public void doAction(){
+    public void doAction() {
         this.action.execute();
     }
 
-    public Menu getNextMenu(){
+    public Menu getNextMenu() {
         return nextMenu;
     }
 
