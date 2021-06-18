@@ -7,7 +7,6 @@ import com.company.api.service.IGuestService;
 import com.company.filter.SortByDeparture;
 import com.company.filter.SortGuestsByName;
 import com.company.model.Guest;
-import com.company.model.Room;
 import com.company.model.Service;
 import com.company.util.IdCreate;
 
@@ -16,11 +15,9 @@ import java.util.List;
 public class GuestService implements IGuestService {
 
     private final IGuestDao guestDao;
-    private final IRoomDao roomDao;
 
-    public GuestService(IGuestDao guestDao, IRoomDao roomDao) {
+    public GuestService(IGuestDao guestDao) {
         this.guestDao = guestDao;
-        this.roomDao = roomDao;
     }
 
     @Override
@@ -56,10 +53,10 @@ public class GuestService implements IGuestService {
 
     public Guest getGuest(Long guestID) {
         for (Guest guestRoom : guestDao.getAll()) {
-                if (guestRoom.getId().equals(guestID)) {
-                    return guestRoom;
-                }
+            if (guestRoom.getId().equals(guestID)) {
+                return guestRoom;
             }
+        }
         return null;
     }
 }
