@@ -10,7 +10,7 @@ import com.company.util.IdCreate;
 import java.time.LocalDate;
 import java.util.*;
 
-public class RoomService implements IRoomService {
+public class RoomService implements IRoomService{
 
     private final IRoomDao roomDao;
 
@@ -69,6 +69,26 @@ public class RoomService implements IRoomService {
         }
         return roomFree;
 
+    }
+
+    @Override
+    public void changeStatus(Integer roomNum, RoomStatus roomStatus) {
+        List<Room> rooms = getAll();
+        for (Room room : rooms) {
+            if (room.getNumber().equals(roomNum)) {
+                room.setRoomStatus(roomStatus);
+            }
+        }
+    }
+
+    @Override
+    public void changePrice(Integer roomNum, Double newPrice) {
+        List<Room> rooms = getAll();
+        for (Room room : rooms) {
+            if (room.getNumber().equals(roomNum)) {
+                room.setPriceRoom(newPrice);
+            }
+        }
     }
 
     @Override
@@ -194,5 +214,15 @@ public class RoomService implements IRoomService {
         }
         return listGuestsAndDate;
     }
+
+    public void save(Room room) {
+        roomDao.save(room);
+    }
+
+    public List<Room> getAll() {
+        List<Room> rooms = roomDao.getAll();
+        return rooms;
+    }
+
 
 }

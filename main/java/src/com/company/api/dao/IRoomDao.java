@@ -9,9 +9,6 @@ import java.util.List;
 
 public interface IRoomDao extends GenericDao<Room> {
 
-   void changeStatus(Integer roomNum, RoomStatus roomStatus);
-
-    void changePrice(Integer roomNum, Double price);
-
+    Room update(Room entity);
 
 }

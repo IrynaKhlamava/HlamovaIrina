@@ -21,6 +21,10 @@ public interface IRoomService {
 
     List<Room> getAllFreeRoom();
 
+    void changeStatus(Integer roomNum, RoomStatus roomStatus);
+
+    void changePrice(Integer roomNum, Double newPrice);
+
     List<Room> sortRoomByCapacity();
 
     List<Room> sortRoomByPrice();

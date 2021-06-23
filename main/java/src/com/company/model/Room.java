@@ -18,7 +18,6 @@ public class Room extends AEntity {
         this.roomStatus = roomStatus;
         this.priceRoom = priceRoom;
         this.comfort = comfort;
-        //this.guests = guests;
         this.guests = new ArrayList();
 
     }

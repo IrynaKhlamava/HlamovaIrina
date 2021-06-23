@@ -8,26 +8,6 @@ import java.util.*;
 
 public class RoomDao extends AbstractDao<Room> implements IRoomDao {
 
-   @Override
-    public void changeStatus(Integer roomNum, RoomStatus roomStatus) {
-        List<Room> rooms = getAll();
-        for (Room room : rooms) {
-            if (room.getNumber().equals(roomNum)) {
-                room.setRoomStatus(roomStatus);
-            }
-        }
-    }
-
-    @Override
-    public void changePrice(Integer roomNum, Double newPrice) {
-        List<Room> rooms = getAll();
-        for (Room room : rooms) {
-            if (room.getNumber().equals(roomNum)) {
-                room.setPriceRoom(newPrice);
-            }
-        }
-    }
-
     @Override
     public Room update(Room entity) {
        Room room = getById(entity.getId());

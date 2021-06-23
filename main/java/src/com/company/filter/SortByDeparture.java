@@ -15,6 +15,4 @@ public class SortByDeparture implements Comparator<Guest> {
         return 0;
 
     }
-
-
 }
