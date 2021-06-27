@@ -55,8 +55,8 @@ public class Guest extends AEntity {
         return dateCheckIn;
     }
 
-    public void setDateCheckIn() {
-        this.dateCheckIn = LocalDate.now();
+    public void setDateCheckIn(LocalDate dateDateCheckOut) {
+        this.dateCheckIn = dateDateCheckOut;
     }
 
     public Integer getDaysOfStay() {

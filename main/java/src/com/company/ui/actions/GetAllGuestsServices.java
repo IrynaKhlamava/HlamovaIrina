@@ -1,5 +1,6 @@
 package com.company.ui.actions;
 
+import com.company.exceptions.ServiceException;
 import com.company.util.ScannerUtil;
 
 public class GetAllGuestsServices extends AbstractAction {
@@ -8,6 +9,10 @@ public class GetAllGuestsServices extends AbstractAction {
     public void execute() {
         System.out.println("введите ID гостя");
         Long guestId = ScannerUtil.readLong();
-        hotelFacade.getAllGuestsServices(hotelFacade.getGuest(guestId)).forEach(System.out::println);
+        try {
+            hotelFacade.getAllGuestsServices(hotelFacade.getGuest(guestId)).forEach(System.out::println);
+        } catch (ServiceException e) {
+            System.out.println("Не удалось получить услуги гостя. Введите другой пункт меню");
+        }
     }
 }

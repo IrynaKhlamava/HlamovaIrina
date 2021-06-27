@@ -1,18 +1,24 @@
 package com.company.ui.actions;
 
-import java.util.Scanner;
+import com.company.exceptions.ServiceException;
+import com.company.model.Guest;
+import com.company.util.ScannerUtil;
 
 public class AddService extends AbstractAction {
 
     @Override
     public void execute() {
-        Scanner scanner = new Scanner(System.in);
         System.out.println("введите название услуги");
-        String name = scanner.next();
+        String name = ScannerUtil.readString();
         System.out.println("введите цену услуги");
-        Double price = scanner.nextDouble();
+        Double price = ScannerUtil.readDouble();
         System.out.println("введите ID гостя");
-        Long guestId = scanner.nextLong();
-        hotelFacade.saveService(name, price, hotelFacade.getGuest(guestId));
+        Long guestId = ScannerUtil.readLong();
+        try {
+            Guest guest = hotelFacade.getGuest(guestId);
+            hotelFacade.saveService(name, price, guest);
+        } catch (ServiceException e) {
+            System.out.println("Добавить услугу гостю не удалось. Введите другой пунк меню");
+        }
     }
 }

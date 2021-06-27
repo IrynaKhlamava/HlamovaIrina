@@ -17,9 +17,6 @@ public class Menu {
     }
 
     public List<MenuItem> getMenuItems() {
-        if (menuItems == null) {
-            menuItems = new ArrayList<>();
-        }
         return menuItems;
     }
 

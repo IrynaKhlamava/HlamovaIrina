@@ -1,5 +1,6 @@
 package com.company.ui.actions;
 
+import com.company.exceptions.ServiceException;
 import com.company.util.ScannerUtil;
 
 public class GetBill extends AbstractAction {
@@ -8,7 +9,10 @@ public class GetBill extends AbstractAction {
     public void execute() {
         System.out.println("введите ID гостя");
         Long guestId = ScannerUtil.readLong();
-        System.out.println(hotelFacade.getBill(hotelFacade.getGuest(guestId)));
-
+        try {
+            System.out.println(hotelFacade.getBill(hotelFacade.getGuest(guestId)));
+        } catch (ServiceException e) {
+            System.out.println("Получить счет гостя не удалось. Введите другой пункт меню");
+        }
     }
 }

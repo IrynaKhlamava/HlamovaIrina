@@ -1,5 +1,6 @@
 package com.company.ui.actions;
 
+import com.company.exceptions.ServiceException;
 import com.company.util.ScannerUtil;
 
 public class GetLastGuestsOfRoom extends AbstractAction {
@@ -8,6 +9,10 @@ public class GetLastGuestsOfRoom extends AbstractAction {
     public void execute() {
         System.out.println("введите номер комнаты");
         Integer roomNum = ScannerUtil.readInteger();
-        System.out.println(hotelFacade.getLastGuestsOfRoom(roomNum));
+        try {
+            System.out.println(hotelFacade.getLastGuestsOfRoom(roomNum));
+        } catch(ServiceException e){
+            System.out.println("Посмотреть последних гостей комнаты не удалось. Введите другой пункт меню");
+        }
     }
 }

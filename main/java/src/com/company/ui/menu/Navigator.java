@@ -12,7 +12,6 @@ public class Navigator {
         for (int i = 0; i < menuItems.size(); i++) {
             System.out.println(i + ". " + menuItems.get(i).getTitle());
         }
-
     }
 
     public void navigate(Integer index) {

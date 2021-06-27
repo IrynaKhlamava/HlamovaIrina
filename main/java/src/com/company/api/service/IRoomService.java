@@ -1,11 +1,9 @@
 package com.company.api.service;
 
-import com.company.model.Guest;
-import com.company.model.Room;
-import com.company.model.RoomComfort;
-import com.company.model.RoomStatus;
+import com.company.model.*;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -21,7 +19,7 @@ public interface IRoomService {
 
     List<Room> getAllFreeRoom();
 
-    void changeStatus(Integer roomNum, RoomStatus roomStatus);
+    void changeStatusByRoomNumber(Integer roomNum, RoomStatus roomStatus);
 
     void changePrice(Integer roomNum, Double newPrice);
 
@@ -47,6 +45,8 @@ public interface IRoomService {
 
     double getBill(Guest guest);
 
-    Map<String, List<LocalDate>> lastGuestsOfRoom(int roomNumber);
+    List<LastGuestsInfo>  lastGuestsOfRoom(int roomNumber);
+
+    Map<Integer, List<Guest>> getAllGuestsAndRoomsSortedByThisComparator(Comparator comparator);
 
 }

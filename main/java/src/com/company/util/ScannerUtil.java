@@ -1,52 +1,67 @@
 package com.company.util;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ScannerUtil {
 
+    private static final Logger LOGGER = Logger.getLogger(ScannerUtil.class.getName());
+
     public static Long readLong() {
-        try {
-            Scanner scanner = new Scanner(System.in);
-            Long input = scanner.nextLong();
-            return input;
-        } catch (Exception e) {
-            System.out.println("Вы ввели не число");
-            return null;
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            try {
+                return Long.valueOf(scanner.nextLine().trim());
+            } catch (Exception e) {
+                LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
+                System.out.println("ввели неверное число. ожидается ввод Long  ");
+            }
         }
     }
 
     public static Integer readInteger() {
-        try {
-            Scanner scanner = new Scanner(System.in);
-            Integer inputInt = scanner.nextInt();
-            return inputInt;
-        } catch (Exception e) {
-            System.out.println("Вы ввели не число");
-            return null;
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            try {
+                return Integer.valueOf(scanner.nextLine().trim());
+            } catch (NumberFormatException e) {
+                LOGGER.log(Level.WARNING, "Ошибка ввода", e);
+                System.out.println("Ошибка ввода. Введите соответствующий пункт меню");
+            } catch (IndexOutOfBoundsException e) {
+                LOGGER.log(Level.WARNING, "Ошибка ввода", e);
+                System.out.println("Выбран не    существующий пункт меню. Введите другой");
+            } catch (InputMismatchException e) {
+                LOGGER.log(Level.WARNING, "Ошибка ввода", e);
+                System.out.println("Ошибка ввода. Введите соответствующий пункт меню");
+            }
         }
     }
 
     public static String readString() {
-        try {
-            Scanner scanner = new Scanner(System.in);
-            String input = scanner.nextLine();
-            return input;
-        } catch (Exception e) {
-            System.out.println("Вы ввели неверные данные");
-            return null;
+        while (true) {
+            try {
+                Scanner scanner = new Scanner(System.in);
+                return scanner.nextLine().trim();
+            } catch (NumberFormatException e) {
+                LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
+                System.out.println("Ошибка ввода. ожидается строка");
+            }
         }
+
     }
 
     public static Double readDouble() {
-        try {
-            Scanner scanner = new Scanner(System.in);
-            Double input = scanner.nextDouble();
-            return input;
-        } catch (Exception e) {
-            System.out.println("Вы ввели неверные данные");
-            return null;
+        while (true) {
+            try {
+                Scanner scanner = new Scanner(System.in);
+                return Double.valueOf(scanner.nextLine().trim().replace(",", "."));
+            } catch (Exception e) {
+                LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
+                System.out.println("ввели неверное число. ожидается double");
+            }
         }
+
     }
-
-
 }

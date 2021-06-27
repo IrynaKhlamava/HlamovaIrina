@@ -9,6 +9,4 @@ import java.util.List;
 
 public interface IRoomDao extends GenericDao<Room> {
 
-    Room update(Room entity);
-
 }

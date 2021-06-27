@@ -2,6 +2,9 @@ package com.company.service;
 
 import com.company.api.dao.IServiceDao;
 import com.company.api.service.IServiceService;
+import com.company.exceptions.DaoException;
+import com.company.exceptions.ServiceException;
+import com.company.filter.SortRoomByComfort;
 import com.company.filter.SortServicesByName;
 import com.company.filter.SortServicesByPrice;
 import com.company.model.Guest;
@@ -9,8 +12,12 @@ import com.company.model.Service;
 import com.company.util.IdCreate;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ServiceService implements IServiceService {
+
+    private static final Logger LOGGER = Logger.getLogger(ServiceService.class.getName());
 
     private final IServiceDao serviceDao;
 
@@ -20,31 +27,64 @@ public class ServiceService implements IServiceService {
 
     @Override
     public Service addService(String name, double price, Guest guest) {
-        Service service = new Service(name, price);
-        service.setId(IdCreate.createServiceId());
-        serviceDao.save(service);
-        guest.getListServices().add(service);
-        return service;
+        try {
+            LOGGER.log(Level.INFO, String.format("AddService : %s to guest :%s", name, guest));
+
+            Service service = new Service(name, price);
+            service.setId(IdCreate.createServiceId());
+            serviceDao.save(service);
+            guest.getListServices().add(service);
+            return service;
+        } catch (ServiceException e) {
+            LOGGER.log(Level.WARNING, "AddService failed", e);
+            throw new ServiceException("AddService failed", e);
+        }
     }
 
     @Override
     public List<Service> getAllServicesSortByPrice(Guest guest) {
-        return serviceDao.getFilteredListSorted(guest.getListServices(), new SortServicesByPrice());
+        try {
+            LOGGER.log(Level.INFO, "Services Sorted By Price");
+            return serviceDao.getFilteredListSorted(guest.getListServices(), new SortServicesByPrice());
+        } catch (DaoException e) {
+            LOGGER.log(Level.WARNING, "Services Sorted By Price failed", e);
+            throw new ServiceException("Services Sorted By Price failed", e);
+        }
     }
 
     @Override
     public List<Service> getServicesSortByName() {
-        return serviceDao.getFilteredListSorted(serviceDao.getAll(), new SortServicesByName());
+        try {
+            LOGGER.log(Level.INFO, "Services Sorted By Name");
+            return serviceDao.getFilteredListSorted(serviceDao.getAll(), new SortServicesByName());
+        } catch (DaoException e) {
+            LOGGER.log(Level.WARNING, "Services Sorted By Name failed", e);
+            throw new ServiceException("Services Sorted By Name failed", e);
+        }
     }
 
     @Override
     public List<Service> getServicesSortByPrice() {
-        return serviceDao.getFilteredListSorted(serviceDao.getAll(), new SortServicesByPrice());
-     }
+        try {
+            LOGGER.log(Level.INFO, "Services Sorted By Price");
+            return serviceDao.getFilteredListSorted(serviceDao.getAll(), new SortServicesByPrice());
+        } catch (DaoException e) {
+            LOGGER.log(Level.WARNING, "Services Sorted By Price failed", e);
+            throw new ServiceException("Services Sorted By Price failed", e);
+        }
+    }
 
     public List<Service> getAll() {
-        List<Service> services = serviceDao.getAll();
-        return services;
+        try {
+            if (serviceDao.getAll().size() > 0) {
+                return serviceDao.getAll();
+            }
+        } catch (DaoException e) {
+            LOGGER.log(Level.INFO, String.format("list of services is empty"));
+            throw new ServiceException(String.format("list of services is empty"));
+        }
+        return serviceDao.getAll();
     }
+
 
 }

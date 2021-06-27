@@ -6,7 +6,6 @@ public class Builder {
 
     private Menu rootMenu;
 
-
     public Menu getRootMenu() {
         return rootMenu;
     }
@@ -30,7 +29,7 @@ public class Builder {
         roomMenu.addMenuItem(new MenuItem("Список номеров которые будут свободны к дате", new GetFreeRoomsByDate(), roomMenu));
         roomMenu.addMenuItem(new MenuItem("Посмотреть 3-х последних постояльцев номера и даты их пребывания", new GetLastGuestsOfRoom(), roomMenu));
         roomMenu.addMenuItem(new MenuItem("Посмотреть детали номера", new GetRoomDescription(), roomMenu));
-        roomMenu.addMenuItem(new MenuItem("Изменить статус номера", new ChangeRoomStatus(), roomMenu));
+        roomMenu.addMenuItem(new MenuItem("Изменить статус номера", new ChangeStatusByRoomNumber(), roomMenu));
         roomMenu.addMenuItem(new MenuItem("Изменить цену номера", new ChangeRoomPrice(), roomMenu));
         roomMenu.addMenuItem(new MenuItem("Главное меню", new EmptyAction(), mainMenu));
 
@@ -45,7 +44,7 @@ public class Builder {
         guestMenu.addMenuItem(new MenuItem("Отсортировать гостей по дате отправления", new GetAllGuestsSortedByDepartureAction(), guestMenu));
         guestMenu.addMenuItem(new MenuItem("Главное меню", new EmptyAction(), mainMenu));
 
-        serviceMenu.addMenuItem(new MenuItem("Добавить услугу", new AddService(), serviceMenu));
+        serviceMenu.addMenuItem(new MenuItem("Добавить услугу гостю", new AddService(), serviceMenu));
         serviceMenu.addMenuItem(new MenuItem("Список всех услуг", new GetAllServices(), serviceMenu));
         serviceMenu.addMenuItem(new MenuItem("Отсортировать все услуги по цене", new GetAllServicesSortedByPrice(), serviceMenu));
         serviceMenu.addMenuItem(new MenuItem("Отсортировать все услуги по названию", new GetAllServicesSortedByName(), serviceMenu));
@@ -53,8 +52,6 @@ public class Builder {
 
         this.rootMenu = mainMenu;
     }
-
-
 }
 
 
