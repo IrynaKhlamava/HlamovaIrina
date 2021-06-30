@@ -12,19 +12,17 @@ public class GuestDao extends AbstractDao<Guest> implements IGuestDao {
 
     private static final Logger LOGGER = Logger.getLogger(GuestDao.class.getName());
 
-
     @Override
     public Guest update(Guest entity) {
-        try {
+        Guest guest = getById(entity.getId());
+        if (guest != null) {
             LOGGER.log(Level.INFO, String.format("Update Guest"));
-            Guest guest = getById(entity.getId());
             guest.setName(entity.getName());
             guest.setDaysOfStay(entity.getDaysOfStay());
             return guest;
-        } catch (
-                DaoException e) {
-            LOGGER.log(Level.WARNING, "Update guest failed", e);
-            throw new ServiceException("Update guest failed", e);
+        } else {
+            LOGGER.log(Level.WARNING, "Update guest failed");
+            throw new DaoException("Update guest failed");
         }
     }
 }

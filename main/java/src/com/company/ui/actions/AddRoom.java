@@ -1,7 +1,5 @@
 package com.company.ui.actions;
 
-import com.company.exceptions.ServiceException;
-import com.company.model.Room;
 import com.company.model.RoomComfort;
 import com.company.model.RoomStatus;
 import com.company.util.ScannerUtil;
@@ -25,13 +23,12 @@ public class AddRoom extends AbstractAction {
         Integer roomComfort = ScannerUtil.readInteger();
         System.out.println("введите цену");
         Double roomPrice = ScannerUtil.readDouble();
-        try {
-            RoomStatus roomStatusByNum = hotelFacade.getRoomStatusByNumber(roomStatus);
-            RoomComfort roomComfortByNum = hotelFacade.getComfortByNumber(roomComfort);
+        RoomStatus roomStatusByNum = hotelFacade.getRoomStatusByNumber(roomStatus);
+        RoomComfort roomComfortByNum = hotelFacade.getComfortByNumber(roomComfort);
+        if ((roomStatusByNum != null) && (roomComfortByNum != null)) {
             hotelFacade.saveRoom(roomNumber, roomCapacity, roomStatusByNum, roomPrice, roomComfortByNum);
-        } catch (ServiceException e) {
+        } else {
             System.out.println("Добавить комнату не удалось. Введите корректные данные или выберите другой пункт меню");
         }
-
     }
 }

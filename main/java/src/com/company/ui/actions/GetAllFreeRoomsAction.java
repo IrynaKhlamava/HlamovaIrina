@@ -1,16 +1,15 @@
 package com.company.ui.actions;
 
-import com.company.exceptions.ServiceException;
-
 public class GetAllFreeRoomsAction extends AbstractAction {
 
     @Override
     public void execute() {
-        try {
-            System.out.println("Общее количество свободных комнат: " + hotelFacade.getNumberAllFreeRooms());
+        Integer freeRooms = hotelFacade.getNumberAllFreeRooms();
+        if (freeRooms > 0) {
+            System.out.println("Общее количество свободных комнат: " + freeRooms);
             hotelFacade.getAllFreeRooms().forEach(System.out::println);
-        } catch (ServiceException e) {
-            System.out.println("Посмотреть свободные комнаты не удалось. Введите другой пункт меню");
+        } else {
+            System.out.println("Свободных комнат нет");
         }
     }
 }

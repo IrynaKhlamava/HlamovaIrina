@@ -1,6 +1,5 @@
 package com.company.ui.actions;
 
-import com.company.exceptions.ServiceException;
 import com.company.model.RoomStatus;
 import com.company.util.ScannerUtil;
 
@@ -17,10 +16,11 @@ public class ChangeStatusByRoomNumber extends AbstractAction {
                 "3 - занята \n" +
                 "4 - выездная  ");
         Integer roomStatus = ScannerUtil.readInteger();
-        try {
-            RoomStatus roomStatusByNum = hotelFacade.getRoomStatusByNumber(roomStatus);
+
+        RoomStatus roomStatusByNum = hotelFacade.getRoomStatusByNumber(roomStatus);
+        if (roomStatusByNum != null) {
             hotelFacade.changeStatusByRoomNumber(roomNum, roomStatusByNum);
-        } catch (ServiceException e) {
+        } else {
             System.out.println("Введены некорректные данные. Введите соответствующие данные либо выберите другой пункт меню");
         }
     }

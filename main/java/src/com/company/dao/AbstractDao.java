@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 public abstract class AbstractDao<T extends AEntity> implements GenericDao<T> {
 
-    private static final String GET_BY_DATA_ERROR_MESSAGE = "could not find an entity by data: %d";
+    private static final String GET_BY_DATA_ERROR_MESSAGE = "could not find an entity by data: %s";
     private static final Logger LOGGER = Logger.getLogger(AbstractDao.class.getName());
 
 
@@ -31,31 +31,22 @@ public abstract class AbstractDao<T extends AEntity> implements GenericDao<T> {
 
     @Override
     public T getById(Long id) {
-        for (T entity : repository) {
-            if (id.equals(entity.getId())) {
-                return entity;
-            }
-        }
-        LOGGER.log(Level.WARNING, String.format(GET_BY_DATA_ERROR_MESSAGE, id));
-        throw new DaoException(String.format(GET_BY_DATA_ERROR_MESSAGE, id));
+        return repository.stream()
+                .filter(x -> id.equals(x.getId()))
+                .peek(x -> {
+                    LOGGER.log(Level.INFO, String.format("Get entity by id: ", id));
+                })
+                .findFirst()
+                .orElseThrow(() -> {
+                    LOGGER.log(Level.WARNING, String.format(GET_BY_DATA_ERROR_MESSAGE, id));
+                    throw new DaoException(String.format(GET_BY_DATA_ERROR_MESSAGE, id));
+                });
     }
-//        return repository.stream()
-//                .filter(x -> id.equals(x.getId()))
-//                .findFirst()
-//                .orElseThrow();
-//    }
 
     @Override
     public List<T> getAll() {
-            if ((new ArrayList<>(repository)).size() > 0) {
-                return new ArrayList<>(repository);
-            }
-        else {
-            LOGGER.log(Level.INFO, String.format("repository is empty "));
-            throw new DaoException(String.format("repository is empty"));
-        }
+        return new ArrayList<>(repository);
     }
-
 
     @Override
     public int getTotalNumber() {
@@ -69,7 +60,7 @@ public abstract class AbstractDao<T extends AEntity> implements GenericDao<T> {
                     .stream()
                     .sorted(comparator)
                     .collect(Collectors.toList());
-        } catch (DaoException e){
+        } catch (DaoException e) {
             LOGGER.log(Level.WARNING, String.format("get All Sorted failed"));
             throw new DaoException(String.format("get All Sorted failed"));
         }
@@ -82,6 +73,4 @@ public abstract class AbstractDao<T extends AEntity> implements GenericDao<T> {
                 .sorted(comparator)
                 .collect(Collectors.toList());
     }
-
-
 }

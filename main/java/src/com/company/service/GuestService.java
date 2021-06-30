@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 
 public class GuestService implements IGuestService {
 
-    private static final String GET_BY_ID_ERROR_MESSAGE = "could not find guest by id:";
+    private static final String GET_BY_ID_ERROR_MESSAGE = "could not find guest by id: %s";
     private static final Logger LOGGER = Logger.getLogger(GuestService.class.getName());
 
     private final IGuestDao guestDao;
@@ -44,23 +44,10 @@ public class GuestService implements IGuestService {
 
     @Override
     public List<Service> getAllServices(Guest guest) {
-        try {
-            return guest.getListServices();
-        } catch (DaoException e) {
-            LOGGER.log(Level.INFO, String.format("get All Services of guest failed"));
-            throw new ServiceException(String.format("get All Services of guest failed"));
-        }
+        return guest.getListServices();
     }
 
     public List<Guest> getAll() {
-        try {
-            if (guestDao.getAll().size() > 0) {
-                return guestDao.getAll();
-            }
-        } catch (DaoException e) {
-            LOGGER.log(Level.INFO, String.format("list of guests is empty"));
-            throw new ServiceException(String.format("list of guests is empty"));
-        }
         return guestDao.getAll();
     }
 
@@ -71,7 +58,6 @@ public class GuestService implements IGuestService {
         } catch (DaoException e) {
             LOGGER.log(Level.INFO, String.format("sort Guests By Name failed"));
             throw new ServiceException(String.format("sort Guests By Name failed"));
-
         }
     }
 
@@ -90,28 +76,15 @@ public class GuestService implements IGuestService {
     }
 
     public Guest getGuest(Long guestID) {
-//        try {
-//        List<Guest> guests = guestDao.getAll();
-//        return guests.stream()
-//                .filter(g -> g.getId().equals(guestID))
-//                .findFirst();
-//        } catch (DaoException e) {
-//            LOGGER.log(Level.WARNING, GET_BY_ID_ERROR_MESSAGE, guestID);
-//            throw new ServiceException(String.format(GET_BY_ID_ERROR_MESSAGE, guestID));
-//        }
-        try {
-            LOGGER.log(Level.INFO, String.format("get Guest By ID: %s ", guestID));
-            for (Guest guestRoom : guestDao.getAll()) {
-                if (guestRoom.getId().equals(guestID)) {
-                    return guestRoom;
-                }
-            }
-        } catch (DaoException e) {
-            LOGGER.log(Level.WARNING, GET_BY_ID_ERROR_MESSAGE, guestID);
-            throw new ServiceException(String.format(GET_BY_ID_ERROR_MESSAGE, guestID));
-        }
-        return null;
+        return guestDao.getAll().stream()
+                .filter(g -> g.getId().equals(guestID))
+                .peek(g -> {
+                    LOGGER.log(Level.INFO, String.format("get Guest By ID: %s ", guestID));
+                })
+                .findFirst()
+                .orElseThrow(() -> {
+                    LOGGER.log(Level.WARNING, String.format(GET_BY_ID_ERROR_MESSAGE, guestID));
+                    throw new ServiceException(String.format(GET_BY_ID_ERROR_MESSAGE, guestID));
+                });
     }
-
 }
-

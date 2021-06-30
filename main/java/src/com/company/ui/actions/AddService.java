@@ -1,6 +1,5 @@
 package com.company.ui.actions;
 
-import com.company.exceptions.ServiceException;
 import com.company.model.Guest;
 import com.company.util.ScannerUtil;
 
@@ -14,11 +13,11 @@ public class AddService extends AbstractAction {
         Double price = ScannerUtil.readDouble();
         System.out.println("введите ID гостя");
         Long guestId = ScannerUtil.readLong();
-        try {
-            Guest guest = hotelFacade.getGuest(guestId);
+        Guest guest = hotelFacade.getGuest(guestId);
+        if (guest != null) {
             hotelFacade.saveService(name, price, guest);
-        } catch (ServiceException e) {
-            System.out.println("Добавить услугу гостю не удалось. Введите другой пунк меню");
+        } else {
+            System.out.println("Нет такого гостя. Добавить услугу не удалось. Введите другой пунк меню");
         }
     }
 }

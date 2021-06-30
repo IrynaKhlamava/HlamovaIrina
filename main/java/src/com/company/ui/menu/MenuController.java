@@ -1,8 +1,14 @@
 package com.company.ui.menu;
 
+import com.company.service.RoomService;
 import com.company.util.ScannerUtil;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class MenuController {
+
+    private static final Logger LOGGER = Logger.getLogger(MenuController.class.getName());
 
     private static MenuController instance;
     private Builder builder;
@@ -22,7 +28,8 @@ public class MenuController {
                 navigator.printMenu();
                 navigator.navigate(ScannerUtil.readInteger());
             } catch (Exception e) {
-                System.out.println("Выбран несуществующий пунк меню. Введите другой");
+                LOGGER.log(Level.WARNING, "last request failed", e);
+                System.out.println("Введены некорректные данные");
             }
         }
     }

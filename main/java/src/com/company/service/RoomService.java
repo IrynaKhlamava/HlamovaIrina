@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 public class RoomService implements IRoomService {
 
-    private static final String GET_BY_DATA_ERROR_MESSAGE = "could not find an entity by data: %d";
+    private static final String GET_BY_DATA_ERROR_MESSAGE = "could not find an entity by data: %s";
     private static final Logger LOGGER = Logger.getLogger(RoomService.class.getName());
 
     private final IRoomDao roomDao;
@@ -69,116 +69,65 @@ public class RoomService implements IRoomService {
 
     @Override
     public Room getByRoomNumber(Integer roomNum) {
-        try {
-            LOGGER.log(Level.INFO, String.format("get Room By Number: %s ", roomNum));
-            for (Room room : roomDao.getAll()) {
-                if (room.getNumber().equals(roomNum)) {
-                    return room;
-                }
-            }
-        } catch (Exception e) {
-            LOGGER.log(Level.WARNING, "get Room By Number failed", e);
-            throw new ServiceException("get Room By Number failed", e);
-        }
-        return null;
+        return roomDao.getAll().stream()
+                .filter(room -> room.getNumber()
+                        .equals(roomNum))
+                .peek(room -> {
+                    if (room != null) {
+                        LOGGER.log(Level.INFO, String.format("get Room By Number: %s ", roomNum));
+                    }
+                })
+                .findFirst()
+                .orElseThrow(() -> {
+                    LOGGER.log(Level.WARNING, String.format("get Room By Number failed: %s ", roomNum));
+                    throw new ServiceException("get Room By Number failed");
+                });
     }
-
-//    List<Room> rooms = roomDao.getAll();
-//            return rooms.stream()
-//                    .filter(r -> r.getNumber()
-//                            .equals(roomNum))
-//                    .findFirst()
-//                   .orElseThrow(()-> new DaoException(""));
-//
-//            //LOGGER.log(Level.WARNING, "getByRoomNumber failed", roomNum);
-//            //throw new DaoException("getByRoomNumber failed", roomNum);
-//        //}
-    //  }
 
     @Override
     public List<Room> getAllFreeRoom() {
         try {
-            List<Room> rooms = roomDao.getAll();
-            return rooms.stream()
+            return getAll().stream()
                     .filter(r -> r.getGuests().size() == 0)
                     .collect(Collectors.toList());
-//            List<Room> roomFree = new ArrayList<>();
-//            List<Room> rooms = roomDao.getAll();
-//            for (Room room : rooms) {
-//                if (room.getGuests().size() == 0) {
-//                    roomFree.add(room);
-//                }
-//            }
-//            return roomFree;
         } catch (DaoException e) {
-            LOGGER.log(Level.WARNING, String.format("get All FreeRoom failed"));
-            throw new ServiceException(String.format("get All FreeRoom failed"));
+            LOGGER.log(Level.WARNING, String.format("get All FreeRoom failed"), e);
+            throw new ServiceException(String.format("get All FreeRoom failed"), e);
         }
     }
-//        List<Room> rooms = roomDao.getAll();
-//        return rooms.stream()
-//                .filter(r -> r.getGuests().size() == 0)
-//                .collect(Collectors.toList());
-//    }
 
     @Override
     public void changeStatusByRoomNumber(Integer roomNum, RoomStatus roomStatus) {
-        try {
-            for (Room room : roomDao.getAll()) {
-                if (room.getNumber().equals(roomNum)) {
-                    room.setRoomStatus(roomStatus);
-                    LOGGER.log(Level.INFO, String.format("changed in room number: %s, to new status: %s ", roomNum, roomStatus));
-                } else {
-                    LOGGER.log(Level.INFO, String.format("no room number: %s. change status failed", roomNum));
+        getAll().stream()
+                .filter(r -> r.getNumber().equals(roomNum))
+                .peek(r -> {
+                    if (r != null) {
+                        r.setRoomStatus(roomStatus);
+                        LOGGER.log(Level.INFO, String.format("Status of the room at number: %s. changed on new status: %s", roomNum, roomStatus));
+                    }
+                })
+                .findFirst()
+                .orElseThrow(() -> {
+                    LOGGER.log(Level.WARNING, String.format("change status room: %s failed", roomNum));
                     throw new ServiceException(String.format(GET_BY_DATA_ERROR_MESSAGE, roomNum));
-                }
-            }
-        } catch (DaoException e) {
-            LOGGER.log(Level.WARNING, String.format("change status room: %s failed", roomNum));
-            throw new ServiceException(String.format(GET_BY_DATA_ERROR_MESSAGE, roomNum));
-        }
-
+                });
     }
-//        try {
-//            List<Room> rooms = getAll();
-//            rooms.stream()
-//                    .filter(r -> r.getNumber().equals(roomNum))
-//                    .peek(r -> r.setRoomStatus(roomStatus))
-//                    .findFirst();
-//            //LOGGER.log(Level.INFO, String.format("Status of the room at number: %s. changed on new status: %s", roomNum, roomStatus));
-//
-//        } catch (DaoException e) {
-//            LOGGER.log(Level.WARNING, String.format("change status room: %s failed", roomNum));
-//            throw new ServiceException(String.format(GET_BY_DATA_ERROR_MESSAGE, roomNum));
-//        }
-
-//    }
 
     @Override
     public void changePrice(Integer roomNum, Double newPrice) {
-//        try {
-//            List<Room> rooms = roomDao.getAll();
-//            rooms.stream()
-//                    .filter(r -> r.getNumber().equals(roomNum))
-//                    .peek(r -> r.setPriceRoom(newPrice))
-//                    .findFirst();
-//          //  LOGGER.log(Level.INFO, String.format("Price of the room at number: %s. changed on new price: %s", roomNum, newPrice));
-        try {
-            for (Room room : roomDao.getAll()) {
-                if (room.getNumber()
-                        .equals(roomNum)) {
-                    room.setPriceRoom(newPrice);
-                    LOGGER.log(Level.INFO, String.format("Price of the room at number: %s. changed on new price: %s", roomNum, newPrice));
-                } else {
+        getAll().stream()
+                .filter(r -> r.getNumber().equals(roomNum))
+                .peek(r -> {
+                    if (r != null) {
+                        r.setPriceRoom(newPrice);
+                        LOGGER.log(Level.INFO, String.format("Price of the room at number: %s. changed on new price: %s", roomNum, newPrice));
+                    }
+                })
+                .findFirst()
+                .orElseThrow(() -> {
                     LOGGER.log(Level.INFO, String.format("no room number: %s. change price failed", roomNum));
                     throw new ServiceException(String.format(GET_BY_DATA_ERROR_MESSAGE, roomNum));
-                }
-            }
-        } catch (DaoException e) {
-            LOGGER.log(Level.INFO, String.format("no room number: %s. change price failed", roomNum));
-            throw new ServiceException(String.format(GET_BY_DATA_ERROR_MESSAGE, roomNum));
-        }
-
+                });
     }
 
 
@@ -355,8 +304,8 @@ public class RoomService implements IRoomService {
         try {
             LOGGER.log(Level.INFO, "last Guests Of Room");
             List<LastGuestsInfo> listLastGuestInfo = new ArrayList<>();
-            List<Room> rooms = roomDao.getAll();
-            for (Room room : rooms) {
+            //List<Room> rooms = roomDao.getAll();
+            for (Room room : roomDao.getAll()) {
                 if (room.getNumber().equals(roomNumber)) {
                     List<Guest> allGuests = room.getGuests();
                     if (allGuests.size() > 1) allGuests.sort(new SortByDeparture());
@@ -384,14 +333,6 @@ public class RoomService implements IRoomService {
     }
 
     public List<Room> getAll() {
-        try {
-            if (roomDao.getAll().size() > 0) {
-                return roomDao.getAll();
-            }
-        } catch (DaoException e) {
-            LOGGER.log(Level.INFO, String.format("list of rooms is empty"));
-            throw new ServiceException(String.format("list of rooms is empty"));
-        }
         return roomDao.getAll();
     }
 

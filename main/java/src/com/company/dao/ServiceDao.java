@@ -14,15 +14,15 @@ public class ServiceDao extends AbstractDao<Service> implements IServiceDao {
 
     @Override
     public Service update(Service entity) {
-        try {
+        Service service = getById(entity.getId());
+        if (service != null) {
             LOGGER.log(Level.INFO, String.format("Update Service"));
-            Service service = getById(entity.getId());
             service.setName(entity.getName());
             service.setPrice(entity.getPrice());
             return service;
-        } catch (DaoException e) {
-            LOGGER.log(Level.WARNING, "Update Service failed", e);
-            throw new ServiceException("Update Service failed", e);
+        } else {
+            LOGGER.log(Level.WARNING, "Update Service failed");
+            throw new DaoException("Update Service failed");
         }
     }
 }

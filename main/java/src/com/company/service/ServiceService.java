@@ -29,13 +29,12 @@ public class ServiceService implements IServiceService {
     public Service addService(String name, double price, Guest guest) {
         try {
             LOGGER.log(Level.INFO, String.format("AddService : %s to guest :%s", name, guest));
-
             Service service = new Service(name, price);
             service.setId(IdCreate.createServiceId());
             serviceDao.save(service);
             guest.getListServices().add(service);
             return service;
-        } catch (ServiceException e) {
+        } catch (DaoException e) {
             LOGGER.log(Level.WARNING, "AddService failed", e);
             throw new ServiceException("AddService failed", e);
         }
@@ -75,14 +74,6 @@ public class ServiceService implements IServiceService {
     }
 
     public List<Service> getAll() {
-        try {
-            if (serviceDao.getAll().size() > 0) {
-                return serviceDao.getAll();
-            }
-        } catch (DaoException e) {
-            LOGGER.log(Level.INFO, String.format("list of services is empty"));
-            throw new ServiceException(String.format("list of services is empty"));
-        }
         return serviceDao.getAll();
     }
 

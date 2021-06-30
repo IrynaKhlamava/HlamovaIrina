@@ -14,7 +14,7 @@ public class ScannerUtil {
         while (true) {
             try {
                 return Long.valueOf(scanner.nextLine().trim());
-            } catch (Exception e) {
+            } catch (InputMismatchException e) {
                 LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
                 System.out.println("ввели неверное число. ожидается ввод Long  ");
             }
@@ -32,9 +32,6 @@ public class ScannerUtil {
             } catch (IndexOutOfBoundsException e) {
                 LOGGER.log(Level.WARNING, "Ошибка ввода", e);
                 System.out.println("Выбран не    существующий пункт меню. Введите другой");
-            } catch (InputMismatchException e) {
-                LOGGER.log(Level.WARNING, "Ошибка ввода", e);
-                System.out.println("Ошибка ввода. Введите соответствующий пункт меню");
             }
         }
     }
@@ -44,7 +41,7 @@ public class ScannerUtil {
             try {
                 Scanner scanner = new Scanner(System.in);
                 return scanner.nextLine().trim();
-            } catch (NumberFormatException e) {
+            } catch (InputMismatchException e) {
                 LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
                 System.out.println("Ошибка ввода. ожидается строка");
             }
@@ -57,7 +54,7 @@ public class ScannerUtil {
             try {
                 Scanner scanner = new Scanner(System.in);
                 return Double.valueOf(scanner.nextLine().trim().replace(",", "."));
-            } catch (Exception e) {
+            } catch (InputMismatchException e) {
                 LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
                 System.out.println("ввели неверное число. ожидается double");
             }

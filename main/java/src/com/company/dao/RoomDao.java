@@ -17,18 +17,18 @@ public class RoomDao extends AbstractDao<Room> implements IRoomDao {
 
     @Override
     public Room update(Room entity) {
-        try {
+        Room room = getById(entity.getId());
+        if (room != null) {
             LOGGER.log(Level.INFO, String.format("Update room"));
-            Room room = getById(entity.getId());
             room.setNumber(entity.getNumber());
             room.setPriceRoom(entity.getPriceRoom());
             room.setRoomStatus(entity.getRoomStatus());
             room.setCapacity(entity.getCapacity());
             room.setComfort(entity.getComfort());
             return room;
-        } catch (DaoException e) {
-            LOGGER.log(Level.WARNING, "Update room failed", e);
-            throw new ServiceException("Update room failed", e);
+        } else {
+            LOGGER.log(Level.WARNING, "Update room failed");
+            throw new DaoException("Update room failed");
         }
     }
 }
