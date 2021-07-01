@@ -3,8 +3,6 @@ package com.company.filter;
 import com.company.model.Guest;
 
 import java.util.Comparator;
-import java.util.Date;
-
 
 public class SortByDeparture implements Comparator<Guest> {
 

@@ -8,10 +8,6 @@ public class GetLastGuestsOfRoom extends AbstractAction {
     public void execute() {
         System.out.println("введите номер комнаты");
         Integer roomNum = ScannerUtil.readInteger();
-        if (hotelFacade.getLastGuestsOfRoom(roomNum).size() > 0) {
-            System.out.println(hotelFacade.getLastGuestsOfRoom(roomNum));
-        } else {
-            System.out.println("Посмотреть последних гостей комнаты не удалось");
-        }
+        System.out.println(hotelFacade.getLastGuestsOfRoom(roomNum));
     }
 }

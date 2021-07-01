@@ -4,7 +4,12 @@ import com.company.model.RoomComfort;
 import com.company.model.RoomStatus;
 import com.company.util.ScannerUtil;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class AddRoom extends AbstractAction {
+
+    private static final Logger LOGGER = Logger.getLogger(AddRoom.class.getName());
 
     @Override
     public void execute() {
@@ -28,7 +33,7 @@ public class AddRoom extends AbstractAction {
         if ((roomStatusByNum != null) && (roomComfortByNum != null)) {
             hotelFacade.saveRoom(roomNumber, roomCapacity, roomStatusByNum, roomPrice, roomComfortByNum);
         } else {
-            System.out.println("Добавить комнату не удалось. Введите корректные данные или выберите другой пункт меню");
+            LOGGER.log(Level.INFO, String.format("Добавить комнату не удалось"));
         }
     }
 }

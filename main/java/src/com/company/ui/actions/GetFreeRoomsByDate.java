@@ -15,6 +15,6 @@ public class GetFreeRoomsByDate extends AbstractAction {
         System.out.println("введите год");
         Integer year = ScannerUtil.readInteger();
         LocalDate onDate = LocalDate.of(year, month, day);
-            hotelFacade.getFreeRoomsByDate(onDate).forEach(System.out::println);
+        hotelFacade.getFreeRoomsByDate(onDate).forEach(System.out::println);
     }
 }

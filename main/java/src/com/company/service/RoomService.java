@@ -14,6 +14,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import static com.company.util.FilteredListSorted.getFilteredListSorted;
+
 public class RoomService implements IRoomService {
 
     private static final String GET_BY_DATA_ERROR_MESSAGE = "could not find an entity by data: %s";
@@ -42,8 +44,8 @@ public class RoomService implements IRoomService {
 
     @Override
     public void checkIn(Guest guest, Room room) {
+        LOGGER.log(Level.INFO, String.format("checkIn of the guest: %s to the room: %s", guest, room));
         try {
-            LOGGER.log(Level.INFO, String.format("checkIn of the guest: %s to the room: %s", guest, room));
             guest.setDateCheckIn(LocalDate.now());
             guest.setDateCheckOut(guest.getDateCheckIn().plusDays(guest.getDaysOfStay()));
             if (room.getGuests().size() < room.getCapacity()) {
@@ -57,8 +59,8 @@ public class RoomService implements IRoomService {
 
     @Override
     public void checkOut(Guest guest, Room room) {
+        LOGGER.log(Level.INFO, String.format("checkOut of the guest: %s from the room: %s", guest, room));
         try {
-            LOGGER.log(Level.INFO, String.format("checkOut of the guest: %s from the room: %s", guest, room));
             guest.setDateCheckOut(LocalDate.now());
             room.getGuests().remove(guest);
         } catch (DaoException e) {
@@ -69,14 +71,10 @@ public class RoomService implements IRoomService {
 
     @Override
     public Room getByRoomNumber(Integer roomNum) {
+        LOGGER.log(Level.INFO, String.format("get Room By Number: %s ", roomNum));
         return roomDao.getAll().stream()
                 .filter(room -> room.getNumber()
                         .equals(roomNum))
-                .peek(room -> {
-                    if (room != null) {
-                        LOGGER.log(Level.INFO, String.format("get Room By Number: %s ", roomNum));
-                    }
-                })
                 .findFirst()
                 .orElseThrow(() -> {
                     LOGGER.log(Level.WARNING, String.format("get Room By Number failed: %s ", roomNum));
@@ -98,13 +96,11 @@ public class RoomService implements IRoomService {
 
     @Override
     public void changeStatusByRoomNumber(Integer roomNum, RoomStatus roomStatus) {
+        LOGGER.log(Level.INFO, String.format("Status of the room at number: %s. changed on new status: %s", roomNum, roomStatus));
         getAll().stream()
                 .filter(r -> r.getNumber().equals(roomNum))
                 .peek(r -> {
-                    if (r != null) {
-                        r.setRoomStatus(roomStatus);
-                        LOGGER.log(Level.INFO, String.format("Status of the room at number: %s. changed on new status: %s", roomNum, roomStatus));
-                    }
+                    r.setRoomStatus(roomStatus);
                 })
                 .findFirst()
                 .orElseThrow(() -> {
@@ -115,13 +111,11 @@ public class RoomService implements IRoomService {
 
     @Override
     public void changePrice(Integer roomNum, Double newPrice) {
+        LOGGER.log(Level.INFO, String.format("Price of the room at number: %s. changed on new price: %s", roomNum, newPrice));
         getAll().stream()
                 .filter(r -> r.getNumber().equals(roomNum))
                 .peek(r -> {
-                    if (r != null) {
-                        r.setPriceRoom(newPrice);
-                        LOGGER.log(Level.INFO, String.format("Price of the room at number: %s. changed on new price: %s", roomNum, newPrice));
-                    }
+                    r.setPriceRoom(newPrice);
                 })
                 .findFirst()
                 .orElseThrow(() -> {
@@ -130,11 +124,10 @@ public class RoomService implements IRoomService {
                 });
     }
 
-
     @Override
     public List<Room> sortRoomByCapacity() {
+        LOGGER.log(Level.INFO, "sort Room By Capacity");
         try {
-            LOGGER.log(Level.INFO, "sort Room By Capacity");
             return roomDao.getAllSorted(new SortRoomByCapacity());
         } catch (DaoException e) {
             LOGGER.log(Level.WARNING, "sort Room By Capacity failed", e);
@@ -144,8 +137,8 @@ public class RoomService implements IRoomService {
 
     @Override
     public List<Room> sortRoomByComfort() {
+        LOGGER.log(Level.INFO, "sort Room By Comfort");
         try {
-            LOGGER.log(Level.INFO, "sort Room By Comfort");
             return roomDao.getAllSorted(new SortRoomByComfort());
         } catch (DaoException e) {
             LOGGER.log(Level.WARNING, "sort Room By Comfort failed", e);
@@ -155,9 +148,9 @@ public class RoomService implements IRoomService {
 
     @Override
     public List<Room> getFreeRoomSortByPrice() {
+        LOGGER.log(Level.INFO, "Free Room Sort By Price");
         try {
-            LOGGER.log(Level.INFO, "Free Room Sort By Price");
-            return roomDao.getFilteredListSorted(getAllFreeRoom(), new SortRoomByPrice());
+            return getFilteredListSorted(getAllFreeRoom(), new SortRoomByPrice());
         } catch (DaoException e) {
             LOGGER.log(Level.WARNING, "get Free Room Sort By Price failed", e);
             throw new ServiceException("get Free Room Sort By Price failed", e);
@@ -166,9 +159,9 @@ public class RoomService implements IRoomService {
 
     @Override
     public List<Room> getFreeRoomSortByCapacity() {
+        LOGGER.log(Level.INFO, "Free Room Sort By Capacity");
         try {
-            LOGGER.log(Level.INFO, "Free Room Sort By Capacity");
-            return roomDao.getFilteredListSorted(getAllFreeRoom(), new SortRoomByCapacity());
+            return getFilteredListSorted(getAllFreeRoom(), new SortRoomByCapacity());
         } catch (DaoException e) {
             LOGGER.log(Level.WARNING, "get Free Room Sort By Capacity failed", e);
             throw new ServiceException("get Free Room Sort By Capacity failed", e);
@@ -177,17 +170,18 @@ public class RoomService implements IRoomService {
 
     @Override
     public List<Room> getFreeRoomSortByComfort() {
+        LOGGER.log(Level.INFO, "Free Room Sort By Comfort");
         try {
-            return roomDao.getFilteredListSorted(getAllFreeRoom(), new SortRoomByComfort());
+            return getFilteredListSorted(getAllFreeRoom(), new SortRoomByComfort());
         } catch (DaoException e) {
             LOGGER.log(Level.WARNING, "sort Free Room By Price failed", e);
             throw new ServiceException("sort Room By Price failed", e);
         }
     }
 
-
     @Override
     public List<Room> sortRoomByPrice() {
+        LOGGER.log(Level.INFO, "Free Room Sort By Price");
         try {
             return roomDao.getAllSorted(new SortRoomByPrice());
         } catch (DaoException e) {
@@ -199,6 +193,7 @@ public class RoomService implements IRoomService {
 
     @Override
     public Map<Integer, List<Guest>> getAllGuestsAndRoomsSortedByThisComparator(Comparator comparator) {
+        LOGGER.log(Level.INFO, "get Rooms ang Guests Sort By comparator");
         try {
             Map<Integer, List<Guest>> listGuestsAndRooms = new HashMap<>();
             List<Room> rooms = roomDao.getAll();
@@ -216,6 +211,7 @@ public class RoomService implements IRoomService {
 
     @Override
     public Map<Integer, List<Guest>> getAllGuestsAndRoomsSortByName() {
+        LOGGER.log(Level.INFO, "get Rooms ang Guests Sort By Name failed");
         try {
             return getAllGuestsAndRoomsSortedByThisComparator(new SortGuestsByName());
         } catch (DaoException e) {
@@ -226,6 +222,7 @@ public class RoomService implements IRoomService {
 
     @Override
     public Map<Integer, List<Guest>> getAllGuestsAndRoomsSortByDeparture() {
+        LOGGER.log(Level.INFO, "get Rooms ang Guests Sort By Departure failed");
         try {
             return getAllGuestsAndRoomsSortedByThisComparator(new SortByDeparture());
         } catch (DaoException e) {
@@ -236,9 +233,9 @@ public class RoomService implements IRoomService {
 
     @Override
     public int availableRooms() {
+        LOGGER.log(Level.INFO, "available Rooms");
         try {
-            List<Room> rooms = roomDao.getAll();
-            return (int) rooms.stream()
+            return (int) roomDao.getAll().stream()
                     .filter(r -> r.getGuests().size() == 0)
                     .count();
         } catch (DaoException e) {
@@ -249,11 +246,10 @@ public class RoomService implements IRoomService {
 
     @Override
     public List<Room> getFreeRoomsByDate(LocalDate onDate) {
+        LOGGER.log(Level.INFO, "get Free Rooms By Date");
         try {
-            LOGGER.log(Level.INFO, "get Free Rooms By Date");
             List<Room> roomsFreeOnDate = new ArrayList<>();
-            List<Room> rooms = roomDao.getAll();
-            for (Room room : rooms) {
+            for (Room room : roomDao.getAll()) {
                 List<Guest> allGuests = room.getGuests();
                 if (allGuests.size() == 0) {
                     roomsFreeOnDate.add(room);
@@ -274,14 +270,12 @@ public class RoomService implements IRoomService {
 
     @Override
     public double getBill(Guest guest) {
+        LOGGER.log(Level.INFO, "get Bill of guest");
         try {
-            LOGGER.log(Level.INFO, "get Bill of guest");
-            List<Room> rooms = roomDao.getAll();
             double sum = 0, price = 0, sumServices = 0;
             List<Service> addService;
-            for (Room room : rooms) {
-                List<Guest> allGuests = room.getGuests();
-                for (Guest guestRoom : allGuests) {
+            for (Room room : roomDao.getAll()) {
+                for (Guest guestRoom : room.getGuests()) {
                     if (guestRoom.getId().equals(guest.getId())) {
                         price = room.getPriceRoom();
                         addService = guest.getListServices();
@@ -301,10 +295,9 @@ public class RoomService implements IRoomService {
 
     @Override
     public List<LastGuestsInfo> lastGuestsOfRoom(int roomNumber) {
+        LOGGER.log(Level.INFO, "last Guests Of Room");
         try {
-            LOGGER.log(Level.INFO, "last Guests Of Room");
             List<LastGuestsInfo> listLastGuestInfo = new ArrayList<>();
-            //List<Room> rooms = roomDao.getAll();
             for (Room room : roomDao.getAll()) {
                 if (room.getNumber().equals(roomNumber)) {
                     List<Guest> allGuests = room.getGuests();

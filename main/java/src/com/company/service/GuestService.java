@@ -19,7 +19,6 @@ import java.util.logging.Logger;
 
 public class GuestService implements IGuestService {
 
-    private static final String GET_BY_ID_ERROR_MESSAGE = "could not find guest by id: %s";
     private static final Logger LOGGER = Logger.getLogger(GuestService.class.getName());
 
     private final IGuestDao guestDao;
@@ -76,15 +75,6 @@ public class GuestService implements IGuestService {
     }
 
     public Guest getGuest(Long guestID) {
-        return guestDao.getAll().stream()
-                .filter(g -> g.getId().equals(guestID))
-                .peek(g -> {
-                    LOGGER.log(Level.INFO, String.format("get Guest By ID: %s ", guestID));
-                })
-                .findFirst()
-                .orElseThrow(() -> {
-                    LOGGER.log(Level.WARNING, String.format(GET_BY_ID_ERROR_MESSAGE, guestID));
-                    throw new ServiceException(String.format(GET_BY_ID_ERROR_MESSAGE, guestID));
-                });
+        return guestDao.getById(guestID);
     }
 }

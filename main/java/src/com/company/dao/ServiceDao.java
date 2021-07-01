@@ -1,8 +1,6 @@
 package com.company.dao;
 
 import com.company.api.dao.IServiceDao;
-import com.company.exceptions.DaoException;
-import com.company.exceptions.ServiceException;
 import com.company.model.Service;
 
 import java.util.logging.Level;
@@ -15,14 +13,9 @@ public class ServiceDao extends AbstractDao<Service> implements IServiceDao {
     @Override
     public Service update(Service entity) {
         Service service = getById(entity.getId());
-        if (service != null) {
-            LOGGER.log(Level.INFO, String.format("Update Service"));
-            service.setName(entity.getName());
-            service.setPrice(entity.getPrice());
-            return service;
-        } else {
-            LOGGER.log(Level.WARNING, "Update Service failed");
-            throw new DaoException("Update Service failed");
-        }
+        LOGGER.log(Level.INFO, String.format("Update Service"));
+        service.setName(entity.getName());
+        service.setPrice(entity.getPrice());
+        return service;
     }
 }

@@ -15,10 +15,5 @@ public class CheckInAction extends AbstractAction {
         Guest guest = hotelFacade.getGuest(guestId);
         Room roomNumber = hotelFacade.getByRoomNumber(numRoom);
         hotelFacade.checkIn(guest, roomNumber);
-        if ((guest != null) && (roomNumber != null)) {
-            hotelFacade.checkIn(guest, roomNumber);
-        } else {
-            System.out.println("Заселить гостя в комнату не удалось. Введите другой пункт меню");
-        }
     }
 }

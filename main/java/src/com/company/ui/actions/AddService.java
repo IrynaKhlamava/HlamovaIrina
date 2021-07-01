@@ -14,10 +14,7 @@ public class AddService extends AbstractAction {
         System.out.println("введите ID гостя");
         Long guestId = ScannerUtil.readLong();
         Guest guest = hotelFacade.getGuest(guestId);
-        if (guest != null) {
-            hotelFacade.saveService(name, price, guest);
-        } else {
-            System.out.println("Нет такого гостя. Добавить услугу не удалось. Введите другой пунк меню");
-        }
+        hotelFacade.saveService(name, price, guest);
+
     }
 }

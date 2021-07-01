@@ -16,7 +16,6 @@ public abstract class AbstractDao<T extends AEntity> implements GenericDao<T> {
     private static final String GET_BY_DATA_ERROR_MESSAGE = "could not find an entity by data: %s";
     private static final Logger LOGGER = Logger.getLogger(AbstractDao.class.getName());
 
-
     private final List<T> repository = new ArrayList<>();
 
     @Override
@@ -31,11 +30,9 @@ public abstract class AbstractDao<T extends AEntity> implements GenericDao<T> {
 
     @Override
     public T getById(Long id) {
+        LOGGER.log(Level.INFO, String.format("Get entity by id: %s", id));
         return repository.stream()
                 .filter(x -> id.equals(x.getId()))
-                .peek(x -> {
-                    LOGGER.log(Level.INFO, String.format("Get entity by id: ", id));
-                })
                 .findFirst()
                 .orElseThrow(() -> {
                     LOGGER.log(Level.WARNING, String.format(GET_BY_DATA_ERROR_MESSAGE, id));
@@ -55,20 +52,7 @@ public abstract class AbstractDao<T extends AEntity> implements GenericDao<T> {
 
     @Override
     public List<T> getAllSorted(Comparator<T> comparator) {
-        try {
-            return getAll()
-                    .stream()
-                    .sorted(comparator)
-                    .collect(Collectors.toList());
-        } catch (DaoException e) {
-            LOGGER.log(Level.WARNING, String.format("get All Sorted failed"));
-            throw new DaoException(String.format("get All Sorted failed"));
-        }
-    }
-
-    @Override
-    public List<T> getFilteredListSorted(List<T> filteredList, Comparator<T> comparator) {
-        return filteredList
+        return getAll()
                 .stream()
                 .sorted(comparator)
                 .collect(Collectors.toList());

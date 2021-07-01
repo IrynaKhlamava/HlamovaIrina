@@ -4,7 +4,6 @@ import com.company.api.dao.IServiceDao;
 import com.company.api.service.IServiceService;
 import com.company.exceptions.DaoException;
 import com.company.exceptions.ServiceException;
-import com.company.filter.SortRoomByComfort;
 import com.company.filter.SortServicesByName;
 import com.company.filter.SortServicesByPrice;
 import com.company.model.Guest;
@@ -14,6 +13,8 @@ import com.company.util.IdCreate;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static com.company.util.FilteredListSorted.getFilteredListSorted;
 
 public class ServiceService implements IServiceService {
 
@@ -27,8 +28,8 @@ public class ServiceService implements IServiceService {
 
     @Override
     public Service addService(String name, double price, Guest guest) {
+        LOGGER.log(Level.INFO, String.format("AddService : %s to guest :%s", name, guest));
         try {
-            LOGGER.log(Level.INFO, String.format("AddService : %s to guest :%s", name, guest));
             Service service = new Service(name, price);
             service.setId(IdCreate.createServiceId());
             serviceDao.save(service);
@@ -42,9 +43,9 @@ public class ServiceService implements IServiceService {
 
     @Override
     public List<Service> getAllServicesSortByPrice(Guest guest) {
+        LOGGER.log(Level.INFO, "Services Sorted By Price");
         try {
-            LOGGER.log(Level.INFO, "Services Sorted By Price");
-            return serviceDao.getFilteredListSorted(guest.getListServices(), new SortServicesByPrice());
+            return getFilteredListSorted(guest.getListServices(), new SortServicesByPrice());
         } catch (DaoException e) {
             LOGGER.log(Level.WARNING, "Services Sorted By Price failed", e);
             throw new ServiceException("Services Sorted By Price failed", e);
@@ -53,9 +54,9 @@ public class ServiceService implements IServiceService {
 
     @Override
     public List<Service> getServicesSortByName() {
+        LOGGER.log(Level.INFO, "Services Sorted By Name");
         try {
-            LOGGER.log(Level.INFO, "Services Sorted By Name");
-            return serviceDao.getFilteredListSorted(serviceDao.getAll(), new SortServicesByName());
+            return getFilteredListSorted(serviceDao.getAll(), new SortServicesByName());
         } catch (DaoException e) {
             LOGGER.log(Level.WARNING, "Services Sorted By Name failed", e);
             throw new ServiceException("Services Sorted By Name failed", e);
@@ -64,9 +65,9 @@ public class ServiceService implements IServiceService {
 
     @Override
     public List<Service> getServicesSortByPrice() {
+        LOGGER.log(Level.INFO, "Services Sorted By Price");
         try {
-            LOGGER.log(Level.INFO, "Services Sorted By Price");
-            return serviceDao.getFilteredListSorted(serviceDao.getAll(), new SortServicesByPrice());
+            return getFilteredListSorted(serviceDao.getAll(), new SortServicesByPrice());
         } catch (DaoException e) {
             LOGGER.log(Level.WARNING, "Services Sorted By Price failed", e);
             throw new ServiceException("Services Sorted By Price failed", e);
@@ -76,6 +77,4 @@ public class ServiceService implements IServiceService {
     public List<Service> getAll() {
         return serviceDao.getAll();
     }
-
-
 }

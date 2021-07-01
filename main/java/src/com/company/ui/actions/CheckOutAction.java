@@ -14,10 +14,6 @@ public class CheckOutAction extends AbstractAction {
         Integer numRoom = ScannerUtil.readInteger();
         Guest guest = hotelFacade.getGuest(guestId);
         Room roomNumber = hotelFacade.getByRoomNumber(numRoom);
-        if ((guest != null) && (roomNumber != null)) {
-            hotelFacade.checkOut(guest, roomNumber);
-        } else {
-            System.out.println("Выселить гостя из комнаты не удалось. Введите другой пункт меню");
-        }
+        hotelFacade.checkOut(guest, roomNumber);
     }
 }
