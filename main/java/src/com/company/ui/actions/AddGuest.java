@@ -11,6 +11,5 @@ public class AddGuest extends AbstractAction {
         System.out.println("введите планируемое колличество дней пребывания");
         Integer daysOfStay = ScannerUtil.readInteger();
         hotelFacade.saveGuest(name, daysOfStay);
-
     }
 }

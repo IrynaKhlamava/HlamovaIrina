@@ -9,6 +9,5 @@ public class GetBill extends AbstractAction {
         System.out.println("введите ID гостя");
         Long guestId = ScannerUtil.readLong();
         System.out.println(hotelFacade.getBill(hotelFacade.getGuest(guestId)));
-
     }
 }

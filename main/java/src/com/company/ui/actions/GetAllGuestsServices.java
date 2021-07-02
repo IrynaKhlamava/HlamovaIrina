@@ -1,5 +1,6 @@
 package com.company.ui.actions;
 
+import com.company.model.Guest;
 import com.company.util.ScannerUtil;
 
 public class GetAllGuestsServices extends AbstractAction {

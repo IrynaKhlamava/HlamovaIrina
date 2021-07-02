@@ -1,5 +1,6 @@
 package com.company.ui.actions;
 
+
 public class GetAllRoomsSortedByPriceAction extends AbstractAction {
 
     @Override

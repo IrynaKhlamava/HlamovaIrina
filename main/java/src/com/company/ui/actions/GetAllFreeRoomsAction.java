@@ -4,8 +4,12 @@ public class GetAllFreeRoomsAction extends AbstractAction {
 
     @Override
     public void execute() {
-        System.out.println("Общее количество свободных комнат: "+hotelFacade.getNumberAllFreeRooms());
-        hotelFacade.getAllFreeRooms().forEach(System.out::println);
-
+        Integer freeRooms = hotelFacade.getNumberAllFreeRooms();
+        if (freeRooms > 0) {
+            System.out.println("Общее количество свободных комнат: " + freeRooms);
+            hotelFacade.getAllFreeRooms().forEach(System.out::println);
+        } else {
+            System.out.println("Свободных комнат нет");
+        }
     }
 }

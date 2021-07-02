@@ -6,5 +6,4 @@ public class GetAllGuestsSortedByNameAction extends AbstractAction {
     public void execute() {
         hotelFacade.getAllGuestsSortedByName().forEach(System.out::println);
     }
-
 }

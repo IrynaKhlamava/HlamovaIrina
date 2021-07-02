@@ -1,11 +1,15 @@
 package com.company.ui.actions;
 
-import com.company.model.Room;
 import com.company.model.RoomComfort;
 import com.company.model.RoomStatus;
 import com.company.util.ScannerUtil;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class AddRoom extends AbstractAction {
+
+    private static final Logger LOGGER = Logger.getLogger(AddRoom.class.getName());
 
     @Override
     public void execute() {
@@ -14,32 +18,22 @@ public class AddRoom extends AbstractAction {
         System.out.println("введите вместимость комнаты");
         Integer roomCapacity = ScannerUtil.readInteger();
         System.out.println("введите статус комнаты");
-        System.out.println("1 - готова к заселению\n" +
-                "2 - неисправна \n" +
-                "3 - ждет уборки\n" +
-                "4 - занята \n" +
-                "5 - выездная  ");
+        System.out.println("0 - готова к заселению\n" +
+                "1 - неисправна \n" +
+                "2 - ждет уборки\n" +
+                "3- занята \n" +
+                "4 - выездная  ");
         Integer roomStatus = ScannerUtil.readInteger();
         System.out.println("введите комфортность комнаты: 3, 4 или 5 звезд");
         Integer roomComfort = ScannerUtil.readInteger();
         System.out.println("введите цену");
         Double roomPrice = ScannerUtil.readDouble();
-        hotelFacade.saveRoom(new Room(roomNumber, roomCapacity, getRoomStatusByNum(roomStatus), roomPrice, getRoomComfortByNum(roomComfort)));
-    }
-
-    private RoomComfort getRoomComfortByNum(Integer num) {
-        for (RoomComfort roomComfort : RoomComfort.values()) {
-            if (num == roomComfort.getValue())
-                return roomComfort;
+        RoomStatus roomStatusByNum = hotelFacade.getRoomStatusByNumber(roomStatus);
+        RoomComfort roomComfortByNum = hotelFacade.getComfortByNumber(roomComfort);
+        if ((roomStatusByNum != null) && (roomComfortByNum != null)) {
+            hotelFacade.saveRoom(roomNumber, roomCapacity, roomStatusByNum, roomPrice, roomComfortByNum);
+        } else {
+            LOGGER.log(Level.INFO, String.format("Добавить комнату не удалось"));
         }
-        return null;
-    }
-
-    private RoomStatus getRoomStatusByNum(Integer num) {
-        for (RoomStatus roomStatus : RoomStatus.values()) {
-            if (num == roomStatus.getValue())
-                return roomStatus;
-        }
-        return null;
     }
 }

@@ -21,5 +21,4 @@ public interface GenericDao<T extends AEntity> {
 
     List<T> getAllSorted(Comparator<T> comparator);
 
-    List<T> getFilteredListSorted(List<T> filteredList, Comparator<T> comparator);
 }

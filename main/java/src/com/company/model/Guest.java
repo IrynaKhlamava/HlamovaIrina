@@ -23,8 +23,8 @@ public class Guest extends AEntity {
         return dateCheckOut;
     }
 
-    public void setDateCheckOut(LocalDate dateDateCheckOut) {
-        this.dateCheckOut = dateDateCheckOut;
+    public void setDateCheckOut(LocalDate dateCheckOut) {
+        this.dateCheckOut = dateCheckOut;
     }
 
     public List<Service> getListServices() {
@@ -55,8 +55,8 @@ public class Guest extends AEntity {
         return dateCheckIn;
     }
 
-    public void setDateCheckIn() {
-        this.dateCheckIn = LocalDate.now();
+    public void setDateCheckIn(LocalDate dateCheckIn) {
+        this.dateCheckIn = dateCheckIn;
     }
 
     public Integer getDaysOfStay() {

@@ -1,5 +1,7 @@
 package com.company.ui.actions;
 
+import com.company.model.Guest;
+import com.company.model.Room;
 import com.company.util.ScannerUtil;
 
 public class CheckOutAction extends AbstractAction {
@@ -10,6 +12,8 @@ public class CheckOutAction extends AbstractAction {
         Long guestId = ScannerUtil.readLong();
         System.out.println("введите номер комнаты");
         Integer numRoom = ScannerUtil.readInteger();
-        hotelFacade.checkOut(hotelFacade.getGuest(guestId), hotelFacade.getByRoomNumber(numRoom));
+        Guest guest = hotelFacade.getGuest(guestId);
+        Room roomNumber = hotelFacade.getByRoomNumber(numRoom);
+        hotelFacade.checkOut(guest, roomNumber);
     }
 }

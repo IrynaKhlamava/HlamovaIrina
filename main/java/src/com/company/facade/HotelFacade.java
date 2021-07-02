@@ -7,10 +7,8 @@ import com.company.api.dao.IServiceDao;
 import com.company.dao.GuestDao;
 import com.company.dao.RoomDao;
 import com.company.dao.ServiceDao;
-import com.company.model.Guest;
-import com.company.model.Room;
-import com.company.model.RoomStatus;
-import com.company.model.Service;
+import com.company.exceptions.ServiceException;
+import com.company.model.*;
 import com.company.service.GuestService;
 import com.company.service.RoomService;
 import com.company.service.ServiceService;
@@ -34,8 +32,8 @@ public class HotelFacade {
         IRoomDao roomDao = new RoomDao();
         IGuestDao guestDao = new GuestDao();
         IServiceDao serviceDao = new ServiceDao();
-        roomService = new RoomService(roomDao, guestDao);
-        guestService = new GuestService(guestDao, roomDao);
+        roomService = new RoomService(roomDao);
+        guestService = new GuestService(guestDao);
         serviceService = new ServiceService(serviceDao);
     }
 
@@ -47,8 +45,8 @@ public class HotelFacade {
         return INSTANCE;
     }
 
-    public void saveRoom(Room room) {
-        roomService.save(room);
+    public void saveRoom(Integer number, Integer capacity, RoomStatus roomStatus, Double priceRoom, RoomComfort comfort) {
+        roomService.addRoom(number, capacity, roomStatus, priceRoom, comfort);
     }
 
     public List<Room> getAllRoom() {
@@ -59,7 +57,7 @@ public class HotelFacade {
         return roomService.sortRoomByCapacity();
     }
 
-    public List<Room> getAllRoomsSortedByByPrice() {
+    public List<Room> getAllRoomsSortedByByPrice(){
         return roomService.sortRoomByPrice();
     }
 
@@ -127,7 +125,7 @@ public class HotelFacade {
         return roomService.getBill(guest);
     }
 
-    public Map<String, List<LocalDate>> getLastGuestsOfRoom(Integer roomNum) {
+    public List<LastGuestsInfo> getLastGuestsOfRoom(Integer roomNum) {
         return roomService.lastGuestsOfRoom(roomNum);
     }
 
@@ -143,11 +141,20 @@ public class HotelFacade {
         return serviceService.getServicesSortByName();
     }
 
-    public void changeRoomStatus(Integer roomNum, RoomStatus roomStatusByNum) {
-        roomService.changeStatus(roomNum, roomStatusByNum );
+    public void changeStatusByRoomNumber(Integer roomNum, RoomStatus roomStatusByNum) {
+        roomService.changeStatusByRoomNumber(roomNum, roomStatusByNum );
     }
 
     public void changeRoomPrice(Integer roomNum, Double newPrice) {
         roomService.changePrice(roomNum, newPrice);
     }
+
+    public RoomStatus getRoomStatusByNumber(Integer num) {
+        return  roomService.getRoomStatusByNumber(num);
+    }
+
+    public RoomComfort getComfortByNumber(Integer num) {
+        return  roomService.getRoomComfortByNumber(num);
+    }
+
 }
