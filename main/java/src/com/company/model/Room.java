@@ -1,16 +1,19 @@
 package com.company.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Room extends AEntity {
+public class Room extends AEntity implements Serializable {
+
     private Integer number;
     private Integer capacity;
     private RoomStatus roomStatus;
     private Double priceRoom;
     private RoomComfort comfort;
     private List<Guest> guests;
+
 
     public Room(Integer number, Integer capacity, RoomStatus roomStatus, Double priceRoom, RoomComfort comfort) {
         this.number = number;
@@ -69,7 +72,8 @@ public class Room extends AEntity {
     @Override
     public String toString() {
         return "Room{" +
-                "number=" + number +
+                "id=" + super.getId() +
+                ", number=" + number +
                 ", capacity=" + capacity +
                 ", roomStatus=" + roomStatus +
                 ", priceRoom=" + priceRoom +

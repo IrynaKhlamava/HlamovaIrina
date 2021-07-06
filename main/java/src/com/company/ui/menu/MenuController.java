@@ -1,6 +1,5 @@
 package com.company.ui.menu;
 
-import com.company.service.RoomService;
 import com.company.util.ScannerUtil;
 
 import java.util.logging.Level;
@@ -9,6 +8,8 @@ import java.util.logging.Logger;
 public class MenuController {
 
     private static final Logger LOGGER = Logger.getLogger(MenuController.class.getName());
+
+    public static Integer indexRun = -1;
 
     private static MenuController instance;
     private Builder builder;
@@ -22,8 +23,7 @@ public class MenuController {
     public void run() {
         builder.buildMenu();
         navigator.setCurrentMenu(builder.getRootMenu());
-        Integer index = -1;
-        while (!index.equals(0)) {
+        while (!indexRun.equals(0)) {
             try {
                 navigator.printMenu();
                 navigator.navigate(ScannerUtil.readInteger());

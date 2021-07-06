@@ -7,6 +7,7 @@ import com.company.exceptions.ServiceException;
 import com.company.filter.*;
 import com.company.model.*;
 import com.company.util.IdCreate;
+import com.company.util.PropertiesHandler;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -20,6 +21,9 @@ public class RoomService implements IRoomService {
 
     private static final String GET_BY_DATA_ERROR_MESSAGE = "could not find an entity by data: %s";
     private static final Logger LOGGER = Logger.getLogger(RoomService.class.getName());
+    Integer NUM_OF_GUESTS = PropertiesHandler.getProperty("guest.change_num_of_last_guests")
+            .map(Integer::valueOf)
+            .orElse(3);
 
     private final IRoomDao roomDao;
 
@@ -33,7 +37,6 @@ public class RoomService implements IRoomService {
             LOGGER.log(Level.INFO, String.format("addRoom number: %s, capacity: %s, roomStatus: %s, priceRoom: %s, comfort: %s", number, capacity, roomStatus, priceRoom, comfort));
             Room room = new Room(number, capacity, roomStatus, priceRoom, comfort);
             room.setId(IdCreate.createRoomId());
-            room.setNumber(NumberRoom.getNewRoomNumber());
             roomDao.save(room);
             return room;
         } catch (DaoException e) {
@@ -303,7 +306,7 @@ public class RoomService implements IRoomService {
                     List<Guest> allGuests = room.getGuests();
                     if (allGuests.size() > 1) allGuests.sort(new SortByDeparture());
                     int count = 0;
-                    for (int i = allGuests.size() - 1; i >= 0 && count < 3; i--) {
+                    for (int i = allGuests.size() - 1; i >= 0 && count < NUM_OF_GUESTS; i--) {
                         Guest guest = allGuests.get(i);
                         LastGuestsInfo guestsInfo = new LastGuestsInfo();
                         guestsInfo.setName(guest.getName());

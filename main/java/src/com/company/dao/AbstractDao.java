@@ -3,6 +3,7 @@ package com.company.dao;
 import com.company.api.dao.GenericDao;
 import com.company.exceptions.DaoException;
 import com.company.model.AEntity;
+import com.company.model.Guest;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -16,7 +17,9 @@ public abstract class AbstractDao<T extends AEntity> implements GenericDao<T> {
     private static final String GET_BY_DATA_ERROR_MESSAGE = "could not find an entity by data: %s";
     private static final Logger LOGGER = Logger.getLogger(AbstractDao.class.getName());
 
-    private final List<T> repository = new ArrayList<>();
+   // private final List<T> repository = new ArrayList<>();
+
+    private List<T> repository = new ArrayList<>();
 
     @Override
     public void save(T entity) {
@@ -56,5 +59,8 @@ public abstract class AbstractDao<T extends AEntity> implements GenericDao<T> {
                 .stream()
                 .sorted(comparator)
                 .collect(Collectors.toList());
+    }
+    public void saveAll(List<T> entity) {
+        repository = entity;
     }
 }

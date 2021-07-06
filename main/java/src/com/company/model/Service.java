@@ -1,11 +1,13 @@
 package com.company.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Service extends AEntity {
+public class Service extends AEntity  implements Serializable {
 
     private String name;
     private double price;
+
 
     public Service(String name, double price) {
         this.name = name;
@@ -45,7 +47,8 @@ public class Service extends AEntity {
     @Override
     public String toString() {
         return "Service{" +
-                "name='" + name + '\'' +
+                "id=" + super.getId() +
+                ", name='" + name + '\'' +
                 ", price=" + price +
                 '}';
     }

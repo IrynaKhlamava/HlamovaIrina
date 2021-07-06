@@ -1,21 +1,19 @@
 package com.company.facade;
 
-
 import com.company.api.dao.IGuestDao;
 import com.company.api.dao.IRoomDao;
 import com.company.api.dao.IServiceDao;
 import com.company.dao.GuestDao;
 import com.company.dao.RoomDao;
 import com.company.dao.ServiceDao;
-import com.company.exceptions.ServiceException;
 import com.company.model.*;
 import com.company.service.GuestService;
 import com.company.service.RoomService;
 import com.company.service.ServiceService;
+import com.company.util.SerializationHandler;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 public class HotelFacade {
 
@@ -29,9 +27,9 @@ public class HotelFacade {
     }
 
     private void init() {
-        IRoomDao roomDao = new RoomDao();
-        IGuestDao guestDao = new GuestDao();
-        IServiceDao serviceDao = new ServiceDao();
+        IRoomDao roomDao = RoomDao.getRoomDao();
+        IGuestDao guestDao = GuestDao.getGuestDao();
+        IServiceDao serviceDao = ServiceDao.getServiceDao();
         roomService = new RoomService(roomDao);
         guestService = new GuestService(guestDao);
         serviceService = new ServiceService(serviceDao);
@@ -157,4 +155,7 @@ public class HotelFacade {
         return  roomService.getRoomComfortByNumber(num);
     }
 
+    public void saveToFile() {
+        SerializationHandler.serialize(roomService.getAll(), guestService.getAll(), serviceService.getAll());
+  }
 }

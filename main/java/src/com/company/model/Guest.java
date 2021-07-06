@@ -1,14 +1,15 @@
 package com.company.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
 
-public class Guest extends AEntity {
+public class Guest extends AEntity implements Serializable {
 
     private String name;
-    private Long id;
+  //  private Long id;
     private Integer daysOfStay;
     private LocalDate dateCheckIn;
     private LocalDate dateCheckOut;
@@ -39,16 +40,8 @@ public class Guest extends AEntity {
         return name;
     }
 
-    public Long getId() {
-        return this.id;
-    }
-
     public void setName(String name) {
         this.name = name;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public LocalDate getDateCheckIn() {
@@ -73,7 +66,6 @@ public class Guest extends AEntity {
         if (!(o instanceof Guest)) return false;
         Guest guest = (Guest) o;
         return Objects.equals(name, guest.name) &&
-                Objects.equals(id, guest.id) &&
                 Objects.equals(daysOfStay, guest.daysOfStay) &&
                 Objects.equals(dateCheckIn, guest.dateCheckIn) &&
                 Objects.equals(dateCheckOut, guest.dateCheckOut) &&
@@ -82,14 +74,14 @@ public class Guest extends AEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, id, daysOfStay, dateCheckIn, dateCheckOut, listServices);
+        return Objects.hash(name,daysOfStay, dateCheckIn, dateCheckOut, listServices);
     }
 
     @Override
     public String toString() {
         return "Guest{" +
                 "name='" + name + '\'' +
-                ", id=" + id +
+                ", id=" + super.getId() +
                 ", daysOfStay=" + daysOfStay +
                 ", dateCheckIn=" + dateCheckIn +
                 ", dateCheckOut=" + dateCheckOut +
