@@ -21,9 +21,6 @@ public class RoomService implements IRoomService {
 
     private static final String GET_BY_DATA_ERROR_MESSAGE = "could not find an entity by data: %s";
     private static final Logger LOGGER = Logger.getLogger(RoomService.class.getName());
-    Integer NUM_OF_GUESTS = PropertiesHandler.getProperty("guest.change_num_of_last_guests")
-            .map(Integer::valueOf)
-            .orElse(3);
 
     private final IRoomDao roomDao;
 
@@ -306,7 +303,7 @@ public class RoomService implements IRoomService {
                     List<Guest> allGuests = room.getGuests();
                     if (allGuests.size() > 1) allGuests.sort(new SortByDeparture());
                     int count = 0;
-                    for (int i = allGuests.size() - 1; i >= 0 && count < NUM_OF_GUESTS; i--) {
+                    for (int i = allGuests.size() - 1; i >= 0 && count < PropertiesHandler.getNumOfGuest(); i--) {
                         Guest guest = allGuests.get(i);
                         LastGuestsInfo guestsInfo = new LastGuestsInfo();
                         guestsInfo.setName(guest.getName());

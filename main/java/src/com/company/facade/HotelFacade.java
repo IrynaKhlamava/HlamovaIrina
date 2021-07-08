@@ -9,6 +9,7 @@ import com.company.dao.ServiceDao;
 import com.company.model.*;
 import com.company.service.GuestService;
 import com.company.service.RoomService;
+import com.company.service.SerializationService;
 import com.company.service.ServiceService;
 import com.company.util.SerializationHandler;
 
@@ -156,6 +157,7 @@ public class HotelFacade {
     }
 
     public void saveToFile() {
-        SerializationHandler.serialize(roomService.getAll(), guestService.getAll(), serviceService.getAll());
+        SerializationService serializationService = new SerializationService();
+        serializationService.serializeToFile(roomService.getAll(), guestService.getAll(), serviceService.getAll());
   }
 }

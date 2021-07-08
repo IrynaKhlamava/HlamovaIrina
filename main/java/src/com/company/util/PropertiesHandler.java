@@ -27,13 +27,27 @@ public class PropertiesHandler {
     }
 
     private static void loadProperties() {
-        try(InputStream inputStream = new FileInputStream(PROPERTIES_FILE_PATH)){
+        try (InputStream inputStream = new FileInputStream(PROPERTIES_FILE_PATH)) {
             properties = new Properties();
             properties.load(inputStream);
-        } catch (IOException e){
+        } catch (IOException e) {
             LOGGER.warning(FAILED_READ_PROPERTIES_ERROR_MESSAGE + e.getMessage());
             throw new ServiceException(FAILED_READ_PROPERTIES_ERROR_MESSAGE, e);
         }
     }
+
+    public static Integer getNumOfGuest() {
+        Integer num;
+        return num = PropertiesHandler.getProperty("guest.change_num_of_last_guests")
+                .map(Integer::valueOf)
+                .orElse(3);
+    }
+
+    public static String getPathToFile() {
+        String pathToFile;
+        return pathToFile = PropertiesHandler.getProperty("serialization.path_to_file")
+                .orElseThrow(() -> new ServiceException("Serialization file not found"));
+    }
+
 
 }

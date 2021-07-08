@@ -2,10 +2,8 @@ package com.company.dao;
 
 import com.company.api.dao.IServiceDao;
 import com.company.model.Service;
-import com.company.util.IdCreate;
-import com.company.util.SerializationHandler;
+import com.company.service.SerializationService;
 
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -27,9 +25,8 @@ public class ServiceDao extends AbstractDao<Service> implements IServiceDao {
     }
 
     private void init() {
-        List<Service> services = SerializationHandler.deserialize(Service.class);
-        this.saveAll(services);
-        IdCreate.setServiceId(services.size()+1L);
+        SerializationService serializationService = new SerializationService();
+        this.saveAll(serializationService.deserializeServiceFromFile());
     }
 
     @Override

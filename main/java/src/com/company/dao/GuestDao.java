@@ -2,6 +2,7 @@ package com.company.dao;
 
 import com.company.model.Guest;
 import com.company.api.dao.IGuestDao;
+import com.company.service.SerializationService;
 import com.company.util.IdCreate;
 import com.company.util.SerializationHandler;
 
@@ -27,9 +28,8 @@ public class GuestDao extends AbstractDao<Guest> implements IGuestDao {
     }
 
     private void init() {
-        List<Guest> guests = SerializationHandler.deserialize(Guest.class);
-        this.saveAll(guests);
-        IdCreate.setGuestId(guests.size()+1L);
+        SerializationService serializationService = new SerializationService();
+        this.saveAll(serializationService.deserializeGuestFromFile());
     }
 
     @Override

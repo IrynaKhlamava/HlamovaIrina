@@ -9,7 +9,7 @@ public class MenuController {
 
     private static final Logger LOGGER = Logger.getLogger(MenuController.class.getName());
 
-    public static Integer indexRun = -1;
+    public static Boolean isRunning = true;
 
     private static MenuController instance;
     private Builder builder;
@@ -23,7 +23,7 @@ public class MenuController {
     public void run() {
         builder.buildMenu();
         navigator.setCurrentMenu(builder.getRootMenu());
-        while (!indexRun.equals(0)) {
+        while (isRunning) {
             try {
                 navigator.printMenu();
                 navigator.navigate(ScannerUtil.readInteger());
