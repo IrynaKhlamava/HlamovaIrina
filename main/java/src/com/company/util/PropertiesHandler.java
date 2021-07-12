@@ -36,12 +36,12 @@ public class PropertiesHandler {
         }
     }
 
-    public static Integer getNumOfGuest() {
-        Integer num;
-        return num = PropertiesHandler.getProperty("guest.change_num_of_last_guests")
-                .map(Integer::valueOf)
-                .orElse(3);
-    }
+//    public static Integer getNumOfGuest() {
+//        Integer num;
+//        return num = PropertiesHandler.getProperty("guest.change_num_of_last_guests")
+//                .map(Integer::valueOf)
+//                .orElse(3);
+//    }
 
     public static String getPathToFile() {
         String pathToFile;

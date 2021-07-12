@@ -23,6 +23,10 @@ public class RoomService implements IRoomService {
     private static final Logger LOGGER = Logger.getLogger(RoomService.class.getName());
 
     private final IRoomDao roomDao;
+    private final Integer numLastGuestFromProperty = PropertiesHandler.getProperty("guest.change_num_of_last_guests")
+            .map(Integer::valueOf)
+                .orElse(3);
+
 
     public RoomService(IRoomDao roomDao) {
         this.roomDao = roomDao;
@@ -303,7 +307,7 @@ public class RoomService implements IRoomService {
                     List<Guest> allGuests = room.getGuests();
                     if (allGuests.size() > 1) allGuests.sort(new SortByDeparture());
                     int count = 0;
-                    for (int i = allGuests.size() - 1; i >= 0 && count < PropertiesHandler.getNumOfGuest(); i--) {
+                    for (int i = allGuests.size() - 1; i >= 0 && count < numLastGuestFromProperty; i--) {
                         Guest guest = allGuests.get(i);
                         LastGuestsInfo guestsInfo = new LastGuestsInfo();
                         guestsInfo.setName(guest.getName());

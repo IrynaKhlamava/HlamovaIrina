@@ -59,6 +59,8 @@ public abstract class AbstractDao<T extends AEntity> implements GenericDao<T> {
     }
 
     public void saveAll(List<T> entity) {
-        repository.addAll(entity);
+        if (!entity.isEmpty()) {
+            repository.addAll(entity);
+        }
     }
 }
