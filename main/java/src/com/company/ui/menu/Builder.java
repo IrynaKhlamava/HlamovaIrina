@@ -1,10 +1,15 @@
 package com.company.ui.menu;
 
 import com.company.ui.actions.*;
+import com.company.util.PropertiesHandler;
 
 public class Builder {
 
     private Menu rootMenu;
+
+    private Boolean CHANGE_STATUS = PropertiesHandler.getProperty("room.change_status.enable")
+            .map(Boolean::valueOf)
+            .orElse(false);
 
     public Menu getRootMenu() {
         return rootMenu;
@@ -15,10 +20,12 @@ public class Builder {
         Menu roomMenu = new Menu("Комнаты");
         Menu guestMenu = new Menu("Гости");
         Menu serviceMenu = new Menu("Услуги");
+        Menu exit = new Menu("Выход");
 
         mainMenu.addMenuItem(new MenuItem("Комнаты", new EmptyAction(), roomMenu));
         mainMenu.addMenuItem(new MenuItem("Гости", new EmptyAction(), guestMenu));
         mainMenu.addMenuItem(new MenuItem("Услуги", new EmptyAction(), serviceMenu));
+        mainMenu.addMenuItem(new MenuItem("Выход", new ExitAction(), exit));
 
         roomMenu.addMenuItem(new MenuItem("Добавить комнату", new AddRoom(), roomMenu));
         roomMenu.addMenuItem(new MenuItem("Вывести список комнат", new GetAllRoomAction(), roomMenu));
@@ -29,17 +36,19 @@ public class Builder {
         roomMenu.addMenuItem(new MenuItem("Список номеров которые будут свободны к дате", new GetFreeRoomsByDate(), roomMenu));
         roomMenu.addMenuItem(new MenuItem("Посмотреть 3-х последних постояльцев номера и даты их пребывания", new GetLastGuestsOfRoom(), roomMenu));
         roomMenu.addMenuItem(new MenuItem("Посмотреть детали номера", new GetRoomDescription(), roomMenu));
-        roomMenu.addMenuItem(new MenuItem("Изменить статус номера", new ChangeStatusByRoomNumber(), roomMenu));
+        if (CHANGE_STATUS) {
+            roomMenu.addMenuItem(new MenuItem("Изменить статус номера", new ChangeStatusByRoomNumber(), roomMenu));
+        }
         roomMenu.addMenuItem(new MenuItem("Изменить цену номера", new ChangeRoomPrice(), roomMenu));
         roomMenu.addMenuItem(new MenuItem("Главное меню", new EmptyAction(), mainMenu));
 
         guestMenu.addMenuItem(new MenuItem("Добавить гостя", new AddGuest(), guestMenu));
+        guestMenu.addMenuItem(new MenuItem("Посмотреть список всех гостей", new GetAllGuestsAction(), guestMenu));
         guestMenu.addMenuItem(new MenuItem("Заселить гостя в комнату", new CheckInAction(), guestMenu));
         guestMenu.addMenuItem(new MenuItem("Выселить гостя из комнаты", new CheckOutAction(), guestMenu));
         guestMenu.addMenuItem(new MenuItem("Посмотреть сумму счета гостя", new GetBill(), guestMenu));
         guestMenu.addMenuItem(new MenuItem("Посмотреть список услуг гостя и их цену", new GetAllGuestsServices(), guestMenu));
         guestMenu.addMenuItem(new MenuItem("Услуги гостя отсортировать по цене", new GetAllGuestServicesSortedByPrice(), guestMenu));
-        guestMenu.addMenuItem(new MenuItem("Посмотреть список всех гостей", new GetAllGuestsAction(), guestMenu));
         guestMenu.addMenuItem(new MenuItem("Отсортировать гостей по имени", new GetAllGuestsSortedByNameAction(), guestMenu));
         guestMenu.addMenuItem(new MenuItem("Отсортировать гостей по дате отправления", new GetAllGuestsSortedByDepartureAction(), guestMenu));
         guestMenu.addMenuItem(new MenuItem("Главное меню", new EmptyAction(), mainMenu));

@@ -7,6 +7,7 @@ import com.company.ui.menu.Navigator;
 public class Main {
 
     public static void main(String[] args) {
+
         Builder builder = new Builder();
         Navigator navigator = new Navigator();
         MenuController menuController = new MenuController(builder, navigator);

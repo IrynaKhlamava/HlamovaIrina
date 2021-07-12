@@ -12,6 +12,18 @@ public class IdCreate {
         return guestId++;
     }
 
+    public static void setGuestId(Long guestId) {
+        IdCreate.guestId = guestId;
+    }
+
+    public static void setRoomId(Long roomId) {
+        IdCreate.roomId = roomId;
+    }
+
+    public static void setServiceId(Long serviceId) {
+        IdCreate.serviceId = serviceId;
+    }
+
     public static Long createRoomId() {
         return roomId++;
     }
