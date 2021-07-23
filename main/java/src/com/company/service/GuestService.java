@@ -8,6 +8,8 @@ import com.company.exceptions.DaoException;
 import com.company.exceptions.ServiceException;
 import com.company.filter.SortByDeparture;
 import com.company.filter.SortGuestsByName;
+import com.company.injection.annotation.Autowired;
+import com.company.injection.annotation.Component;
 import com.company.model.Guest;
 
 import com.company.model.Service;
@@ -17,11 +19,16 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+@Component
 public class GuestService implements IGuestService {
 
     private static final Logger LOGGER = Logger.getLogger(GuestService.class.getName());
 
-    private final IGuestDao guestDao;
+    @Autowired
+    private IGuestDao guestDao;
+
+    public GuestService() {
+    }
 
     public GuestService(IGuestDao guestDao) {
         this.guestDao = guestDao;

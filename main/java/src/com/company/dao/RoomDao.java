@@ -1,26 +1,24 @@
 package com.company.dao;
 
 import com.company.api.dao.IRoomDao;
+import com.company.injection.annotation.Autowired;
+import com.company.injection.annotation.Component;
 import com.company.model.*;
 import com.company.service.SerializationService;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+@Component
 public class RoomDao extends AbstractDao<Room> implements IRoomDao {
 
     private static final Logger LOGGER = Logger.getLogger(RoomDao.class.getName());
 
+    @Autowired
     private static RoomDao INSTANCE;
 
-    private RoomDao() {
-    }
-
     public static RoomDao getRoomDao() {
-        if (INSTANCE == null) {
-            INSTANCE = new RoomDao();
-            INSTANCE.init();
-        }
+        INSTANCE.init();
         return INSTANCE;
     }
 

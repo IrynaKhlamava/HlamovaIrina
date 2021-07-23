@@ -1,9 +1,14 @@
 package com.company.ui.menu;
 
+import com.company.injection.annotation.Autowired;
+import com.company.injection.annotation.Component;
+
 import java.util.List;
 
+@Component
 public class Navigator {
 
+    @Autowired
     private Menu currentMenu;
 
     public void printMenu() {

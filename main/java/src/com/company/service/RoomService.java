@@ -2,12 +2,14 @@ package com.company.service;
 
 import com.company.api.dao.IRoomDao;
 import com.company.api.service.IRoomService;
+import com.company.config.annotation.ConfigProperty;
 import com.company.exceptions.DaoException;
 import com.company.exceptions.ServiceException;
 import com.company.filter.*;
+import com.company.injection.annotation.Autowired;
+import com.company.injection.annotation.Component;
 import com.company.model.*;
 import com.company.util.IdCreate;
-import com.company.util.PropertiesHandler;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -17,16 +19,24 @@ import java.util.stream.Collectors;
 
 import static com.company.util.FilteredListSorted.getFilteredListSorted;
 
+@Component
 public class RoomService implements IRoomService {
 
     private static final String GET_BY_DATA_ERROR_MESSAGE = "could not find an entity by data: %s";
     private static final Logger LOGGER = Logger.getLogger(RoomService.class.getName());
 
-    private final IRoomDao roomDao;
-    private final Integer numLastGuestFromProperty = PropertiesHandler.getProperty("guest.change_num_of_last_guests")
-            .map(Integer::valueOf)
-                .orElse(3);
+    @Autowired
+    private IRoomDao roomDao;
 
+    @ConfigProperty
+    private Integer numLastGuestFromProperty;
+//    private final Integer numLastGuestFromProperty = PropertiesHandler.getProperty("guest.change_num_of_last_guests")
+//            .map(Integer::valueOf)
+//            .orElse(3);
+
+
+    public RoomService() {
+    }
 
     public RoomService(IRoomDao roomDao) {
         this.roomDao = roomDao;

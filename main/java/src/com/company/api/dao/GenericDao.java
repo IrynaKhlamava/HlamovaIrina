@@ -1,5 +1,6 @@
 package com.company.api.dao;
 
+import com.company.injection.annotation.Component;
 import com.company.model.AEntity;
 
 import java.util.Comparator;

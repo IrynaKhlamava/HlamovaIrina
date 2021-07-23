@@ -6,26 +6,29 @@ import com.company.api.dao.IServiceDao;
 import com.company.dao.GuestDao;
 import com.company.dao.RoomDao;
 import com.company.dao.ServiceDao;
+import com.company.injection.annotation.Autowired;
+import com.company.injection.annotation.Component;
 import com.company.model.*;
 import com.company.service.GuestService;
 import com.company.service.RoomService;
 import com.company.service.SerializationService;
 import com.company.service.ServiceService;
-import com.company.util.SerializationHandler;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@Component
 public class HotelFacade {
 
+    @Autowired
     private RoomService roomService;
+    @Autowired
     private GuestService guestService;
+    @Autowired
     private ServiceService serviceService;
+
+    @Autowired
     private static HotelFacade INSTANCE;
-
-    private HotelFacade() {
-
-    }
 
     private void init() {
         IRoomDao roomDao = RoomDao.getRoomDao();
@@ -37,12 +40,10 @@ public class HotelFacade {
     }
 
     public static HotelFacade getINSTANCE() {
-        if (INSTANCE == null) {
-            INSTANCE = new HotelFacade();
             INSTANCE.init();
+            return INSTANCE;
         }
-        return INSTANCE;
-    }
+
 
     public void saveRoom(Integer number, Integer capacity, RoomStatus roomStatus, Double priceRoom, RoomComfort comfort) {
         roomService.addRoom(number, capacity, roomStatus, priceRoom, comfort);

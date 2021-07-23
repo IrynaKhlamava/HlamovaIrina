@@ -1,15 +1,21 @@
 package com.company.ui.menu;
 
+import com.company.config.annotation.ConfigProperty;
+import com.company.injection.annotation.Autowired;
+import com.company.injection.annotation.Component;
 import com.company.ui.actions.*;
-import com.company.util.PropertiesHandler;
 
+@Component
 public class Builder {
 
+    @Autowired
     private Menu rootMenu;
 
-    private Boolean CHANGE_STATUS = PropertiesHandler.getProperty("room.change_status.enable")
-            .map(Boolean::valueOf)
-            .orElse(false);
+    @ConfigProperty
+    private Boolean CHANGE_STATUS;
+//    private Boolean CHANGE_STATUS = PropertiesHandler.getProperty("room.change_status.enable")
+//            .map(Boolean::valueOf)
+//            .orElse(false);
 
     public Menu getRootMenu() {
         return rootMenu;

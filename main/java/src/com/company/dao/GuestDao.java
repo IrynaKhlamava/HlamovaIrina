@@ -1,29 +1,24 @@
 package com.company.dao;
 
+import com.company.injection.annotation.Autowired;
+import com.company.injection.annotation.Component;
 import com.company.model.Guest;
 import com.company.api.dao.IGuestDao;
 import com.company.service.SerializationService;
-import com.company.util.IdCreate;
-import com.company.util.SerializationHandler;
 
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+@Component
 public class GuestDao extends AbstractDao<Guest> implements IGuestDao {
 
     private static final Logger LOGGER = Logger.getLogger(GuestDao.class.getName());
 
+    @Autowired
     private static GuestDao INSTANCE;
 
-    private GuestDao() {
-    }
-
     public static GuestDao getGuestDao() {
-        if (INSTANCE == null) {
-            INSTANCE = new GuestDao();
-            INSTANCE.init();
-        }
+        INSTANCE.init();
         return INSTANCE;
     }
 

@@ -8,6 +8,9 @@ public class MenuItem {
     private IAction action;
     private Menu nextMenu;
 
+    public MenuItem() {
+    }
+
     public MenuItem(String title, IAction action, Menu nextMenu) {
         this.title = title;
         this.action = action;
