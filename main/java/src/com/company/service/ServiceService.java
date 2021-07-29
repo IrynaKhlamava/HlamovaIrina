@@ -84,4 +84,9 @@ public class ServiceService implements IServiceService {
     public List<Service> getAll() {
         return serviceDao.getAll();
     }
+
+    @Override
+    public void saveAll(List<Service> services) {
+        serviceDao.saveAll(services);
+    }
 }

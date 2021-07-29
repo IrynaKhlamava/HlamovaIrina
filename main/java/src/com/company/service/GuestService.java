@@ -58,6 +58,11 @@ public class GuestService implements IGuestService {
     }
 
     @Override
+    public void saveAll(List<Guest> guests) {
+        guestDao.saveAll(guests);
+    }
+
+    @Override
     public List<Guest> sortGuestsByName() {
         try {
             return guestDao.getAllSorted(new SortGuestsByName());
@@ -84,4 +89,5 @@ public class GuestService implements IGuestService {
     public Guest getGuest(Long guestID) {
         return guestDao.getById(guestID);
     }
+
 }

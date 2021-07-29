@@ -17,6 +17,7 @@ public class DependencyInjector {
         } catch (IllegalAccessException e) {
             LOGGER.warning("Access to the class is denied " + e.getMessage());
             throw new InjectionException("Message", e);
+
         }
     }
 }

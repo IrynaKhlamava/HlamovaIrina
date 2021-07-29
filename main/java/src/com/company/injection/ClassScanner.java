@@ -52,5 +52,6 @@ public class ClassScanner {
         }
         String className = packageName + file.getName().replace(CLASS_EXTENSION, "");
         foundClasses.add(Class.forName(className));
+
     }
 }

@@ -1,18 +1,14 @@
 package com.company.facade;
 
-import com.company.api.dao.IGuestDao;
-import com.company.api.dao.IRoomDao;
-import com.company.api.dao.IServiceDao;
-import com.company.dao.GuestDao;
-import com.company.dao.RoomDao;
-import com.company.dao.ServiceDao;
+import com.company.api.service.IGuestService;
+import com.company.api.service.IRoomService;
+import com.company.api.service.IServiceService;
+
 import com.company.injection.annotation.Autowired;
 import com.company.injection.annotation.Component;
 import com.company.model.*;
-import com.company.service.GuestService;
-import com.company.service.RoomService;
+
 import com.company.service.SerializationService;
-import com.company.service.ServiceService;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -21,29 +17,11 @@ import java.util.List;
 public class HotelFacade {
 
     @Autowired
-    private RoomService roomService;
+    private IRoomService roomService;
     @Autowired
-    private GuestService guestService;
+    private IGuestService guestService;
     @Autowired
-    private ServiceService serviceService;
-
-    @Autowired
-    private static HotelFacade INSTANCE;
-
-    private void init() {
-        IRoomDao roomDao = RoomDao.getRoomDao();
-        IGuestDao guestDao = GuestDao.getGuestDao();
-        IServiceDao serviceDao = ServiceDao.getServiceDao();
-        roomService = new RoomService(roomDao);
-        guestService = new GuestService(guestDao);
-        serviceService = new ServiceService(serviceDao);
-    }
-
-    public static HotelFacade getINSTANCE() {
-            INSTANCE.init();
-            return INSTANCE;
-        }
-
+    private IServiceService serviceService;
 
     public void saveRoom(Integer number, Integer capacity, RoomStatus roomStatus, Double priceRoom, RoomComfort comfort) {
         roomService.addRoom(number, capacity, roomStatus, priceRoom, comfort);
@@ -57,7 +35,7 @@ public class HotelFacade {
         return roomService.sortRoomByCapacity();
     }
 
-    public List<Room> getAllRoomsSortedByByPrice(){
+    public List<Room> getAllRoomsSortedByByPrice() {
         return roomService.sortRoomByPrice();
     }
 
@@ -142,7 +120,7 @@ public class HotelFacade {
     }
 
     public void changeStatusByRoomNumber(Integer roomNum, RoomStatus roomStatusByNum) {
-        roomService.changeStatusByRoomNumber(roomNum, roomStatusByNum );
+        roomService.changeStatusByRoomNumber(roomNum, roomStatusByNum);
     }
 
     public void changeRoomPrice(Integer roomNum, Double newPrice) {
@@ -150,15 +128,22 @@ public class HotelFacade {
     }
 
     public RoomStatus getRoomStatusByNumber(Integer num) {
-        return  roomService.getRoomStatusByNumber(num);
+        return roomService.getRoomStatusByNumber(num);
     }
 
     public RoomComfort getComfortByNumber(Integer num) {
-        return  roomService.getRoomComfortByNumber(num);
+        return roomService.getRoomComfortByNumber(num);
     }
 
     public void saveToFile() {
         SerializationService serializationService = new SerializationService();
         serializationService.serializeToFile(roomService.getAll(), guestService.getAll(), serviceService.getAll());
-  }
+    }
+
+    public void loadFromFile() {
+        SerializationService serializationService = new SerializationService();
+        roomService.saveAll(serializationService.deserializeRoomFromFile());
+        guestService.saveAll(serializationService.deserializeGuestFromFile());
+        serviceService.saveAll(serializationService.deserializeServiceFromFile());
+    }
 }

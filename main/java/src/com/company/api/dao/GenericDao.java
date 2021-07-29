@@ -2,6 +2,7 @@ package com.company.api.dao;
 
 import com.company.injection.annotation.Component;
 import com.company.model.AEntity;
+import com.company.model.Room;
 
 import java.util.Comparator;
 import java.util.List;
@@ -22,4 +23,5 @@ public interface GenericDao<T extends AEntity> {
 
     List<T> getAllSorted(Comparator<T> comparator);
 
+    void saveAll(List<T> entity);
 }

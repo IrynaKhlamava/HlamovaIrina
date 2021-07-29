@@ -1,6 +1,12 @@
 package com.company.ui.actions;
 
+import com.company.facade.HotelFacade;
+
 public class GetAllFreeRoomsAction extends AbstractAction {
+
+    public GetAllFreeRoomsAction(HotelFacade facade) {
+        super(facade);
+    }
 
     @Override
     public void execute() {
@@ -12,4 +18,5 @@ public class GetAllFreeRoomsAction extends AbstractAction {
             System.out.println("Свободных комнат нет");
         }
     }
+
 }

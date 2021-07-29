@@ -14,19 +14,6 @@ public class GuestDao extends AbstractDao<Guest> implements IGuestDao {
 
     private static final Logger LOGGER = Logger.getLogger(GuestDao.class.getName());
 
-    @Autowired
-    private static GuestDao INSTANCE;
-
-    public static GuestDao getGuestDao() {
-        INSTANCE.init();
-        return INSTANCE;
-    }
-
-    private void init() {
-        SerializationService serializationService = new SerializationService();
-        this.saveAll(serializationService.deserializeGuestFromFile());
-    }
-
     @Override
     public Guest update(Guest entity) {
         Guest guest = getById(entity.getId());

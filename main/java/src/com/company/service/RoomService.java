@@ -30,10 +30,6 @@ public class RoomService implements IRoomService {
 
     @ConfigProperty
     private Integer numLastGuestFromProperty;
-//    private final Integer numLastGuestFromProperty = PropertiesHandler.getProperty("guest.change_num_of_last_guests")
-//            .map(Integer::valueOf)
-//            .orElse(3);
-
 
     public RoomService() {
     }
@@ -349,6 +345,10 @@ public class RoomService implements IRoomService {
 
     public RoomComfort getRoomComfortByNumber(Integer num) {
         return RoomComfort.getRoomComfortByNum(num);
+    }
+
+    public void saveAll(List<Room> rooms) {
+        roomDao.saveAll(rooms);
     }
 
 }

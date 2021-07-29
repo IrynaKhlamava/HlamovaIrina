@@ -1,10 +1,15 @@
 package com.company.ui.actions;
 
+import com.company.facade.HotelFacade;
 import com.company.util.ScannerUtil;
 
 import java.time.LocalDate;
 
 public class GetFreeRoomsByDate extends AbstractAction {
+
+    public GetFreeRoomsByDate(HotelFacade facade) {
+        super(facade);
+    }
 
     @Override
     public void execute() {
@@ -17,4 +22,5 @@ public class GetFreeRoomsByDate extends AbstractAction {
         LocalDate onDate = LocalDate.of(year, month, day);
         hotelFacade.getFreeRoomsByDate(onDate).forEach(System.out::println);
     }
+
 }

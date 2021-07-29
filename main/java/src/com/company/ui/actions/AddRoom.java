@@ -1,5 +1,6 @@
 package com.company.ui.actions;
 
+import com.company.facade.HotelFacade;
 import com.company.model.RoomComfort;
 import com.company.model.RoomStatus;
 import com.company.util.ScannerUtil;
@@ -10,6 +11,10 @@ import java.util.logging.Logger;
 public class AddRoom extends AbstractAction {
 
     private static final Logger LOGGER = Logger.getLogger(AddRoom.class.getName());
+
+    public AddRoom(HotelFacade facade) {
+        super(facade);
+    }
 
     @Override
     public void execute() {
@@ -36,4 +41,5 @@ public class AddRoom extends AbstractAction {
             LOGGER.log(Level.INFO, String.format("Добавить комнату не удалось"));
         }
     }
+
 }

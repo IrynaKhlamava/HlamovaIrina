@@ -1,5 +1,7 @@
 package com.company.ui.menu;
 
+import com.company.facade.HotelFacade;
+import com.company.injection.ApplicationContext;
 import com.company.injection.annotation.Autowired;
 import com.company.injection.annotation.Component;
 import com.company.util.ScannerUtil;
@@ -27,8 +29,9 @@ public class MenuController {
         this.navigator = navigator;
     }
 
-    public void run() {
-        builder.buildMenu();
+    public void run(ApplicationContext context) {
+        builder.buildMenu(context.getBean(HotelFacade.class));
+        //builder.buildMenu(context.getBean(HotelFacade.class));
         navigator.setCurrentMenu(builder.getRootMenu());
         while (isRunning) {
             try {
@@ -40,4 +43,5 @@ public class MenuController {
             }
         }
     }
+
 }

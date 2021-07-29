@@ -1,19 +1,12 @@
 package com.company.ui.menu;
 
-import com.company.injection.annotation.Component;
-
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
 public class Menu {
 
     private String name;
     private List<MenuItem> menuItems = new ArrayList<>();
-
-    public Menu() {
-
-    }
 
     public Menu(String name) {
         this.name = name;

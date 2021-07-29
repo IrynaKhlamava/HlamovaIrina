@@ -6,24 +6,18 @@ import com.company.injection.annotation.Autowired;
 import com.company.injection.annotation.Component;
 import com.company.injection.exeptions.InjectionException;
 
-import java.io.*;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class ApplicationContext {
 
-    private static final String FAILED_READ_PROPERTIES_ERROR_MESSAGE = "Failed to read properties";
-    private static final Logger LOGGER = Logger.getLogger(ApplicationContext.class.getName());
     private final Map<Class<?>, Object> context;
     private final Map<Class<?>, Class<?>> classInterfaceMap;
     private ObjectFactory factory;
-    Boolean isProperty = false;
 
     public ApplicationContext() {
         this.context = new HashMap<>();
@@ -48,7 +42,6 @@ public class ApplicationContext {
             for (Class<?> interfaceKey : interfaces) {
                 if (!classInterfaceMap.containsKey(interfaceKey)) {
                     classInterfaceMap.put(interfaceKey, clazz);
-                    classInterfaceMap.put(clazz, clazz);
                 }
             }
         }
@@ -70,17 +63,9 @@ public class ApplicationContext {
                 Object instance = this.getBean(field.getType());
                 field.setAccessible(true);
                 field.set(bean, instance);
+                injectDependencies(instance.getClass(), instance);
             }
             if (field.isAnnotationPresent(ConfigProperty.class)) {
-                if (!isProperty) {
-                    try {//если проперти из файла еще не считаты - считываем в Map propertiesMap
-                        PropertiesConfigurator.configure();
-                        isProperty = true;
-                    } catch (IOException e) {
-                        LOGGER.warning(FAILED_READ_PROPERTIES_ERROR_MESSAGE + e.getMessage());
-                        throw new InjectionException(FAILED_READ_PROPERTIES_ERROR_MESSAGE, e);
-                    }
-                }
                 //получили propertyKey = имя класса.имя переменной
                 String propertyKey = (String.valueOf(clazz)).substring((String.valueOf(clazz)).lastIndexOf('.') + 1) + "." + field.getName();
                 //по ключу нашли получили значение
@@ -90,42 +75,8 @@ public class ApplicationContext {
                         .get()
                         .getValue();
                 //в setPropertyToField по типу поля переменной устанавливаем значение из проперти
-                setPropertyToField(field, propertyValue, bean);
+                PropertiesConfigurator.setPropertyToField(field, propertyValue, bean);
             }
-        }
-    }
-
-    private void setPropertyToField(Field field, String propertyValue, Object bean) throws IllegalAccessException {
-        Class type = field.getType();
-        field.setAccessible(true);
-        if (type.isPrimitive()) {
-            int valueProperty = Integer.parseInt(propertyValue.trim());
-            field.set(bean, valueProperty);
-            return;
-        }
-        if (type == Boolean.class) {
-            Boolean valueProperty = Boolean.parseBoolean(propertyValue);
-            field.set(bean, valueProperty);
-            return;
-        }
-        if (type == Integer.class) {
-            Integer valueProperty = Integer.parseInt(propertyValue.trim());
-            field.set(bean, valueProperty);
-            return;
-        }
-        if (type == String.class) {
-            String valueProperty = propertyValue.trim();
-            field.set(bean, valueProperty);
-        }
-        if (type == Double.class) {
-            Double valueProperty = Double.parseDouble(propertyValue.trim());
-            field.set(bean, valueProperty);
-            return;
-        }
-        if (type == Long.class) {
-            Long valueProperty = Long.parseLong(propertyValue.trim());
-            field.set(bean, valueProperty);
-            return;
         }
     }
 
@@ -148,5 +99,6 @@ public class ApplicationContext {
         Object bean = factory.createBean(clazz);
         context.put(clazz, bean);
         return (T) bean;
+
     }
 }

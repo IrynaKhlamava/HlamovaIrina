@@ -1,9 +1,14 @@
 package com.company.ui.actions;
 
+import com.company.facade.HotelFacade;
 import com.company.model.Guest;
 import com.company.util.ScannerUtil;
 
 public class AddService extends AbstractAction {
+
+    public AddService(HotelFacade faсade) {
+        super(faсade);
+    }
 
     @Override
     public void execute() {
@@ -15,6 +20,6 @@ public class AddService extends AbstractAction {
         Long guestId = ScannerUtil.readLong();
         Guest guest = hotelFacade.getGuest(guestId);
         hotelFacade.saveService(name, price, guest);
-
     }
+
 }

@@ -3,8 +3,6 @@ package com.company.api.service;
 import com.company.model.Guest;
 import com.company.model.Service;
 
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 public interface IGuestService {
@@ -16,5 +14,11 @@ public interface IGuestService {
     List<Guest> sortGuestsByName();
 
     List<Guest> sortGuestsByDeparture();
+
+    Guest getGuest(Long guestID);
+
+    List<Guest> getAll();
+
+    void saveAll(List<Guest> guests);
 
 }
