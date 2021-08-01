@@ -1,9 +1,14 @@
 package com.company.ui.actions;
 
+import com.company.facade.HotelFacade;
 import com.company.model.RoomStatus;
 import com.company.util.ScannerUtil;
 
 public class ChangeStatusByRoomNumber extends AbstractAction {
+
+    public ChangeStatusByRoomNumber(HotelFacade facade) {
+        super(facade);
+    }
 
     @Override
     public void execute() {

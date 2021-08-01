@@ -3,11 +3,10 @@ package com.company.model;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class Service extends AEntity  implements Serializable {
+public class Service extends AEntity implements Serializable {
 
     private String name;
     private double price;
-
 
     public Service(String name, double price) {
         this.name = name;

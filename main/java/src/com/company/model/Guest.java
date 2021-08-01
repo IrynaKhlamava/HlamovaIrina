@@ -2,14 +2,11 @@ package com.company.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
-
 
 public class Guest extends AEntity implements Serializable {
 
     private String name;
-  //  private Long id;
     private Integer daysOfStay;
     private LocalDate dateCheckIn;
     private LocalDate dateCheckOut;
@@ -74,7 +71,7 @@ public class Guest extends AEntity implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name,daysOfStay, dateCheckIn, dateCheckOut, listServices);
+        return Objects.hash(name, daysOfStay, dateCheckIn, dateCheckOut, listServices);
     }
 
     @Override

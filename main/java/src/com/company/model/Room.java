@@ -14,7 +14,6 @@ public class Room extends AEntity implements Serializable {
     private RoomComfort comfort;
     private List<Guest> guests;
 
-
     public Room(Integer number, Integer capacity, RoomStatus roomStatus, Double priceRoom, RoomComfort comfort) {
         this.number = number;
         this.capacity = capacity;

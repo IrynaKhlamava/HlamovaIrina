@@ -43,6 +43,7 @@ public class SerializationService {
 
     public List<Guest> deserializeGuestFromFile() {
         setGuests(SerializationHandler.deserialize(Guest.class));
+        guests.addAll(guests);
         return guests;
     }
 

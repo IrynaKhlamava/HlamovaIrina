@@ -1,9 +1,14 @@
 package com.company.ui.actions;
 
-import com.company.model.Guest;
+import com.company.facade.HotelFacade;
+
 import com.company.util.ScannerUtil;
 
 public class GetAllGuestsServices extends AbstractAction {
+
+    public GetAllGuestsServices(HotelFacade facade) {
+        super(facade);
+    }
 
     @Override
     public void execute() {

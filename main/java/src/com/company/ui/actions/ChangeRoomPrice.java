@@ -1,8 +1,13 @@
 package com.company.ui.actions;
 
+import com.company.facade.HotelFacade;
 import com.company.util.ScannerUtil;
 
 public class ChangeRoomPrice extends AbstractAction {
+
+    public ChangeRoomPrice(HotelFacade facade) {
+        super(facade);
+    }
 
     @Override
     public void execute() {
@@ -12,4 +17,5 @@ public class ChangeRoomPrice extends AbstractAction {
         Double newPrice = ScannerUtil.readDouble();
         hotelFacade.changeRoomPrice(roomNum, newPrice);
     }
+
 }

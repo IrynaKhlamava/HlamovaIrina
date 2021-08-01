@@ -1,7 +1,10 @@
 package com.company.ui.menu;
 
+import com.company.injection.annotation.Component;
+
 import java.util.List;
 
+@Component
 public class Navigator {
 
     private Menu currentMenu;
@@ -25,6 +28,5 @@ public class Navigator {
     public void setCurrentMenu(Menu currentMenu) {
         this.currentMenu = currentMenu;
     }
-
 
 }

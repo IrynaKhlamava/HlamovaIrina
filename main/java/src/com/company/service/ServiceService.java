@@ -6,6 +6,8 @@ import com.company.exceptions.DaoException;
 import com.company.exceptions.ServiceException;
 import com.company.filter.SortServicesByName;
 import com.company.filter.SortServicesByPrice;
+import com.company.injection.annotation.Autowired;
+import com.company.injection.annotation.Component;
 import com.company.model.Guest;
 import com.company.model.Service;
 import com.company.util.IdCreate;
@@ -16,11 +18,16 @@ import java.util.logging.Logger;
 
 import static com.company.util.FilteredListSorted.getFilteredListSorted;
 
+@Component
 public class ServiceService implements IServiceService {
 
     private static final Logger LOGGER = Logger.getLogger(ServiceService.class.getName());
 
-    private final IServiceDao serviceDao;
+    @Autowired
+    private IServiceDao serviceDao;
+
+    public ServiceService() {
+    }
 
     public ServiceService(IServiceDao serviceDao) {
         this.serviceDao = serviceDao;
@@ -76,5 +83,10 @@ public class ServiceService implements IServiceService {
 
     public List<Service> getAll() {
         return serviceDao.getAll();
+    }
+
+    @Override
+    public void saveAll(List<Service> services) {
+        serviceDao.saveAll(services);
     }
 }

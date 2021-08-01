@@ -45,8 +45,16 @@ public interface IRoomService {
 
     double getBill(Guest guest);
 
-    List<LastGuestsInfo>  lastGuestsOfRoom(int roomNumber);
+    List<LastGuestsInfo> lastGuestsOfRoom(int roomNumber);
 
     Map<Integer, List<Guest>> getAllGuestsAndRoomsSortedByThisComparator(Comparator comparator);
+
+    List<Room> getAll();
+
+    RoomStatus getRoomStatusByNumber(Integer num);
+
+    RoomComfort getRoomComfortByNumber(Integer num);
+
+    void saveAll(List<Room> rooms);
 
 }
