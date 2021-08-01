@@ -67,7 +67,8 @@ public class ApplicationContext {
             }
             if (field.isAnnotationPresent(ConfigProperty.class)) {
                 //получили propertyKey = имя класса.имя переменной
-                String propertyKey = (String.valueOf(clazz)).substring((String.valueOf(clazz)).lastIndexOf('.') + 1) + "." + field.getName();
+                String propertyKey = field.getName();
+//                String propertyKey = (String.valueOf(clazz)).substring((String.valueOf(clazz)).lastIndexOf('.') + 1) + "." + field.getName();
                 //по ключу нашли получили значение
                 String propertyValue = PropertiesConfigurator.propertiesMap.entrySet().stream()
                         .filter(entry -> propertyKey.equals(entry.getKey()))
