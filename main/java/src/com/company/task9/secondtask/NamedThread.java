@@ -21,6 +21,7 @@ public class NamedThread implements Runnable {
                 semaphore.release();
             } catch (InterruptedException e) {
                 System.err.println(e.getLocalizedMessage());
+                break;
             }
         }
     }
