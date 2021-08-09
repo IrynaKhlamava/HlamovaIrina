@@ -10,6 +10,6 @@ public class FourthTask {
         WatchThread watchThread = new WatchThread(4);
         final Thread timeThread = new Thread(watchThread);
         final ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-        scheduledExecutorService.scheduleAtFixedRate(timeThread, 0, watchThread.getN(), TimeUnit.SECONDS);
+        scheduledExecutorService.scheduleAtFixedRate(timeThread, 0, watchThread.getSec(), TimeUnit.SECONDS);
     }
 }

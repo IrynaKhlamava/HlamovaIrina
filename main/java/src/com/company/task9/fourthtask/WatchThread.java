@@ -6,14 +6,14 @@ import java.time.format.DateTimeFormatter;
 
 public class WatchThread implements Runnable{
     private static  final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
-    int n;
+    int sec;
 
-    public WatchThread(int n) {
-        this.n = n;
+    public WatchThread(int sec) {
+        this.sec = sec;
     }
 
-    public int getN() {
-        return n;
+    public int getSec() {
+        return sec;
     }
 
     @Override
