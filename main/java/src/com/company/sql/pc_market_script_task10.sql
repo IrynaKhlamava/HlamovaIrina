@@ -103,4 +103,5 @@ union select price from printer) scnd );
 select maker from product where model in (
 select model from pc where ram = (
 select min(ram) from pc) and speed = (
-select max(speed) from pc where ram = (select min(ram) from pc)));
+select max(speed) from pc where ram = (select min(ram) from pc)))
+and maker in (select maker from product where type = 'printer');
