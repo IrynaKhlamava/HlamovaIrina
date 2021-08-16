@@ -4,13 +4,13 @@ USE pc_market;
 select model, speed, hd from pc where price < 500;
 
 #2 Найдите производителей принтеров. Вывести: maker
-select distinct maker from product;
+select distinct maker from product where type = 'Printer';
 
 #3 Найдите номер модели, объем памяти и размеры экранов ПК-блокнотов, цена которых превышает 1000 дол.
 select model, ram, screen from laptop where price > 1000;
 
 #4 Найдите все записи таблицы Printer для цветных принтеров.
-select *from printer where color = 'y';
+select * from printer where color = 'y';
 
 #5 Найдите номер модели, скорость и размер жесткого диска ПК, имеющих 12x или 24x CD и цену менее 600 дол.
 select model, speed, hd from pc where cd in ( '12', '24') and price < 600;
