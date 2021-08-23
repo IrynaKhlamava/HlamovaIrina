@@ -1,8 +1,10 @@
 package com.company.service;
 
+import com.company.api.dao.IGuestDao;
 import com.company.api.dao.IRoomDao;
 import com.company.api.service.IRoomService;
 import com.company.config.annotation.ConfigProperty;
+import com.company.dao.util.Connector;
 import com.company.exceptions.DaoException;
 import com.company.exceptions.ServiceException;
 import com.company.filter.*;
@@ -11,6 +13,7 @@ import com.company.injection.annotation.Component;
 import com.company.model.*;
 import com.company.util.IdCreate;
 
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.logging.Level;
@@ -25,8 +28,13 @@ public class RoomService implements IRoomService {
     private static final String GET_BY_DATA_ERROR_MESSAGE = "could not find an entity by data: %s";
     private static final Logger LOGGER = Logger.getLogger(RoomService.class.getName());
 
+    private final Connector connector = Connector.getInstance();
+
     @Autowired
     private IRoomDao roomDao;
+
+    @Autowired
+    private IGuestDao guestDao;
 
     @ConfigProperty
     private Integer numLastGuestFromProperty;
@@ -34,16 +42,17 @@ public class RoomService implements IRoomService {
     public RoomService() {
     }
 
-    public RoomService(IRoomDao roomDao) {
+    public RoomService(IRoomDao roomDao, IGuestDao guestDao) {
         this.roomDao = roomDao;
+        this.guestDao = guestDao;
     }
 
     @Override
-    public Room addRoom(Integer number, Integer capacity, RoomStatus roomStatus, Double priceRoom, RoomComfort comfort) {
+    public Room addRoom(Integer number, Integer capacity, Integer roomStatus, Double priceRoom, Integer comfort) {
         try {
             LOGGER.log(Level.INFO, String.format("addRoom number: %s, capacity: %s, roomStatus: %s, priceRoom: %s, comfort: %s", number, capacity, roomStatus, priceRoom, comfort));
             Room room = new Room(number, capacity, roomStatus, priceRoom, comfort);
-            room.setId(IdCreate.createRoomId());
+            //room.setId(IdCreate.createRoomId());
             roomDao.save(room);
             return room;
         } catch (DaoException e) {
@@ -54,16 +63,33 @@ public class RoomService implements IRoomService {
 
     @Override
     public void checkIn(Guest guest, Room room) {
+        int count;
         LOGGER.log(Level.INFO, String.format("checkIn of the guest: %s to the room: %s", guest, room));
+        count = getCountGuestsInRoom(room);
         try {
             guest.setDateCheckIn(LocalDate.now());
             guest.setDateCheckOut(guest.getDateCheckIn().plusDays(guest.getDaysOfStay()));
-            if (room.getGuests().size() < room.getCapacity()) {
-                room.getGuests().add(guest);
+            guest.setRoomId(room.getId());
+            if (count < room.getCapacity()) {
+               // room.getGuests().add(guest);
+                guestDao.update(guest);
             }
         } catch (DaoException e) {
             LOGGER.log(Level.WARNING, "CheckIn failed", e);
             throw new ServiceException("CheckIn failed", e);
+        }
+    }
+
+    private int getCountGuestsInRoom(Room room) {
+        Connection connection = connector.getConnection();
+        Long id = room.getId();
+        String sql = String.format("SELECT count(id) from guests WHERE room_id=" + id);
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            ResultSet result = statement.executeQuery();
+            result.next();
+            return Integer.parseInt(result.getString(1));
+        } catch (SQLException e) {
+            throw new ServiceException(e);
         }
     }
 

@@ -39,7 +39,7 @@ public class GuestService implements IGuestService {
         try {
             LOGGER.log(Level.INFO, String.format("addGuest by name: %s from on days: %s", name, daysOfStay));
             Guest guest = new Guest(name, daysOfStay);
-            guest.setId(IdCreate.createGuestId());
+           // guest.setId(IdCreate.createGuestId());
             guestDao.save(guest);
             return guest;
         } catch (DaoException e) {

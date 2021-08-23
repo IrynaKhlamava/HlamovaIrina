@@ -23,7 +23,7 @@ public class HotelFacade {
     @Autowired
     private IServiceService serviceService;
 
-    public void saveRoom(Integer number, Integer capacity, RoomStatus roomStatus, Double priceRoom, RoomComfort comfort) {
+    public void saveRoom(Integer number, Integer capacity, Integer roomStatus, Double priceRoom, Integer comfort) {
         roomService.addRoom(number, capacity, roomStatus, priceRoom, comfort);
     }
 

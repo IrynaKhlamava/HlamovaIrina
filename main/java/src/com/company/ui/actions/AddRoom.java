@@ -33,10 +33,10 @@ public class AddRoom extends AbstractAction {
         Integer roomComfort = ScannerUtil.readInteger();
         System.out.println("введите цену");
         Double roomPrice = ScannerUtil.readDouble();
-        RoomStatus roomStatusByNum = hotelFacade.getRoomStatusByNumber(roomStatus);
-        RoomComfort roomComfortByNum = hotelFacade.getComfortByNumber(roomComfort);
-        if ((roomStatusByNum != null) && (roomComfortByNum != null)) {
-            hotelFacade.saveRoom(roomNumber, roomCapacity, roomStatusByNum, roomPrice, roomComfortByNum);
+       // RoomStatus roomStatusByNum = hotelFacade.getRoomStatusByNumber(roomStatus);
+       // RoomComfort roomComfortByNum = hotelFacade.getComfortByNumber(roomComfort);
+        if ((roomStatus >= 0 && roomStatus <= 4) && (roomComfort >=3 &&  roomComfort <= 5)) {
+            hotelFacade.saveRoom(roomNumber, roomCapacity, roomStatus, roomPrice, roomComfort);
         } else {
             LOGGER.log(Level.INFO, String.format("Добавить комнату не удалось"));
         }

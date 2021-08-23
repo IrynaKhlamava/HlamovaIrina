@@ -37,10 +37,11 @@ public class ServiceService implements IServiceService {
     public Service addService(String name, double price, Guest guest) {
         LOGGER.log(Level.INFO, String.format("AddService : %s to guest :%s", name, guest));
         try {
-            Service service = new Service(name, price);
-            service.setId(IdCreate.createServiceId());
+            Service service = new Service(name, price, guest);
+            //service.setId(IdCreate.createServiceId());
             serviceDao.save(service);
-            guest.getListServices().add(service);
+            //guest.getListServices().add(service);
+
             return service;
         } catch (DaoException e) {
             LOGGER.log(Level.WARNING, "AddService failed", e);

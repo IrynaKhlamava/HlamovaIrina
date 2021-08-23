@@ -9,7 +9,7 @@ import java.util.Map;
 
 public interface IRoomService {
 
-    Room addRoom(Integer number, Integer capacity, RoomStatus roomStatus, Double priceRoom, RoomComfort comfort);
+    Room addRoom(Integer number, Integer capacity, Integer roomStatus, Double priceRoom, Integer comfort);
 
     void checkIn(Guest guest, Room room);
 

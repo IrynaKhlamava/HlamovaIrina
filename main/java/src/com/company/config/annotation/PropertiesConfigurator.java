@@ -56,6 +56,7 @@ public class PropertiesConfigurator {
         if (type == String.class) {
             String valueProperty = propertyValue.trim();
             field.set(bean, valueProperty);
+            return;
         }
         if (type == Double.class) {
             Double valueProperty = Double.parseDouble(propertyValue.trim());

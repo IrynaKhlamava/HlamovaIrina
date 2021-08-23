@@ -3,14 +3,19 @@ package com.company.model;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class Service extends AEntity implements Serializable {
+public class Service extends AEntity {
 
     private String name;
     private double price;
+    private Long guestId;
 
-    public Service(String name, double price) {
+    public Service() {
+    }
+
+    public Service(String name, double price, Guest guest) {
         this.name = name;
         this.price = price;
+        this.guestId = guest.getId();
     }
 
     public String getName() {
@@ -27,6 +32,14 @@ public class Service extends AEntity implements Serializable {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public Long getGuestId() {
+        return guestId;
+    }
+
+    public void setGuestId(Long guestId) {
+        this.guestId = guestId;
     }
 
     @Override

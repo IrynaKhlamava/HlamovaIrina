@@ -4,13 +4,17 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.*;
 
-public class Guest extends AEntity implements Serializable {
+public class Guest extends AEntity {
 
     private String name;
     private Integer daysOfStay;
     private LocalDate dateCheckIn;
     private LocalDate dateCheckOut;
     private List<Service> listServices = new ArrayList<>();
+    private Long roomId;
+
+    public Guest() {
+    }
 
     public Guest(String name, Integer daysOfStay) {
         this.name = name;
@@ -55,6 +59,14 @@ public class Guest extends AEntity implements Serializable {
 
     public void setDaysOfStay(Integer daysOfStay) {
         this.daysOfStay = daysOfStay;
+    }
+
+    public Long getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(Long roomId) {
+        this.roomId = roomId;
     }
 
     @Override
