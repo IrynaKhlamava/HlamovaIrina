@@ -4,32 +4,25 @@ import com.company.api.dao.IGuestDao;
 import com.company.api.dao.IRoomDao;
 import com.company.api.dao.IServiceDao;
 import com.company.api.service.IRoomService;
-import com.company.config.annotation.ConfigProperty;
-import com.company.dao.util.Connector;
+
 import com.company.exceptions.DaoException;
 import com.company.exceptions.ServiceException;
-import com.company.filter.*;
+
 import com.company.injection.annotation.Autowired;
 import com.company.injection.annotation.Component;
 import com.company.model.*;
-import com.company.util.IdCreate;
 
-import java.sql.*;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
-import static com.company.util.FilteredListSorted.getFilteredListSorted;
 
 @Component
 public class RoomService implements IRoomService {
 
     private static final String GET_BY_DATA_ERROR_MESSAGE = "could not find an entity by data: %s";
     private static final Logger LOGGER = Logger.getLogger(RoomService.class.getName());
-
-    private final Connector connector = Connector.getInstance();
 
     @Autowired
     private IRoomDao roomDao;
@@ -212,9 +205,6 @@ public class RoomService implements IRoomService {
     public double getBill(Guest guest) {
         LOGGER.log(Level.INFO, "get Bill of guest");
         try {
-            roomDao.getRoomPrice(guest.getRoomId());
-            guest.getDaysOfStay();
-            serviceDao.getBillForGuestForServices(guest.getId());
             return roomDao.getRoomPrice(guest.getRoomId()) * guest.getDaysOfStay() + serviceDao.getBillForGuestForServices(guest.getId());
         } catch (DaoException e) {
             LOGGER.log(Level.WARNING, "get Bill of guest failed", e);
