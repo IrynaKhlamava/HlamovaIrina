@@ -2,8 +2,6 @@ package com.company.api.dao;
 
 import com.company.model.AEntity;
 
-
-import java.util.Comparator;
 import java.util.List;
 
 public interface GenericDao<T extends AEntity> {
@@ -20,7 +18,6 @@ public interface GenericDao<T extends AEntity> {
 
     int getTotalNumber();
 
-    List<T> getAllSorted(Comparator<T> comparator);
+    List<T> getAllSorted(String col);
 
-    void saveAll(List<T> entity);
 }

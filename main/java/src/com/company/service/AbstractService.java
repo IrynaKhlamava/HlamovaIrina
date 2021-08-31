@@ -6,12 +6,4 @@ import com.company.model.AEntity;
 
 public abstract class AbstractService<T extends AEntity, D extends GenericDao<T>> implements GenericService<T> {
 
-//    protected abstract D getDao;
-//
-//    public void save(T entity){
-//        getDao().save(entity);
-//
-//    }
-
-
 }

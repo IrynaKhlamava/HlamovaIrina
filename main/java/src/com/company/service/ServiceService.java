@@ -38,10 +38,7 @@ public class ServiceService implements IServiceService {
         LOGGER.log(Level.INFO, String.format("AddService : %s to guest :%s", name, guest));
         try {
             Service service = new Service(name, price, guest);
-            //service.setId(IdCreate.createServiceId());
             serviceDao.save(service);
-            //guest.getListServices().add(service);
-
             return service;
         } catch (DaoException e) {
             LOGGER.log(Level.WARNING, "AddService failed", e);
@@ -53,7 +50,7 @@ public class ServiceService implements IServiceService {
     public List<Service> getAllServicesSortByPrice(Guest guest) {
         LOGGER.log(Level.INFO, "Services Sorted By Price");
         try {
-            return getFilteredListSorted(guest.getListServices(), new SortServicesByPrice());
+            return serviceDao.getAllGuestServices(guest.getId());
         } catch (DaoException e) {
             LOGGER.log(Level.WARNING, "Services Sorted By Price failed", e);
             throw new ServiceException("Services Sorted By Price failed", e);
@@ -64,7 +61,7 @@ public class ServiceService implements IServiceService {
     public List<Service> getServicesSortByName() {
         LOGGER.log(Level.INFO, "Services Sorted By Name");
         try {
-            return getFilteredListSorted(serviceDao.getAll(), new SortServicesByName());
+            return serviceDao.getAllSorted("name");
         } catch (DaoException e) {
             LOGGER.log(Level.WARNING, "Services Sorted By Name failed", e);
             throw new ServiceException("Services Sorted By Name failed", e);
@@ -75,7 +72,7 @@ public class ServiceService implements IServiceService {
     public List<Service> getServicesSortByPrice() {
         LOGGER.log(Level.INFO, "Services Sorted By Price");
         try {
-            return getFilteredListSorted(serviceDao.getAll(), new SortServicesByPrice());
+            return serviceDao.getAllSorted("price");
         } catch (DaoException e) {
             LOGGER.log(Level.WARNING, "Services Sorted By Price failed", e);
             throw new ServiceException("Services Sorted By Price failed", e);
@@ -86,8 +83,4 @@ public class ServiceService implements IServiceService {
         return serviceDao.getAll();
     }
 
-    @Override
-    public void saveAll(List<Service> services) {
-        serviceDao.saveAll(services);
-    }
 }
