@@ -21,7 +21,8 @@ public class GuestDao extends AbstractDao<Guest> implements IGuestDao {
 
     private static final Logger LOGGER = Logger.getLogger(GuestDao.class.getName());
     private static final String INSERT_QUERY = "INSERT INTO GUESTS (name, days_of_stay) VALUES (?,?);";
-    private static final String UPDATE_QUERY = "UPDATE GUESTS SET name = ?, days_of_stay = ?, date_check_in = ?, date_check_out = ?, room_id = ? WHERE id =?;";
+    private static final String UPDATE_QUERY = "UPDATE GUESTS SET name = ?, days_of_stay = ?, date_check_in = ?, date_check_out = ?, room_id = ? " +
+                                                    "WHERE id =?;";
     private static final TableEnum TABLE_NAME = TableEnum.GUESTS;
     private static final String LAST_GUEST = "SELECT name, date_check_in, date_check_out from guests where room_id = ? order by date_check_out desc;";
 
@@ -72,14 +73,14 @@ public class GuestDao extends AbstractDao<Guest> implements IGuestDao {
     }
 
     @Override
-    public List<LastGuestsInfo> getLastGuestsOfRoom(Long roomId, Integer numLastGuestFromProperty) {
+    public List<LastGuestsInfo> getLastGuestsOfRoom(Long roomId, Integer lastGuestNum) {
         Connection connection = connector.getConnection();
         try (PreparedStatement statement = connection.prepareStatement(LAST_GUEST)) {
             prepareStatementById(statement, roomId);
             ResultSet result = statement.executeQuery();
             List<LastGuestsInfo> repository = new ArrayList<>();
             int count = 0;
-            while (result.next() && count < numLastGuestFromProperty) {
+            while (result.next() && count < lastGuestNum) {
                 repository.add(EntityMapper.createLastGuestsInfo(result));
             }
             return repository;
