@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Room extends AEntity implements Serializable {
+public class Room extends AEntity {
 
     private Integer number;
     private Integer capacity;
@@ -14,12 +14,15 @@ public class Room extends AEntity implements Serializable {
     private RoomComfort comfort;
     private List<Guest> guests;
 
-    public Room(Integer number, Integer capacity, RoomStatus roomStatus, Double priceRoom, RoomComfort comfort) {
+    public Room() {
+    }
+
+    public Room(Integer number, Integer capacity, Integer roomStatus, Double priceRoom, Integer comfort) {
         this.number = number;
         this.capacity = capacity;
-        this.roomStatus = roomStatus;
+        this.roomStatus = RoomStatus.getRoomStatusByNum(roomStatus);
         this.priceRoom = priceRoom;
-        this.comfort = comfort;
+        this.comfort = RoomComfort.getRoomComfortByNum(comfort);
         this.guests = new ArrayList();
 
     }

@@ -16,8 +16,6 @@ public class Builder {
     @ConfigProperty
     private static Boolean changeStatus;
 
-    public static Boolean isDataLoaded = false;
-
     public Menu getRootMenu() {
         return rootMenu;
     }
@@ -34,9 +32,7 @@ public class Builder {
         mainMenu.addMenuItem(new MenuItem("Гости", new EmptyAction(hotelFacade), guestMenu));
         mainMenu.addMenuItem(new MenuItem("Услуги", new EmptyAction(hotelFacade), serviceMenu));
         mainMenu.addMenuItem(new MenuItem("Выход", new ExitAction(hotelFacade), exit));
-        if (!isDataLoaded) {
-            mainMenu.addMenuItem(new MenuItem("Загрузить данные из файла", new LoadFromFileAction(hotelFacade), mainMenu));
-        }
+
         roomMenu.addMenuItem(new MenuItem("Добавить комнату", new AddRoom(hotelFacade), roomMenu));
         roomMenu.addMenuItem(new MenuItem("Вывести список комнат", new GetAllRoomAction(hotelFacade), roomMenu));
         roomMenu.addMenuItem(new MenuItem("Отсортировать комнаты по цене", new GetAllRoomsSortedByPriceAction(hotelFacade), roomMenu));

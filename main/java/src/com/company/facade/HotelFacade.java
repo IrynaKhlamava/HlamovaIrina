@@ -8,9 +8,6 @@ import com.company.injection.annotation.Autowired;
 import com.company.injection.annotation.Component;
 import com.company.model.*;
 
-import com.company.service.SerializationService;
-
-import java.time.LocalDate;
 import java.util.List;
 
 @Component
@@ -23,7 +20,7 @@ public class HotelFacade {
     @Autowired
     private IServiceService serviceService;
 
-    public void saveRoom(Integer number, Integer capacity, RoomStatus roomStatus, Double priceRoom, RoomComfort comfort) {
+    public void saveRoom(Integer number, Integer capacity, Integer roomStatus, Double priceRoom, Integer comfort) {
         roomService.addRoom(number, capacity, roomStatus, priceRoom, comfort);
     }
 
@@ -95,8 +92,8 @@ public class HotelFacade {
         return roomService.getAllFreeRoom().size();
     }
 
-    public List<Room> getFreeRoomsByDate(LocalDate onDate) {
-        return roomService.getFreeRoomsByDate(onDate);
+    public List<Room> getFreeRoomsByDate(String byDate) {
+        return roomService.getFreeRoomsByDate(byDate);
     }
 
     public double getBill(Guest guest) {
@@ -104,7 +101,7 @@ public class HotelFacade {
     }
 
     public List<LastGuestsInfo> getLastGuestsOfRoom(Integer roomNum) {
-        return roomService.lastGuestsOfRoom(roomNum);
+        return guestService.lastGuestsOfRoom(roomNum);
     }
 
     public List<Service> getAllGuestsServices(Guest guest) {
@@ -135,15 +132,4 @@ public class HotelFacade {
         return roomService.getRoomComfortByNumber(num);
     }
 
-    public void saveToFile() {
-        SerializationService serializationService = new SerializationService();
-        serializationService.serializeToFile(roomService.getAll(), guestService.getAll(), serviceService.getAll());
-    }
-
-    public void loadFromFile() {
-        SerializationService serializationService = new SerializationService();
-        roomService.saveAll(serializationService.deserializeRoomFromFile());
-        guestService.saveAll(serializationService.deserializeGuestFromFile());
-        serviceService.saveAll(serializationService.deserializeServiceFromFile());
-    }
 }

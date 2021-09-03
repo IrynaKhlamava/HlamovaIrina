@@ -18,8 +18,6 @@ public interface IServiceService {
 
     List<Service> getAll();
 
-    void saveAll(List<Service> deserializeServiceFromFile);
-
 }
 
 
