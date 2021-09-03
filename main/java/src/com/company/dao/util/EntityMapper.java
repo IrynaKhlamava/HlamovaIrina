@@ -4,6 +4,9 @@ import com.company.model.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.Optional;
 
 public class EntityMapper {
 
@@ -49,9 +52,21 @@ public class EntityMapper {
         guest.setId(resultSet.getLong("id"));
         guest.setName(resultSet.getString("name"));
         guest.setDaysOfStay(resultSet.getInt("days_of_stay"));
-        guest.setDateCheckIn(resultSet.getDate("date_check_in").toLocalDate());
-        guest.setDateCheckOut(resultSet.getDate("date_check_out").toLocalDate());
-        guest.setRoomId(resultSet.getLong("room_id"));
+        if (resultSet.getDate("date_check_in") != null) {
+            guest.setDateCheckIn(resultSet.getDate("date_check_in").toLocalDate());
+        } else {
+            guest.setDateCheckIn(null);
+        }
+        if (resultSet.getDate("date_check_out") != null) {
+            guest.setDateCheckOut(resultSet.getDate("date_check_out").toLocalDate());
+        } else {
+            guest.setDateCheckOut(null);
+        }
+        if (resultSet.getLong("room_id") != 0) {
+            guest.setRoomId(resultSet.getLong("room_id"));
+        } else {
+            guest.setRoomId(null);
+        }
         return guest;
     }
 

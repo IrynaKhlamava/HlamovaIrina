@@ -25,6 +25,16 @@ public abstract class AbstractDao<T extends AEntity> implements GenericDao<T> {
 
     private final Connector connector = Connector.getInstance();
 
+    protected abstract String getInsertQuery();
+
+    protected abstract String getUpdateQuery();
+
+    protected abstract void prepareStatement(PreparedStatement statement, T entity) throws SQLException;
+
+    protected abstract void prepareStatementForCreate(PreparedStatement statement, T entity) throws SQLException;
+
+    protected abstract TableEnum getTableName();
+
     @Override
     public T save(T entity) {
         Connection connection = connector.getConnection();
@@ -94,11 +104,11 @@ public abstract class AbstractDao<T extends AEntity> implements GenericDao<T> {
         String sql = String.format("SELECT * FROM %s", getTableName());
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             ResultSet resultSet = statement.executeQuery();
-            List<T> repository = new ArrayList<>();
+            List<T> result = new ArrayList<>();
             while (resultSet.next()) {
-                repository.add((T) EntityMapper.parseResultSet(resultSet, getTableName()));
+                result.add((T) EntityMapper.parseResultSet(resultSet, getTableName()));
             }
-            return repository;
+            return result;
         } catch (SQLException e) {
             LOGGER.log(Level.WARNING, String.format("getAll failed"));
             throw new DaoException(String.format("getAll failed"));
@@ -116,11 +126,11 @@ public abstract class AbstractDao<T extends AEntity> implements GenericDao<T> {
         String sql = String.format("SELECT * FROM %s ORDER BY %s", getTableName(), col);
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             ResultSet resultSet = statement.executeQuery();
-            List<T> repository = new ArrayList<>();
+            List<T> result = new ArrayList<>();
             while (resultSet.next()) {
-                repository.add((T) EntityMapper.parseResultSet(resultSet, getTableName()));
+                result.add((T) EntityMapper.parseResultSet(resultSet, getTableName()));
             }
-            return repository;
+            return result;
         } catch (SQLException e) {
             LOGGER.log(Level.WARNING, String.format("getAllSorted failed"));
             throw new DaoException(String.format("getAllSorted failed"));
@@ -135,17 +145,7 @@ public abstract class AbstractDao<T extends AEntity> implements GenericDao<T> {
         }
     }
 
-    protected abstract String getInsertQuery();
-
-    protected abstract String getUpdateQuery();
-
-    protected abstract void prepareStatement(PreparedStatement statement, T entity) throws SQLException;
-
-    protected abstract void prepareStatementForCreate(PreparedStatement statement, T entity) throws SQLException;
-
-    protected abstract TableEnum getTableName();
-
-    public void prepareStatementById(PreparedStatement statement, Long id) throws SQLException {
+  public void prepareStatementById(PreparedStatement statement, Long id) throws SQLException {
         statement.setLong(1, id);
     }
 

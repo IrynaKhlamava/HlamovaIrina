@@ -25,9 +25,12 @@ public class RoomDao extends AbstractDao<Room> implements IRoomDao {
     private static final String UPDATE_QUERY = "UPDATE ROOMS SET number= ?, capacity = ?, status = ?, comfort = ?, price = ? WHERE id=?;";
     private static final String UPDATE_STATUS = "UPDATE ROOMS SET status = ? where number = ? ";
     private static final String UPDATE_PRICE = "UPDATE ROOMS SET price = ? where number= ? ";
-    private static final String GET_FREE_ROOMS = "SELECT r.id, number, capacity, status, comfort, price FROM ROOMS r join GUESTS g on r.id = g.room_id group by r.id having count(g.room_id)< r.capacity;";
-    private static final String SORT_FREE_ROOMS = "SELECT r.id, number, capacity, status, comfort, price FROM ROOMS r join GUESTS g on r.id = g.room_id group by r.id having count(g.room_id)< r.capacity ORDER BY ?;";
-    private static final String GET_FREE_ROOMS_BY_DATE = "SELECT r.id, number, capacity, status, comfort, price FROM ROOMS r join GUESTS g on r.id = g.room_id where g.date_check_out <= ? group by r.id;";
+    private static final String GET_FREE_ROOMS = "SELECT r.id, number, capacity, status, comfort, price FROM ROOMS r join GUESTS g on r.id = g.room_id " +
+                                                      "group by r.id having count(g.room_id)< r.capacity;";
+    private static final String SORT_FREE_ROOMS = "SELECT r.id, number, capacity, status, comfort, price FROM ROOMS r join GUESTS g on r.id = g.room_id" +
+                                                      "group by r.id having count(g.room_id)< r.capacity ORDER BY ?;";
+    private static final String GET_FREE_ROOMS_BY_DATE = "SELECT r.id, number, capacity, status, comfort, price FROM ROOMS r join GUESTS g " +
+                                                           "on r.id = g.room_id where g.date_check_out <= ? group by r.id;";
     private static final String GET_ROOM_PRICE = "SELECT price FROM rooms WHERE id = ?;";
     private static final TableEnum TABLE_NAME = TableEnum.ROOMS;
 
