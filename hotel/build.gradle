@@ -1,0 +1,33 @@
+plugins {
+    id 'java'
+    id 'groovy'
+    id 'application'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 12
+
+
+allprojects {
+
+    apply plugin: 'java'
+
+    repositories {
+        mavenCentral()
+    }
+
+    mainClassName = "com.company.Main"
+
+    dependencies {
+        implementation group: 'log4j', name: 'log4j', version: '1.2.17'
+        implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.26'
+    }
+
+}
+
+
+
+
+
