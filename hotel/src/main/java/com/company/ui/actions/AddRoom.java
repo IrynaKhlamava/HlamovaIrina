@@ -27,13 +27,13 @@ public class AddRoom extends AbstractAction {
                 "3- занята \n" +
                 "4 - выездная  ");
         Integer roomStatus = ScannerUtil.readInteger();
-        System.out.println("введите комфортность комнаты: 3, 4 или 5 звезд");
+        System.out.println("введите комфортность комнаты: 0, 1 или 2 звезды");
         Integer roomComfort = ScannerUtil.readInteger();
         System.out.println("введите цену");
         Double roomPrice = ScannerUtil.readDouble();
        // RoomStatus roomStatusByNum = hotelFacade.getRoomStatusByNumber(roomStatus);
        // RoomComfort roomComfortByNum = hotelFacade.getComfortByNumber(roomComfort);
-        if ((roomStatus >= 0 && roomStatus <= 4) && (roomComfort >=3 &&  roomComfort <= 5)) {
+        if ((roomStatus >= 0 && roomStatus <= 4) && (roomComfort >=0 &&  roomComfort <= 2)) {
             hotelFacade.saveRoom(roomNumber, roomCapacity, roomStatus, roomPrice, roomComfort);
         } else {
             LOGGER.info(String.format("Добавить комнату не удалось"));

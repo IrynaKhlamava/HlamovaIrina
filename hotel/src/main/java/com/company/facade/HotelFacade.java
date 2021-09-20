@@ -100,7 +100,7 @@ public class HotelFacade {
         return roomService.getBill(guest);
     }
 
-    public List<LastGuestsInfo> getLastGuestsOfRoom(Integer roomNum) {
+    public List<Guest> getLastGuestsOfRoom(Integer roomNum) {
         return guestService.lastGuestsOfRoom(roomNum);
     }
 

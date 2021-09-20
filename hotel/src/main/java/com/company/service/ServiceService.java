@@ -1,5 +1,6 @@
 package com.company.service;
 
+import com.company.api.dao.IGuestDao;
 import com.company.api.dao.IServiceDao;
 import com.company.api.service.IServiceService;
 import com.company.exceptions.DaoException;
@@ -22,6 +23,9 @@ public class ServiceService implements IServiceService {
     @Autowired
     private IServiceDao serviceDao;
 
+    @Autowired
+    private IGuestDao guestDao;
+
     public ServiceService() {
     }
 
@@ -35,6 +39,7 @@ public class ServiceService implements IServiceService {
         try {
             Service service = new Service(name, price, guest);
             serviceDao.save(service);
+            guestDao.addService(service, guest);
             return service;
         } catch (DaoException e) {
             LOGGER.warn("AddService failed", e);
@@ -46,7 +51,7 @@ public class ServiceService implements IServiceService {
     public List<Service> getAllServicesSortByPrice(Guest guest) {
         LOGGER.info("Services Sorted By Price");
         try {
-            return serviceDao.getAllGuestServices(guest.getId());
+            return serviceDao.getAllGuestServicesSortByPrice(guest.getId());
         } catch (DaoException e) {
             LOGGER.warn("Services Sorted By Price failed", e);
             throw new ServiceException("Services Sorted By Price failed", e);

@@ -39,8 +39,7 @@ public class RoomService implements IRoomService {
     public Room addRoom(Integer number, Integer capacity, Integer roomStatus, Double priceRoom, Integer comfort) {
         try {
             LOGGER.info(String.format("addRoom number: %s, capacity: %s, roomStatus: %s, priceRoom: %s, comfort: %s",
-                    number, capacity
-                    , roomStatus, priceRoom, comfort));
+                    number, capacity, roomStatus, priceRoom, comfort));
             Room room = new Room(number, capacity, roomStatus, priceRoom, comfort);
             roomDao.save(room);
             return room;
@@ -151,7 +150,7 @@ public class RoomService implements IRoomService {
     public List<Room> getFreeRoomSortByPrice() {
         LOGGER.info("Free Room Sort By Price");
         try {
-            return roomDao.getFreeRoomsSort("price");
+            return roomDao.getFreeRoomsSort("priceRoom");
         } catch (DaoException e) {
             LOGGER.warn("get Free Room Sort By Price failed", e);
             throw new ServiceException("get Free Room Sort By Price failed", e);
@@ -184,7 +183,7 @@ public class RoomService implements IRoomService {
     public List<Room> sortRoomByPrice() {
         LOGGER.info("All Rooms Sort By Price");
         try {
-            return roomDao.getAllSorted("price");
+            return roomDao.getAllSorted("priceRoom");
         } catch (DaoException e) {
             LOGGER.info("sort Rooms By Price failed", e);
             throw new ServiceException("sort Rooms By Price failed", e);

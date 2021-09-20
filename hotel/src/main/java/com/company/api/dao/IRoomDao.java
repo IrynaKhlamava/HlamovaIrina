@@ -1,6 +1,5 @@
 package com.company.api.dao;
 
-import com.company.model.LastGuestsInfo;
 import com.company.model.Room;
 import com.company.model.RoomStatus;
 

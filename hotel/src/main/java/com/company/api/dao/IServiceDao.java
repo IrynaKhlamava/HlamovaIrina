@@ -8,7 +8,7 @@ public interface IServiceDao extends GenericDao<Service> {
 
     List<Service> getGuestServices(Long id);
 
-    List<Service> getAllGuestServices(Long id);
+    List<Service> getAllGuestServicesSortByPrice(Long id);
 
     double getBillForGuestForServices(Long id);
 }

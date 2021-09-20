@@ -1,16 +1,31 @@
 package com.company.model;
 
+import javax.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@Entity
+@Table(name = "rooms")
 public class Room extends AEntity {
 
+    @Column(name = "number")
     private Integer number;
+    @Column(name = "capacity")
     private Integer capacity;
+    @Column(name = "status")
     private RoomStatus roomStatus;
+    @Column(name = "price")
     private Double priceRoom;
+    @Column(name = "comfort")
     private RoomComfort comfort;
+    @OneToMany
+    @JoinTable(
+            name = "guest_room",
+            joinColumns = @JoinColumn(name = "room_id"),
+            inverseJoinColumns = @JoinColumn(name = "guest_id")
+    )
     private List<Guest> guests;
 
     public Room() {
@@ -23,7 +38,6 @@ public class Room extends AEntity {
         this.priceRoom = priceRoom;
         this.comfort = RoomComfort.getRoomComfortByNum(comfort);
         this.guests = new ArrayList();
-
     }
 
     public Integer getNumber() {
@@ -79,7 +93,7 @@ public class Room extends AEntity {
                 ", roomStatus=" + roomStatus +
                 ", priceRoom=" + priceRoom +
                 ", comfort=" + comfort +
-                ", guests=" + guests +
+              //  ", guests=" + guests +
                 '}';
     }
 

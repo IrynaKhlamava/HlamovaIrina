@@ -14,7 +14,6 @@ import com.company.injection.annotation.Autowired;
 import com.company.injection.annotation.Component;
 import com.company.model.Guest;
 
-import com.company.model.LastGuestsInfo;
 import com.company.model.Service;
 import org.apache.log4j.Logger;
 
@@ -76,7 +75,7 @@ public class GuestService implements IGuestService {
     @Override
     public List<Guest> sortGuestsByDeparture() {
         try {
-            return guestDao.getAllSorted("date_check_out");
+            return guestDao.getAllSorted("dateCheckOut");
         } catch (DaoException e) {
             LOGGER.info("sort Guests By Departure failed");
             throw new ServiceException(String.format("sort Guests By Departure failed"));
@@ -91,7 +90,7 @@ public class GuestService implements IGuestService {
         return guestDao.getById(guestID);
     }
 
-    public List<LastGuestsInfo> lastGuestsOfRoom(int roomNumber) {
+    public List<Guest> lastGuestsOfRoom(int roomNumber) {
         LOGGER.info("last Guests Of Room");
         try {
             return guestDao.getLastGuestsOfRoom(roomDao.getRoomByNumber(roomNumber).getId(), numLastGuestFromProperty);

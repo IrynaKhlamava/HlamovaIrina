@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface GenericDao<T extends AEntity> {
 
-    T save(T entity);
+    void save(T entity);
 
     void delete(T entity);
 
@@ -14,7 +14,7 @@ public interface GenericDao<T extends AEntity> {
 
     List<T> getAll();
 
-    T update(T entity);
+    void update(T entity);
 
     int getTotalNumber();
 

@@ -1,11 +1,18 @@
 package com.company.model;
 
+import javax.persistence.*;
 import java.util.Objects;
 
+
+@Entity
+@Table(name = "services")
 public class Service extends AEntity {
 
+    @Column(name = "name")
     private String name;
+    @Column(name = "price")
     private double price;
+    @Column(name = "guest_id")
     private Long guestId;
 
     public Service() {
