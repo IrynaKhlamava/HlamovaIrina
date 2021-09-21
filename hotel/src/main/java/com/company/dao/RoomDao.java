@@ -22,9 +22,9 @@ public class RoomDao extends AbstractDao<Room> implements IRoomDao {
 
     private static final Logger LOGGER = Logger.getLogger(RoomDao.class.getName());
 
-   // private static final EntityManagerUtil emu = new EntityManagerUtil();
+    // private static final EntityManagerUtil emu = new EntityManagerUtil();
 
-   // EntityManager entityManager = emu.getEntityManager();
+    // EntityManager entityManager = emu.getEntityManager();
 
     public RoomDao() {
     }
@@ -54,15 +54,9 @@ public class RoomDao extends AbstractDao<Room> implements IRoomDao {
     @Override
     public void changeRoomStatus(Integer roomNum, RoomStatus newStatus) {
         try {
-            entityManager.getTransaction().begin();
-            CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-            CriteriaQuery<Room> query = builder.createQuery(Room.class);
-            CriteriaUpdate<Room> criteriaUpdate = builder.createCriteriaUpdate(Room.class);
-            Root<Room> roomRoot = criteriaUpdate.from(Room.class);
-            criteriaUpdate.set(roomRoot.get("roomStatus"), newStatus).where(builder.equal(roomRoot.get("number"),
-                    roomNum));
-            entityManager.createQuery(criteriaUpdate).executeUpdate();
-            entityManager.getTransaction().commit();
+            Room room = getRoomByNumber(roomNum);
+            room.setRoomStatus(newStatus);
+            update(room);
         } catch (Exception e) {
             LOGGER.warn("Change room status failed", e);
             throw new DaoException(String.format("Change room status failed"), e);
@@ -72,15 +66,9 @@ public class RoomDao extends AbstractDao<Room> implements IRoomDao {
     @Override
     public void changeRoomPrice(Integer roomNum, Double newPrice) {
         try {
-            entityManager.getTransaction().begin();
-            CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-            CriteriaQuery<Room> query = builder.createQuery(Room.class);
-            CriteriaUpdate<Room> criteriaUpdate = builder.createCriteriaUpdate(Room.class);
-            Root<Room> roomRoot = criteriaUpdate.from(Room.class);
-            criteriaUpdate.set(roomRoot.get("priceRoom"), newPrice).where(builder.equal(roomRoot.get("number"),
-                    roomNum));
-            entityManager.createQuery(criteriaUpdate).executeUpdate();
-            entityManager.getTransaction().commit();
+            Room room = getRoomByNumber(roomNum);
+            room.setPriceRoom(newPrice);
+            update(room);
         } catch (Exception e) {
             LOGGER.warn("Change room price failed", e);
             throw new DaoException(String.format("Change room price failed"), e);
