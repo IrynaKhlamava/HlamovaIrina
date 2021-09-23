@@ -3,6 +3,7 @@ package com.company.api.dao;
 import com.company.model.Room;
 import com.company.model.RoomStatus;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface IRoomDao extends GenericDao<Room> {
@@ -17,7 +18,7 @@ public interface IRoomDao extends GenericDao<Room> {
 
     List<Room> getFreeRoomsSort(String col);
 
-    List<Room> getFreeRoomsByDate(String byDate);
+    List<Room> getFreeRoomsByDate(LocalDate date);
 
     double getRoomPrice(Long roomId);
 

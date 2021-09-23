@@ -193,8 +193,8 @@ public class RoomService implements IRoomService {
     @Override
     public List<Room> getFreeRoomsByDate(String byDate) {
         LOGGER.info("get Free Rooms By Date");
-        try {
-            return roomDao.getFreeRoomsByDate(byDate);
+       try {
+            return roomDao.getFreeRoomsByDate(LocalDate.parse(byDate));
         } catch (DaoException e) {
             LOGGER.warn("get Free Rooms By Date failed", e);
             throw new ServiceException("get Free Rooms By Date failed", e);

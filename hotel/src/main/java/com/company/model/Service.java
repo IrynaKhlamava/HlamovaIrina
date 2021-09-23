@@ -15,7 +15,7 @@ public class Service extends AEntity {
     @Column(name = "guest_id")
     private Long guestId;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)//, cascade = CascadeType.ALL)
     @JoinTable(
             name = "guest_services",
             joinColumns = @JoinColumn(name = "service_id"),

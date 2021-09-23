@@ -103,9 +103,8 @@ public class RoomDao extends AbstractDao<Room> implements IRoomDao {
         }
     }
 
-    public List<Room> getFreeRoomsByDate(String byDate) {
+    public List<Room> getFreeRoomsByDate(LocalDate date) {
         try {
-            LocalDate date = LocalDate.parse(byDate);
             CriteriaBuilder builder = entityManager.getCriteriaBuilder();
             CriteriaQuery<Room> query = builder.createQuery(Room.class);
             Root<Room> rmRoot = query.from(Room.class);

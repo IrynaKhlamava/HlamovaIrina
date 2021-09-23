@@ -18,7 +18,7 @@ public class Guest extends AEntity {
     private LocalDate dateCheckOut;
     @Column(name = "rooms_id")
     private Long roomId;
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)//, cascade = CascadeType.ALL)
     @JoinTable(
             name = "guest_services",
             joinColumns = @JoinColumn(name = "guest_id"),

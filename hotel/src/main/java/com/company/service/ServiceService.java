@@ -39,7 +39,6 @@ public class ServiceService implements IServiceService {
         try {
             Service service = new Service(name, price, guest);
             serviceDao.save(service);
-            guestDao.addService(service, guest);
             return service;
         } catch (DaoException e) {
             LOGGER.warn("AddService failed", e);
