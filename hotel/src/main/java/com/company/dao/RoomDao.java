@@ -2,7 +2,6 @@ package com.company.dao;
 
 import com.company.api.dao.IRoomDao;
 
-import com.company.dao.util.EntityManagerUtil;
 import com.company.exceptions.DaoException;
 import com.company.injection.annotation.Component;
 import com.company.model.*;
@@ -11,7 +10,6 @@ import org.apache.log4j.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Root;
 import java.time.LocalDate;
 import java.util.List;
@@ -21,10 +19,6 @@ import java.util.List;
 public class RoomDao extends AbstractDao<Room> implements IRoomDao {
 
     private static final Logger LOGGER = Logger.getLogger(RoomDao.class.getName());
-
-    // private static final EntityManagerUtil emu = new EntityManagerUtil();
-
-    // EntityManager entityManager = emu.getEntityManager();
 
     public RoomDao() {
     }

@@ -26,6 +26,14 @@ public class Guest extends AEntity {
     )
     private Set<Service> services;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "guest_room",
+            joinColumns = @JoinColumn(name = "guest_id"),
+            inverseJoinColumns = @JoinColumn(name = "room_id")
+    )
+    private Room room;
+
     public Guest() {
     }
 
@@ -74,6 +82,13 @@ public class Guest extends AEntity {
         this.daysOfStay = daysOfStay;
     }
 
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
+    }
 
     public Long getRoomId() {
         return roomId;
@@ -108,7 +123,9 @@ public class Guest extends AEntity {
                 ", daysOfStay=" + daysOfStay +
                 ", dateCheckIn=" + dateCheckIn +
                 ", dateCheckOut=" + dateCheckOut +
+                ", roomId=" + roomId +
                 ", listServices=" + services +
+                ", room=" + room+
                 '}';
     }
 }

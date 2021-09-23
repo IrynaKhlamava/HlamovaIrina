@@ -93,7 +93,7 @@ public class GuestService implements IGuestService {
     public List<Guest> lastGuestsOfRoom(int roomNumber) {
         LOGGER.info("last Guests Of Room");
         try {
-            return guestDao.getLastGuestsOfRoom(roomDao.getRoomByNumber(roomNumber).getId(), numLastGuestFromProperty);
+            return guestDao.getLastGuestsOfRoom(roomNumber, numLastGuestFromProperty);
         } catch (DaoException e) {
             LOGGER.warn("last Guests Of Room failed", e);
             throw new ServiceException("last Guests Of Room failed", e);

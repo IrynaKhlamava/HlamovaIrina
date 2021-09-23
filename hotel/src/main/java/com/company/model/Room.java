@@ -15,10 +15,12 @@ public class Room extends AEntity {
     @Column(name = "capacity")
     private Integer capacity;
     @Column(name = "status")
+    @Enumerated(EnumType.STRING)
     private RoomStatus roomStatus;
     @Column(name = "price")
     private Double priceRoom;
     @Column(name = "comfort")
+    @Enumerated(EnumType.STRING)
     private RoomComfort comfort;
     @OneToMany
     @JoinTable(

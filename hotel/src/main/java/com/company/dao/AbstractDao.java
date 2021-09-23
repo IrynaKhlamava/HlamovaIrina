@@ -17,15 +17,15 @@ public abstract class AbstractDao<T extends AEntity> implements GenericDao<T> {
 
     private static final Logger LOGGER = Logger.getLogger(AbstractDao.class.getName());
 
-    private static final EntityManagerUtil emu = new EntityManagerUtil();
+    private static final EntityManagerUtil entityManagerUtil = new EntityManagerUtil();
 
-    protected EntityManager entityManager = emu.getEntityManager();
+    protected EntityManager entityManager = entityManagerUtil.getEntityManager();
 
 
     public void save(T entity) {
-        emu.beginTransaction();
+        entityManagerUtil.beginTransaction();
         entityManager.persist(entity);
-        emu.commit();
+        entityManagerUtil.commit();
     }
 
     public T getById(Long id) {
@@ -43,17 +43,17 @@ public abstract class AbstractDao<T extends AEntity> implements GenericDao<T> {
 
     @Override
     public void update(T entity) {
-        emu.beginTransaction();
+        entityManagerUtil.beginTransaction();
         entityManager.merge(entity);
-        emu.commit();
+        entityManagerUtil.commit();
     }
 
     @Override
     public void delete(T entity) {
         try {
-            emu.beginTransaction();
+            entityManagerUtil.beginTransaction();
             entityManager.remove(entity);
-            emu.commit();
+            entityManagerUtil.commit();
         } catch (Exception e) {
             LOGGER.warn("DELETE by id failed ", e);
             throw new DaoException(String.format("DELETE by id failed"));

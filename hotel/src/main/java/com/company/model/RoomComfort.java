@@ -3,9 +3,9 @@ package com.company.model;
 import com.company.exceptions.ServiceException;
 
 public enum RoomComfort {
-    THREE_STARS(0),
-    FOUR_STARS(1),
-    FIVE_STARS(2);
+    THREE_STARS(3),
+    FOUR_STARS(4),
+    FIVE_STARS(5);
 
     private int value;
 
@@ -22,7 +22,7 @@ public enum RoomComfort {
     }
 
     public static RoomComfort getRoomComfortByNum(Integer num) {
-        if (num < 0 || num > 2) {
+        if (num < 3 || num > 5) {
             throw new ServiceException(String.format("Введены некорректные данные"));
         }else {
             for (RoomComfort roomComfort : RoomComfort.values()) {

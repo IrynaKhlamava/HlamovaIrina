@@ -10,7 +10,7 @@ public interface IGuestDao extends GenericDao<Guest> {
 
     int getCountGuestsInRoomById(Long id);
 
-    List<Guest> getLastGuestsOfRoom(Long roomId, Integer numLastGuestFromProperty);
+    List<Guest> getLastGuestsOfRoom(Integer roomNumber, Integer numLastGuestFromProperty);
 
     void addService(Service service, Guest guest);
 }

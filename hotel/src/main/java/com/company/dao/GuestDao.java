@@ -5,13 +5,15 @@ import com.company.injection.annotation.Component;
 import com.company.model.Guest;
 import com.company.api.dao.IGuestDao;
 
+import com.company.model.Room;
 import com.company.model.Service;
 import org.apache.log4j.Logger;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Set;
 
@@ -43,22 +45,17 @@ public class GuestDao extends AbstractDao<Guest> implements IGuestDao {
     }
 
     @Override
-    public List<Guest> getLastGuestsOfRoom(Long roomId, Integer lastGuestNum) {
+    public List<Guest> getLastGuestsOfRoom(Integer roomNum, Integer lastGuestNum) {
         try {
             CriteriaBuilder builder = entityManager.getCriteriaBuilder();
             CriteriaQuery<Guest> query = builder.createQuery(Guest.class);
-            Root<Guest> root = query.from(Guest.class);
-            query.select(root).where(builder.equal(root.get("roomId"), roomId));
-            query.orderBy(builder.desc(root.get("dateCheckOut")));
-            List<Guest> list = entityManager.createQuery(query).getResultList();
-            List<Guest> lastGuest = new ArrayList<>();
-            int count = 0;
-            for (int i = 0; i <= list.size() - 1 && count < lastGuestNum; i++) {
-                for (Guest guest : list)
-                    lastGuest.add(guest);
-                count++;
-            }
-            return lastGuest;
+            Root<Guest> guest = query.from(Guest.class);
+            Root<Room> room = query.from(Room.class);
+            Join<Guest, Room> roomJoin = guest.join("room");
+            roomJoin.on(builder.equal(room.get("id"),guest.get("roomId")));
+            query.select(guest).where(builder.equal(room.get("number"), roomNum)).orderBy(builder.desc(guest.get(
+                    "dateCheckOut")));
+            return entityManager.createQuery(query).setMaxResults(lastGuestNum).getResultList();
         } catch (Exception e) {
             LOGGER.warn("Get count guests in room failed", e);
             throw new DaoException(String.format("Get count guests in room failed"));
