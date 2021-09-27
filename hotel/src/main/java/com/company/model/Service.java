@@ -1,20 +1,43 @@
 package com.company.model;
 
+import javax.persistence.*;
 import java.util.Objects;
 
+
+@Entity
+@Table(name = "services")
 public class Service extends AEntity {
 
+    @Column(name = "name")
     private String name;
+    @Column(name = "price")
     private double price;
+    @Column(name = "guest_id")
     private Long guestId;
+    @ManyToOne
+    @JoinTable(
+            name = "guest_services",
+            joinColumns = @JoinColumn(name = "service_id"),
+            inverseJoinColumns = @JoinColumn(name = "guest_id")
+    )
+    private Guest guest;
 
     public Service() {
+    }
+
+    public Guest getGuest() {
+        return guest;
+    }
+
+    public void setGuest(Guest guest) {
+        this.guest = guest;
     }
 
     public Service(String name, double price, Guest guest) {
         this.name = name;
         this.price = price;
         this.guestId = guest.getId();
+        this.guest = guest;
     }
 
     public String getName() {

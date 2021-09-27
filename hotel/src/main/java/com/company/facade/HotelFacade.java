@@ -9,6 +9,7 @@ import com.company.injection.annotation.Component;
 import com.company.model.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class HotelFacade {
@@ -89,7 +90,7 @@ public class HotelFacade {
     }
 
     public Integer getNumberAllFreeRooms() {
-        return roomService.getAllFreeRoom().size();
+        return roomService.getNumOfAvailableRooms();
     }
 
     public List<Room> getFreeRoomsByDate(String byDate) {
@@ -100,11 +101,11 @@ public class HotelFacade {
         return roomService.getBill(guest);
     }
 
-    public List<LastGuestsInfo> getLastGuestsOfRoom(Integer roomNum) {
+    public List<Guest> getLastGuestsOfRoom(Integer roomNum) {
         return guestService.lastGuestsOfRoom(roomNum);
     }
 
-    public List<Service> getAllGuestsServices(Guest guest) {
+    public Set<Service> getAllGuestsServices(Guest guest) {
         return guestService.getAllServices(guest);
     }
 
@@ -132,4 +133,15 @@ public class HotelFacade {
         return roomService.getRoomComfortByNumber(num);
     }
 
+    public List<Room> getFreeRoomSortByPrice() {
+        return roomService.getFreeRoomSortByPrice();
+    }
+
+    public List<Room> getFreeRoomSortByCapacity() {
+        return roomService.getFreeRoomSortByCapacity();
+    }
+
+    public List<Room> getFreeRoomSortByComfort() {
+        return roomService.getFreeRoomSortByComfort();
+    }
 }

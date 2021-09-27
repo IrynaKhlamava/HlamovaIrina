@@ -1,17 +1,32 @@
 package com.company.model;
 
-
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.*;
 
+@Entity
+@Table(name = "guests")
 public class Guest extends AEntity {
 
+    @Column(name = "name")
     private String name;
+    @Column(name = "days_of_stay")
     private Integer daysOfStay;
+    @Column(name = "date_check_in")
     private LocalDate dateCheckIn;
+    @Column(name = "date_check_out")
     private LocalDate dateCheckOut;
-    private List<Service> listServices = new ArrayList<>();
+    @Column(name = "rooms_id")
     private Long roomId;
+    @OneToMany(mappedBy = "guest")
+    private Set<Service> services;
+    @ManyToOne
+    @JoinTable(
+            name = "guest_room",
+            joinColumns = @JoinColumn(name = "guest_id"),
+            inverseJoinColumns = @JoinColumn(name = "room_id")
+    )
+    private Room room;
 
     public Guest() {
     }
@@ -29,12 +44,12 @@ public class Guest extends AEntity {
         this.dateCheckOut = dateCheckOut;
     }
 
-    public List<Service> getListServices() {
-        return listServices;
+    public Set<Service> getServices() {
+        return services;
     }
 
-    public void setListServices(List<Service> listServices) {
-        this.listServices = listServices;
+    public void setServices(Set<Service> services) {
+        this.services = services;
     }
 
     public String getName() {
@@ -61,6 +76,14 @@ public class Guest extends AEntity {
         this.daysOfStay = daysOfStay;
     }
 
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
+    }
+
     public Long getRoomId() {
         return roomId;
     }
@@ -78,12 +101,12 @@ public class Guest extends AEntity {
                 Objects.equals(daysOfStay, guest.daysOfStay) &&
                 Objects.equals(dateCheckIn, guest.dateCheckIn) &&
                 Objects.equals(dateCheckOut, guest.dateCheckOut) &&
-                Objects.equals(listServices, guest.listServices);
+                Objects.equals(services, guest.services);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, daysOfStay, dateCheckIn, dateCheckOut, listServices);
+        return Objects.hash(name, daysOfStay, dateCheckIn, dateCheckOut, services);
     }
 
     @Override
@@ -94,7 +117,9 @@ public class Guest extends AEntity {
                 ", daysOfStay=" + daysOfStay +
                 ", dateCheckIn=" + dateCheckIn +
                 ", dateCheckOut=" + dateCheckOut +
-                ", listServices=" + listServices +
+                ", roomId=" + roomId +
+                ", listServices=" + services +
+                ", room=" + room+
                 '}';
     }
 }

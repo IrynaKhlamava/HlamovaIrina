@@ -30,7 +30,6 @@ public class EntityMapper {
         service.setId(resultSet.getLong("id"));
         service.setName(resultSet.getString("name"));
         service.setPrice(resultSet.getDouble("price"));
-        service.setGuestId(resultSet.getLong("guest_id"));
         return service;
     }
 

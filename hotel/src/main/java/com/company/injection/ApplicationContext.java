@@ -45,7 +45,7 @@ public class ApplicationContext {
                 }
             }
         }
-        fillContext();//на основе classInterfaceMap заполняем контекст
+        fillContext();
     }
 
     private void fillContext() throws IllegalAccessException {
@@ -66,16 +66,12 @@ public class ApplicationContext {
                 injectDependencies(instance.getClass(), instance);
             }
             if (field.isAnnotationPresent(ConfigProperty.class)) {
-                //получили propertyKey = имя класса.имя переменной
                 String propertyKey = field.getName();
-//                String propertyKey = (String.valueOf(clazz)).substring((String.valueOf(clazz)).lastIndexOf('.') + 1) + "." + field.getName();
-                //по ключу нашли получили значение
                 String propertyValue = PropertiesConfigurator.propertiesMap.entrySet().stream()
                         .filter(entry -> propertyKey.equals(entry.getKey()))
                         .findFirst()
                         .get()
                         .getValue();
-                //в setPropertyToField по типу поля переменной устанавливаем значение из проперти
                 PropertiesConfigurator.setPropertyToField(field, propertyValue, bean);
             }
         }

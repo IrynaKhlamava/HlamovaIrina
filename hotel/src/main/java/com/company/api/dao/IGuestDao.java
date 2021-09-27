@@ -1,13 +1,17 @@
 package com.company.api.dao;
 
 import com.company.model.Guest;
-import com.company.model.LastGuestsInfo;
+
+import com.company.model.Service;
 
 import java.util.List;
+import java.util.Set;
 
 public interface IGuestDao extends GenericDao<Guest> {
 
     int getCountGuestsInRoomById(Long id);
 
-    List<LastGuestsInfo> getLastGuestsOfRoom(Long roomId, Integer numLastGuestFromProperty);
+    List<Guest> getLastGuestsOfRoom(Integer roomNumber, Integer numLastGuestFromProperty);
+
+    Set<Service> getGuestServices(Long guestId);
 }

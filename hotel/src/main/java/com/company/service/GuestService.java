@@ -14,11 +14,11 @@ import com.company.injection.annotation.Autowired;
 import com.company.injection.annotation.Component;
 import com.company.model.Guest;
 
-import com.company.model.LastGuestsInfo;
 import com.company.model.Service;
 import org.apache.log4j.Logger;
 
 import java.util.List;
+import java.util.Set;
 
 
 @Component
@@ -55,8 +55,8 @@ public class GuestService implements IGuestService {
     }
 
     @Override
-    public List<Service> getAllServices(Guest guest) {
-        return serviceDao.getGuestServices(guest.getId());
+    public Set<Service> getAllServices(Guest guest) {
+        return guestDao.getGuestServices(guest.getId());
     }
 
     public List<Guest> getAll() {
@@ -76,7 +76,7 @@ public class GuestService implements IGuestService {
     @Override
     public List<Guest> sortGuestsByDeparture() {
         try {
-            return guestDao.getAllSorted("date_check_out");
+            return guestDao.getAllSorted("dateCheckOut");
         } catch (DaoException e) {
             LOGGER.info("sort Guests By Departure failed");
             throw new ServiceException(String.format("sort Guests By Departure failed"));
@@ -91,10 +91,10 @@ public class GuestService implements IGuestService {
         return guestDao.getById(guestID);
     }
 
-    public List<LastGuestsInfo> lastGuestsOfRoom(int roomNumber) {
+    public List<Guest> lastGuestsOfRoom(int roomNumber) {
         LOGGER.info("last Guests Of Room");
         try {
-            return guestDao.getLastGuestsOfRoom(roomDao.getRoomByNumber(roomNumber).getId(), numLastGuestFromProperty);
+            return guestDao.getLastGuestsOfRoom(roomNumber, numLastGuestFromProperty);
         } catch (DaoException e) {
             LOGGER.warn("last Guests Of Room failed", e);
             throw new ServiceException("last Guests Of Room failed", e);
