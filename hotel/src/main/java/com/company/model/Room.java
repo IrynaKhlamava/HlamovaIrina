@@ -22,12 +22,7 @@ public class Room extends AEntity {
     @Column(name = "comfort")
     @Enumerated(EnumType.STRING)
     private RoomComfort comfort;
-    @OneToMany
-    @JoinTable(
-            name = "guest_room",
-            joinColumns = @JoinColumn(name = "room_id"),
-            inverseJoinColumns = @JoinColumn(name = "guest_id")
-    )
+    @OneToMany(mappedBy = "room")
     private List<Guest> guests;
 
     public Room() {
@@ -95,8 +90,7 @@ public class Room extends AEntity {
                 ", roomStatus=" + roomStatus +
                 ", priceRoom=" + priceRoom +
                 ", comfort=" + comfort +
-              //  ", guests=" + guests +
-                '}';
+              '}';
     }
 
     @Override

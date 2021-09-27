@@ -39,6 +39,12 @@ public class Builder {
         roomMenu.addMenuItem(new MenuItem("Отсортировать комнаты по вместимости", new GetAllRoomsSortedByCapacityAction(hotelFacade), roomMenu));
         roomMenu.addMenuItem(new MenuItem("Отсортировать комнаты по комфортности", new GetAllRoomsSortedByComfortAction(hotelFacade), roomMenu));
         roomMenu.addMenuItem(new MenuItem("Количество свободных комнат", new GetAllFreeRoomsAction(hotelFacade), roomMenu));
+        roomMenu.addMenuItem(new MenuItem("Сводобные комнаты отсортировать по цене",
+                new GetFreeRoomsSortedByPrice(hotelFacade), roomMenu));
+        roomMenu.addMenuItem(new MenuItem("Сводобные комнаты отсортировать по вместимости",
+                new GetFreeRoomsSortedByCapacity(hotelFacade), roomMenu));
+        roomMenu.addMenuItem(new MenuItem("Сводобные комнаты отсортировать по комфортности",
+                new GetFreeRoomsSortedByComfort(hotelFacade), roomMenu));
         roomMenu.addMenuItem(new MenuItem("Список номеров которые будут свободны к дате", new GetFreeRoomsByDate(hotelFacade), roomMenu));
         roomMenu.addMenuItem(new MenuItem("Посмотреть 3-х последних постояльцев номера и даты их пребывания", new GetLastGuestsOfRoom(hotelFacade), roomMenu));
         roomMenu.addMenuItem(new MenuItem("Посмотреть детали номера", new GetRoomDescription(hotelFacade), roomMenu));

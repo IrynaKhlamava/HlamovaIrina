@@ -95,7 +95,7 @@ public class RoomService implements IRoomService {
     @Override
     public List<Room> getAllFreeRoom() {
         try {
-            return roomDao.getFreeRooms();
+            return roomDao.getFreeRoomsSort(new RoomFilter());
         } catch (DaoException e) {
             LOGGER.warn(String.format("get All FreeRoom failed"), e);
             throw new ServiceException(String.format("get All FreeRoom failed"), e);
@@ -150,7 +150,9 @@ public class RoomService implements IRoomService {
     public List<Room> getFreeRoomSortByPrice() {
         LOGGER.info("Free Room Sort By Price");
         try {
-            return roomDao.getFreeRoomsSort("priceRoom");
+            RoomFilter filter = new RoomFilter();
+            filter.setSortField("priceRoom");
+            return roomDao.getFreeRoomsSort(filter);
         } catch (DaoException e) {
             LOGGER.warn("get Free Room Sort By Price failed", e);
             throw new ServiceException("get Free Room Sort By Price failed", e);
@@ -161,7 +163,9 @@ public class RoomService implements IRoomService {
     public List<Room> getFreeRoomSortByCapacity() {
         LOGGER.info("Free Room Sort By Capacity");
         try {
-            return roomDao.getFreeRoomsSort("capacity");
+            RoomFilter filter = new RoomFilter();
+            filter.setSortField("capacity");
+            return roomDao.getFreeRoomsSort(filter);
         } catch (DaoException e) {
             LOGGER.warn("get Free Room Sort By Capacity failed", e);
             throw new ServiceException("get Free Room Sort By Capacity failed", e);
@@ -172,7 +176,9 @@ public class RoomService implements IRoomService {
     public List<Room> getFreeRoomSortByComfort() {
         LOGGER.info("Free Room Sort By Comfort");
         try {
-            return roomDao.getFreeRoomsSort("comfort");
+            RoomFilter filter = new RoomFilter();
+            filter.setSortField("comfort");
+            return roomDao.getFreeRoomsSort(filter);
         } catch (DaoException e) {
             LOGGER.info("sort Free Room By Price failed", e);
             throw new ServiceException("sort Room By Price failed", e);
@@ -194,7 +200,9 @@ public class RoomService implements IRoomService {
     public List<Room> getFreeRoomsByDate(String byDate) {
         LOGGER.info("get Free Rooms By Date");
        try {
-            return roomDao.getFreeRoomsByDate(LocalDate.parse(byDate));
+           RoomFilter filter = new RoomFilter();
+           filter.setDate(LocalDate.parse(byDate));
+            return roomDao.getFreeRoomsSort(filter);
         } catch (DaoException e) {
             LOGGER.warn("get Free Rooms By Date failed", e);
             throw new ServiceException("get Free Rooms By Date failed", e);
@@ -226,6 +234,11 @@ public class RoomService implements IRoomService {
 
     public RoomComfort getRoomComfortByNumber(Integer num) {
         return RoomComfort.getRoomComfortByNum(num);
+    }
+
+    @Override
+    public Integer getNumOfAvailableRooms() {
+        return roomDao.getNumOfAvailableRooms();
     }
 
 }

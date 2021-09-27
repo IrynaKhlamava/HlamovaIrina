@@ -16,7 +16,7 @@ public interface GenericDao<T extends AEntity> {
 
     void update(T entity);
 
-    int getTotalNumber();
+    Integer getTotalNumber();
 
     List<T> getAllSorted(String col);
 

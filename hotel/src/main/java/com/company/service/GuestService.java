@@ -18,6 +18,7 @@ import com.company.model.Service;
 import org.apache.log4j.Logger;
 
 import java.util.List;
+import java.util.Set;
 
 
 @Component
@@ -54,8 +55,8 @@ public class GuestService implements IGuestService {
     }
 
     @Override
-    public List<Service> getAllServices(Guest guest) {
-        return serviceDao.getGuestServices(guest.getId());
+    public Set<Service> getAllServices(Guest guest) {
+        return guestDao.getGuestServices(guest.getId());
     }
 
     public List<Guest> getAll() {

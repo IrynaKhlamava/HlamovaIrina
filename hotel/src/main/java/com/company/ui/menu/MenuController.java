@@ -31,7 +31,6 @@ public class MenuController {
 
     public void run(ApplicationContext context) {
         builder.buildMenu(context.getBean(HotelFacade.class));
-        //builder.buildMenu(context.getBean(HotelFacade.class));
         navigator.setCurrentMenu(builder.getRootMenu());
         while (isRunning) {
             try {

@@ -63,9 +63,12 @@ public class GuestDao extends AbstractDao<Guest> implements IGuestDao {
     }
 
     @Override
-    public void addService(Service service, Guest guest) {
-        Set<Service> setGuestService = guest.getServices();
-        setGuestService.add(service);
-        save(guest);
+    public Set<Service> getGuestServices(Long guestId) {
+        try {
+            return getById(guestId).getServices();
+        } catch (Exception e) {
+            LOGGER.warn("Get guests services failed", e);
+            throw new DaoException(String.format("Get guests services failed"));
+        }
     }
 }

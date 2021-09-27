@@ -8,10 +8,9 @@ import com.company.model.*;
 import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -69,51 +68,33 @@ public class RoomDao extends AbstractDao<Room> implements IRoomDao {
         }
     }
 
-    public List<Room> getFreeRooms() {
+    public List<Room> getFreeRoomsSort(RoomFilter filter) {
         try {
             CriteriaBuilder builder = entityManager.getCriteriaBuilder();
             CriteriaQuery<Room> query = builder.createQuery(Room.class);
             Root<Room> rmRoot = query.from(Room.class);
             Root<Guest> gstRoot = query.from(Guest.class);
+            List<Room> roomList = new ArrayList<>();
             query.select(rmRoot).where(builder.equal(gstRoot.get("roomId"), rmRoot.get("id")));
             query.groupBy(rmRoot.get("id"));
-            query.having(builder.greaterThan(rmRoot.get("capacity"), builder.count(gstRoot.get("roomId"))));
-            return entityManager.createQuery(query).getResultList();
-        } catch (Exception e) {
-            LOGGER.warn("get all free rooms failed");
-            throw new DaoException(String.format("get all free rooms failed"));
-        }
-    }
-
-    public List<Room> getFreeRoomsSort(String col) {
-        try {
-            CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-            CriteriaQuery<Room> query = builder.createQuery(Room.class);
-            Root<Room> rmRoot = query.from(Room.class);
-            Root<Guest> gstRoot = query.from(Guest.class);
-            query.multiselect(rmRoot, gstRoot);
-            query.groupBy(rmRoot.get("id"));
-            query.having(builder.greaterThan(rmRoot.get("capacity"), builder.count(gstRoot.get("roomId"))));
-            query.orderBy(builder.desc(rmRoot.get(col)));
-            return entityManager.createQuery(query).getResultList();
-
+            if (filter.getDate() == null && filter.getSortField() == null) {
+                query.having(builder.greaterThan(rmRoot.get("capacity"),
+                        builder.count(gstRoot.get("roomId"))));
+                roomList = entityManager.createQuery(query).getResultList();
+            }
+            if (filter.getDate() != null) {
+                query.select(rmRoot).where(builder.lessThan(gstRoot.<LocalDate>get("dateCheckOut"), filter.getDate())).distinct(true);
+                roomList = entityManager.createQuery(query).getResultList();
+            }
+            if (filter.getSortField() != null) {
+                query.having(builder.greaterThan(rmRoot.get("capacity"), builder.count(gstRoot.get("roomId"))));
+                query.orderBy(builder.asc(rmRoot.get(filter.getSortField())));
+                roomList = entityManager.createQuery(query).getResultList();
+            }
+            return roomList;
         } catch (Exception e) {
             LOGGER.warn("sort free rooms failed");
             throw new DaoException(String.format("sort free rooms failed"));
-        }
-    }
-
-    public List<Room> getFreeRoomsByDate(LocalDate date) {
-        try {
-            CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-            CriteriaQuery<Room> query = builder.createQuery(Room.class);
-            Root<Room> rmRoot = query.from(Room.class);
-            Root<Guest> gstRoot = query.from(Guest.class);
-            query.select(rmRoot).where(builder.lessThan(gstRoot.<LocalDate>get("dateCheckOut"), date)).distinct(true);
-            return entityManager.createQuery(query).getResultList();
-        } catch (Exception e) {
-            LOGGER.warn("get free rooms by date failed");
-            throw new DaoException(String.format("get free rooms by date failed"));
         }
     }
 
@@ -129,5 +110,11 @@ public class RoomDao extends AbstractDao<Room> implements IRoomDao {
             throw new DaoException(String.format("get room price failed"));
         }
     }
+
+    @Override
+    public Integer getNumOfAvailableRooms() {
+        return getFreeRoomsSort(new RoomFilter()).size();
+    }
+
 }
 

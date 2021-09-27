@@ -5,6 +5,7 @@ import com.company.model.Guest;
 import com.company.model.Service;
 
 import java.util.List;
+import java.util.Set;
 
 public interface IGuestDao extends GenericDao<Guest> {
 
@@ -12,5 +13,5 @@ public interface IGuestDao extends GenericDao<Guest> {
 
     List<Guest> getLastGuestsOfRoom(Integer roomNumber, Integer numLastGuestFromProperty);
 
-    void addService(Service service, Guest guest);
+    Set<Service> getGuestServices(Long guestId);
 }

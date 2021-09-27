@@ -18,15 +18,9 @@ public class Guest extends AEntity {
     private LocalDate dateCheckOut;
     @Column(name = "rooms_id")
     private Long roomId;
-    @ManyToMany(fetch = FetchType.LAZY)//, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "guest_services",
-            joinColumns = @JoinColumn(name = "guest_id"),
-            inverseJoinColumns = @JoinColumn(name = "service_id")
-    )
+    @OneToMany(mappedBy = "guest")
     private Set<Service> services;
-
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinTable(
             name = "guest_room",
             joinColumns = @JoinColumn(name = "guest_id"),

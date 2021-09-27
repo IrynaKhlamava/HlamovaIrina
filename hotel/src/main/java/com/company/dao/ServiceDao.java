@@ -30,19 +30,6 @@ public class ServiceDao extends AbstractDao<Service> implements IServiceDao {
         return Service.class;
     }
 
-    public List<Service> getGuestServices(Long guestId) {
-        try {
-            CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-            CriteriaQuery<Service> query = builder.createQuery(Service.class);
-            Root<Service> srvRoot = query.from(Service.class);
-            query.select(srvRoot).where(builder.equal(srvRoot.get("guestId"), guestId));
-            return entityManager.createQuery(query).getResultList();
-        } catch (Exception e) {
-            LOGGER.warn("Get count guests in room failed", e);
-            throw new DaoException(String.format("Get count guests in room failed"));
-        }
-    }
-
     public List<Service> getAllGuestServicesSortByPrice(Long id) {
         try {
             CriteriaBuilder builder = entityManager.getCriteriaBuilder();

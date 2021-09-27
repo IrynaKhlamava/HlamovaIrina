@@ -14,8 +14,7 @@ public class Service extends AEntity {
     private double price;
     @Column(name = "guest_id")
     private Long guestId;
-
-    @ManyToOne(fetch = FetchType.LAZY)//, cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinTable(
             name = "guest_services",
             joinColumns = @JoinColumn(name = "service_id"),

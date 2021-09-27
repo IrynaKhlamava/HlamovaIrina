@@ -61,8 +61,17 @@ public abstract class AbstractDao<T extends AEntity> implements GenericDao<T> {
     }
 
     @Override
-    public int getTotalNumber() {
-        return getAll().size();
+    public Integer getTotalNumber() {
+        try {
+            CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+            CriteriaQuery<Integer> query = builder.createQuery(Integer.class);
+            Root<T> root = query.from(getClazz());
+            builder.count(root.get("id"));
+            return entityManager.createQuery(query).getSingleResult();
+        } catch (Exception e) {
+            LOGGER.warn("getTotalNumber failed");
+            throw new DaoException(String.format("getTotalNumber failed"));
+        }
     }
 
     @Override

@@ -42,4 +42,5 @@ public interface IRoomService {
 
     RoomComfort getRoomComfortByNumber(Integer num);
 
+    Integer getNumOfAvailableRooms();
 }
