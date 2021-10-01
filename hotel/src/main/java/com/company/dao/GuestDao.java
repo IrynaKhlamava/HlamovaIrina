@@ -1,14 +1,15 @@
 package com.company.dao;
 
 import com.company.exceptions.DaoException;
-import com.company.injection.annotation.Component;
 import com.company.model.Guest;
 import com.company.api.dao.IGuestDao;
 
 import com.company.model.Room;
 import com.company.model.Service;
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
@@ -18,13 +19,18 @@ import java.util.List;
 import java.util.Set;
 
 
-@Component
+@Repository
 public class GuestDao extends AbstractDao<Guest> implements IGuestDao {
 
     private static final Logger LOGGER = Logger.getLogger(GuestDao.class.getName());
 
     public GuestDao() {
     }
+
+    public GuestDao(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+
 
     @Override
     protected Class<Guest> getClazz() {
@@ -52,7 +58,7 @@ public class GuestDao extends AbstractDao<Guest> implements IGuestDao {
             Root<Guest> guest = query.from(Guest.class);
             Root<Room> room = query.from(Room.class);
             Join<Guest, Room> roomJoin = guest.join("room");
-            roomJoin.on(builder.equal(room.get("id"),guest.get("roomId")));
+            roomJoin.on(builder.equal(room.get("id"), guest.get("roomId")));
             query.select(guest).where(builder.equal(room.get("number"), roomNum)).orderBy(builder.desc(guest.get(
                     "dateCheckOut")));
             return entityManager.createQuery(query).setMaxResults(lastGuestNum).getResultList();

@@ -1,10 +1,8 @@
 package com.company.ui.menu;
 
-import com.company.injection.annotation.Component;
-
 import java.util.List;
 
-@Component
+@org.springframework.stereotype.Service
 public class Navigator {
 
     private Menu currentMenu;

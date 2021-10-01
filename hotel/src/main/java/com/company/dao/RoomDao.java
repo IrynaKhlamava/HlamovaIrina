@@ -3,9 +3,9 @@ package com.company.dao;
 import com.company.api.dao.IRoomDao;
 
 import com.company.exceptions.DaoException;
-import com.company.injection.annotation.Component;
 import com.company.model.*;
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.*;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@Component
+@Repository
 public class RoomDao extends AbstractDao<Room> implements IRoomDao {
 
     private static final Logger LOGGER = Logger.getLogger(RoomDao.class.getName());
@@ -68,30 +68,38 @@ public class RoomDao extends AbstractDao<Room> implements IRoomDao {
         }
     }
 
-    public List<Room> getFreeRoomsSort(RoomFilter filter) {
+    public List<Room> getAllFreeRooms(RoomFilter filter) {
         try {
             CriteriaBuilder builder = entityManager.getCriteriaBuilder();
             CriteriaQuery<Room> query = builder.createQuery(Room.class);
             Root<Room> rmRoot = query.from(Room.class);
             Root<Guest> gstRoot = query.from(Guest.class);
-            List<Room> roomList = new ArrayList<>();
-            query.select(rmRoot).where(builder.equal(gstRoot.get("roomId"), rmRoot.get("id")));
-            query.groupBy(rmRoot.get("id"));
+            List<Predicate> predicates = new ArrayList<>();
+            List<Predicate> predicatesHaving = new ArrayList<>();
+            List<Order> predicatesOrder = new ArrayList<>();
+            Predicate predicateId = builder.equal(gstRoot.get("roomId"), rmRoot.get("id"));
+            Predicate predicateFreeRooms = builder.or(builder.greaterThan(rmRoot.get("capacity"),
+                    builder.count(gstRoot.get("roomId"))), builder.equal(builder.count(gstRoot.get("roomId")), 0));
+            Predicate predicateByDate = builder.lessThan(gstRoot.<LocalDate>get("dateCheckOut"), filter.getDate());
+            Path predicateGroupBy = null;
+            Order predicateSortField;
+            predicates.add(predicateId);
             if (filter.getDate() == null && filter.getSortField() == null) {
-                query.having(builder.greaterThan(rmRoot.get("capacity"),
-                        builder.count(gstRoot.get("roomId"))));
-                roomList = entityManager.createQuery(query).getResultList();
+                predicatesHaving.add(predicateFreeRooms);
+                predicateGroupBy = rmRoot.get("id");
             }
             if (filter.getDate() != null) {
-                query.select(rmRoot).where(builder.lessThan(gstRoot.<LocalDate>get("dateCheckOut"), filter.getDate())).distinct(true);
-                roomList = entityManager.createQuery(query).getResultList();
+                predicates.add(predicateByDate);
+                predicateGroupBy = rmRoot.get("id");
             }
             if (filter.getSortField() != null) {
-                query.having(builder.greaterThan(rmRoot.get("capacity"), builder.count(gstRoot.get("roomId"))));
-                query.orderBy(builder.asc(rmRoot.get(filter.getSortField())));
-                roomList = entityManager.createQuery(query).getResultList();
+                predicateGroupBy = rmRoot.get("id");
+                predicatesHaving.add(predicateFreeRooms);
+                predicateSortField = builder.asc(rmRoot.get(filter.getSortField()));
+                predicatesOrder.add(predicateSortField);
             }
-            return roomList;
+            query.select(rmRoot).where(predicates.toArray(new Predicate[0])).groupBy(predicateGroupBy).having(predicatesHaving.toArray(new Predicate[0])).orderBy(predicatesOrder).distinct(true);
+            return entityManager.createQuery(query).getResultList();
         } catch (Exception e) {
             LOGGER.warn("sort free rooms failed");
             throw new DaoException(String.format("sort free rooms failed"));
@@ -113,8 +121,16 @@ public class RoomDao extends AbstractDao<Room> implements IRoomDao {
 
     @Override
     public Integer getNumOfAvailableRooms() {
-        return getFreeRoomsSort(new RoomFilter()).size();
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Room> query = builder.createQuery(Room.class);
+        Root<Room> rmRoot = query.from(Room.class);
+        Root<Guest> gstRoot = query.from(Guest.class);
+        Predicate predicateFreeRooms = builder.or(builder.greaterThan(rmRoot.get("capacity"),
+                builder.count(gstRoot.get("roomId"))), builder.equal(builder.count(gstRoot.get("roomId")), 0));
+        query.select(rmRoot).where(builder.equal(gstRoot.get("roomId"), rmRoot.get("id")));
+        query.groupBy(rmRoot.get("id"));
+        query.having(predicateFreeRooms);
+        return entityManager.createQuery(query).getResultList().size();
     }
-
 }
 
