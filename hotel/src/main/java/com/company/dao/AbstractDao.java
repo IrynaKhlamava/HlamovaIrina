@@ -18,7 +18,7 @@ public abstract class AbstractDao<T extends AEntity> implements GenericDao<T> {
 
     private static final Logger LOGGER = Logger.getLogger(AbstractDao.class.getName());
 
-    @PersistenceContext(type = PersistenceContextType.TRANSACTION)
+    @PersistenceContext()
     protected EntityManager entityManager;
 
 
