@@ -1,12 +1,13 @@
 package com.company.dao;
 
 import com.company.api.dao.GenericDao;
-import com.company.dao.util.EntityManagerUtil;
 import com.company.exceptions.DaoException;
 import com.company.model.AEntity;
 import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -17,15 +18,12 @@ public abstract class AbstractDao<T extends AEntity> implements GenericDao<T> {
 
     private static final Logger LOGGER = Logger.getLogger(AbstractDao.class.getName());
 
-    private static final EntityManagerUtil entityManagerUtil = new EntityManagerUtil();
-
-    protected EntityManager entityManager = entityManagerUtil.getEntityManager();
+    @PersistenceContext()
+    protected EntityManager entityManager;
 
 
     public void save(T entity) {
-        entityManagerUtil.beginTransaction();
         entityManager.persist(entity);
-        entityManagerUtil.commit();
     }
 
     public T getById(Long id) {
@@ -43,17 +41,13 @@ public abstract class AbstractDao<T extends AEntity> implements GenericDao<T> {
 
     @Override
     public void update(T entity) {
-        entityManagerUtil.beginTransaction();
         entityManager.merge(entity);
-        entityManagerUtil.commit();
     }
 
     @Override
     public void delete(T entity) {
         try {
-            entityManagerUtil.beginTransaction();
             entityManager.remove(entity);
-            entityManagerUtil.commit();
         } catch (Exception e) {
             LOGGER.warn("DELETE by id failed ", e);
             throw new DaoException(String.format("DELETE by id failed"));

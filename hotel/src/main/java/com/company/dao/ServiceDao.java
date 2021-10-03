@@ -3,9 +3,9 @@ package com.company.dao;
 import com.company.api.dao.IServiceDao;
 
 import com.company.exceptions.DaoException;
-import com.company.injection.annotation.Component;
 import com.company.model.Service;
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -13,7 +13,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
-@Component
+@Repository
 public class ServiceDao extends AbstractDao<Service> implements IServiceDao {
 
     private static final Logger LOGGER = Logger.getLogger(RoomDao.class.getName());

@@ -4,22 +4,25 @@ import com.company.api.service.IGuestService;
 import com.company.api.service.IRoomService;
 import com.company.api.service.IServiceService;
 
-import com.company.injection.annotation.Autowired;
-import com.company.injection.annotation.Component;
 import com.company.model.*;
 
 import java.util.List;
 import java.util.Set;
 
-@Component
+@org.springframework.stereotype.Service
 public class HotelFacade {
 
-    @Autowired
-    private IRoomService roomService;
-    @Autowired
-    private IGuestService guestService;
-    @Autowired
-    private IServiceService serviceService;
+    private final IRoomService roomService;
+
+    private final IGuestService guestService;
+
+    private final IServiceService serviceService;
+
+    public HotelFacade(IRoomService roomService, IGuestService guestService, IServiceService serviceService) {
+        this.roomService = roomService;
+        this.guestService = guestService;
+        this.serviceService = serviceService;
+    }
 
     public void saveRoom(Integer number, Integer capacity, Integer roomStatus, Double priceRoom, Integer comfort) {
         roomService.addRoom(number, capacity, roomStatus, priceRoom, comfort);

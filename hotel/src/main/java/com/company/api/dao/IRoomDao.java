@@ -14,7 +14,7 @@ public interface IRoomDao extends GenericDao<Room> {
 
     void changeRoomPrice(Integer roomNum, Double newPrice);
 
-    List<Room> getFreeRoomsSort(RoomFilter filter);
+    List<Room> getAllFreeRooms(RoomFilter filter);
 
     double getRoomPrice(Long roomId);
 

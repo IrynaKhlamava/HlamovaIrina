@@ -1,45 +1,33 @@
 package com.company.service;
 
 import com.company.api.dao.IGuestDao;
-
-import com.company.api.dao.IRoomDao;
-import com.company.api.dao.IServiceDao;
 import com.company.api.service.IGuestService;
-
-import com.company.config.annotation.ConfigProperty;
 import com.company.exceptions.DaoException;
 import com.company.exceptions.ServiceException;
-
-import com.company.injection.annotation.Autowired;
-import com.company.injection.annotation.Component;
 import com.company.model.Guest;
-
 import com.company.model.Service;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
 
 
-@Component
+@org.springframework.stereotype.Service
+@Transactional
 public class GuestService implements IGuestService {
 
     private static final Logger LOGGER = Logger.getLogger(GuestService.class.getName());
 
-    @Autowired
-    private IGuestDao guestDao;
+    private final IGuestDao guestDao;
 
-    @Autowired
-    private IRoomDao roomDao;
-
-    @Autowired
-    private IServiceDao serviceDao;
-
-    @ConfigProperty
-    private Integer numLastGuestFromProperty;
-
-    public GuestService() {
+    public GuestService(IGuestDao guestDao) {
+        this.guestDao = guestDao;
     }
+
+    @Value("${numLastGuest}")
+    private Integer numLastGuest;
 
     @Override
     public Guest addGuest(String name, Integer daysOfStay) {
@@ -94,7 +82,7 @@ public class GuestService implements IGuestService {
     public List<Guest> lastGuestsOfRoom(int roomNumber) {
         LOGGER.info("last Guests Of Room");
         try {
-            return guestDao.getLastGuestsOfRoom(roomNumber, numLastGuestFromProperty);
+            return guestDao.getLastGuestsOfRoom(roomNumber, numLastGuest);
         } catch (DaoException e) {
             LOGGER.warn("last Guests Of Room failed", e);
             throw new ServiceException("last Guests Of Room failed", e);

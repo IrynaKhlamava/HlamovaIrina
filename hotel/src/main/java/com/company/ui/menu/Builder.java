@@ -1,20 +1,20 @@
 package com.company.ui.menu;
 
-import com.company.config.annotation.ConfigProperty;
 import com.company.facade.HotelFacade;
 
-import com.company.injection.annotation.Component;
 import com.company.ui.actions.*;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class Builder {
 
     private Menu rootMenu;
 
     public HotelFacade hotelFacade;
 
-    @ConfigProperty
-    private static Boolean changeStatus;
+    @Value("${changeStatus}")
+    private Boolean changeStatus;
 
     public Menu getRootMenu() {
         return rootMenu;

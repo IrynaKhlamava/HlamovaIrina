@@ -1,15 +1,14 @@
 package com.company;
 
-import com.company.injection.ApplicationContext;
-import com.company.injection.HotelApplication;
+import com.company.configuration.ContextConfiguration;
 import com.company.ui.UiApplication;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 
 public class Main {
 
     public static void main(String[] args) {
-        ApplicationContext context = new ApplicationContext();
-        HotelApplication.run(context);
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ContextConfiguration.class);
         UiApplication.run(context);
     }
 }

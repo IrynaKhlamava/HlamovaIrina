@@ -5,31 +5,24 @@ import com.company.api.dao.IServiceDao;
 import com.company.api.service.IServiceService;
 import com.company.exceptions.DaoException;
 import com.company.exceptions.ServiceException;
-import com.company.injection.annotation.Autowired;
-import com.company.injection.annotation.Component;
 import com.company.model.Guest;
 import com.company.model.Service;
 
 import org.apache.log4j.Logger;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 
-@Component
+@org.springframework.stereotype.Service
+@Transactional
 public class ServiceService implements IServiceService {
 
     private static final Logger LOGGER = Logger.getLogger(ServiceService.class.getName());
 
-    @Autowired
-    private IServiceDao serviceDao;
+    private final IServiceDao serviceDao;
 
-    @Autowired
-    private IGuestDao guestDao;
-
-    public ServiceService() {
-    }
-
-    public ServiceService(IServiceDao serviceDao) {
+    public ServiceService(IServiceDao serviceDao, IGuestDao guestDao) {
         this.serviceDao = serviceDao;
     }
 

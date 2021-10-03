@@ -8,31 +8,33 @@ import com.company.api.service.IRoomService;
 import com.company.exceptions.DaoException;
 import com.company.exceptions.ServiceException;
 
-import com.company.injection.annotation.Autowired;
-import com.company.injection.annotation.Component;
 import com.company.model.*;
 import org.apache.log4j.Logger;
 
 import java.time.LocalDate;
 import java.util.*;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
-@Component
+@Service
+@Transactional
 public class RoomService implements IRoomService {
 
     private static final String GET_BY_DATA_ERROR_MESSAGE = "could not find an entity by data: %s";
     private static final Logger LOGGER = Logger.getLogger(RoomService.class.getName());
 
-    @Autowired
-    private IRoomDao roomDao;
 
-    @Autowired
-    private IGuestDao guestDao;
+    private final IRoomDao roomDao;
 
-    @Autowired
-    private IServiceDao serviceDao;
+    private final IGuestDao guestDao;
 
-    public RoomService() {
+    private final IServiceDao serviceDao;
+
+    public RoomService(IRoomDao roomDao, IGuestDao guestDao, IServiceDao serviceDao) {
+        this.roomDao = roomDao;
+        this.guestDao = guestDao;
+        this.serviceDao = serviceDao;
     }
 
     @Override
@@ -95,7 +97,7 @@ public class RoomService implements IRoomService {
     @Override
     public List<Room> getAllFreeRoom() {
         try {
-            return roomDao.getFreeRoomsSort(new RoomFilter());
+            return roomDao.getAllFreeRooms(new RoomFilter());
         } catch (DaoException e) {
             LOGGER.warn(String.format("get All FreeRoom failed"), e);
             throw new ServiceException(String.format("get All FreeRoom failed"), e);
@@ -152,7 +154,7 @@ public class RoomService implements IRoomService {
         try {
             RoomFilter filter = new RoomFilter();
             filter.setSortField("priceRoom");
-            return roomDao.getFreeRoomsSort(filter);
+            return roomDao.getAllFreeRooms(filter);
         } catch (DaoException e) {
             LOGGER.warn("get Free Room Sort By Price failed", e);
             throw new ServiceException("get Free Room Sort By Price failed", e);
@@ -165,7 +167,7 @@ public class RoomService implements IRoomService {
         try {
             RoomFilter filter = new RoomFilter();
             filter.setSortField("capacity");
-            return roomDao.getFreeRoomsSort(filter);
+            return roomDao.getAllFreeRooms(filter);
         } catch (DaoException e) {
             LOGGER.warn("get Free Room Sort By Capacity failed", e);
             throw new ServiceException("get Free Room Sort By Capacity failed", e);
@@ -178,7 +180,7 @@ public class RoomService implements IRoomService {
         try {
             RoomFilter filter = new RoomFilter();
             filter.setSortField("comfort");
-            return roomDao.getFreeRoomsSort(filter);
+            return roomDao.getAllFreeRooms(filter);
         } catch (DaoException e) {
             LOGGER.info("sort Free Room By Price failed", e);
             throw new ServiceException("sort Room By Price failed", e);
@@ -202,7 +204,7 @@ public class RoomService implements IRoomService {
        try {
            RoomFilter filter = new RoomFilter();
            filter.setDate(LocalDate.parse(byDate));
-            return roomDao.getFreeRoomsSort(filter);
+            return roomDao.getAllFreeRooms(filter);
         } catch (DaoException e) {
             LOGGER.warn("get Free Rooms By Date failed", e);
             throw new ServiceException("get Free Rooms By Date failed", e);
