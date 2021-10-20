@@ -77,4 +77,30 @@ public class GuestDao extends AbstractDao<Guest> implements IGuestDao {
             throw new DaoException(String.format("Get guests services failed"));
         }
     }
+
+    @Override
+    public void update(Long id, Guest updateData) {
+        Guest guest = getById(id);
+        if (guest != null) {
+            if (updateData.getName() != null) {
+                guest.setName(updateData.getName());
+            }
+            if (updateData.getDaysOfStay() != null) {
+                guest.setDaysOfStay(updateData.getDaysOfStay());
+            }
+            if (updateData.getRoomId() != null) {
+                guest.setRoomId(updateData.getRoomId());
+            }
+            if (updateData.getDateCheckIn() != null) {
+                guest.setDateCheckIn(updateData.getDateCheckIn());
+            }
+            if (updateData.getDateCheckOut() != null) {
+                guest.setDateCheckOut(updateData.getDateCheckOut());
+            }
+            if (updateData.getServices() != null) {
+                guest.setServices(updateData.getServices());
+            }
+            entityManager.merge(guest);
+        }
+    }
 }

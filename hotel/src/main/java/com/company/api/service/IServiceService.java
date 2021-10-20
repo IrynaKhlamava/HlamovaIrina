@@ -1,23 +1,22 @@
 package com.company.api.service;
 
-import com.company.model.Guest;
-
 import com.company.model.Service;
 
 import java.util.List;
 
 public interface IServiceService {
 
-    Service addService(String name, double price, Guest guest);
+    Service addService(String name, double price, Long guestId);
 
-    List<Service> getAllServicesSortByPrice(Guest guest);
+    List<Service> getAllGuestServicesSort(Long id, String col);
 
-    List<Service> getServicesSortByName();
+    List<Service> getAll(String col);
 
-    List<Service> getServicesSortByPrice();
+    Service getById(Long id);
 
-    List<Service> getAll();
+    void delete(Long id);
 
+    void update(Long id, Service updateData);
 }
 
 

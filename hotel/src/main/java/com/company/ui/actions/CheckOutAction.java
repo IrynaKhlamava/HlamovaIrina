@@ -17,9 +17,8 @@ public class CheckOutAction extends AbstractAction {
         Long guestId = ScannerUtil.readLong();
         System.out.println("введите номер комнаты");
         Integer numRoom = ScannerUtil.readInteger();
-        Guest guest = hotelFacade.getGuest(guestId);
         Room roomNumber = hotelFacade.getByRoomNumber(numRoom);
-        hotelFacade.checkOut(guest, roomNumber);
+        hotelFacade.checkOut(guestId, roomNumber.getId());
     }
 
 }

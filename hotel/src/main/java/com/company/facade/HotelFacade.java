@@ -29,19 +29,19 @@ public class HotelFacade {
     }
 
     public List<Room> getAllRoom() {
-        return roomService.getAll();
+        return roomService.getAll("");
     }
 
     public List<Room> getAllRoomsSortedByCapacity() {
-        return roomService.sortRoomByCapacity();
+        return roomService.getAll("capacity");
     }
 
     public List<Room> getAllRoomsSortedByByPrice() {
-        return roomService.sortRoomByPrice();
+        return roomService.getAll("price");
     }
 
     public List<Room> getAllRoomsSortedByComfort() {
-        return roomService.sortRoomByComfort();
+        return roomService.getAll("comfort");
     }
 
     public void saveGuest(String name, Integer daysOfStay) {
@@ -49,27 +49,23 @@ public class HotelFacade {
     }
 
     public List<Guest> getAllGuests() {
-        return guestService.getAll();
+        return guestService.getAll("");
     }
 
     public List<Guest> getAllGuestsSortedByName() {
-        return guestService.sortGuestsByName();
+        return guestService.getAll("name");
     }
 
     public List<Guest> getAllGuestsSortedByDeparture() {
-        return guestService.sortGuestsByDeparture();
+        return guestService.getAll("dateCheckOut");
     }
 
-    public List<Service> getAllServices() {
-        return serviceService.getAll();
+    public void saveService(String name, Double price, Long guestId) {
+        serviceService.addService(name, price, guestId);
     }
 
-    public void saveService(String name, Double price, Guest guest) {
-        serviceService.addService(name, price, guest);
-    }
-
-    public List<Service> getAllGuestServicesSortedByPrice(Guest guest) {
-        return serviceService.getAllServicesSortByPrice(guest);
+    public List<Service> getAllGuestServicesSortedByPrice(Long id, String col) {
+        return serviceService.getAllGuestServicesSort(id, col);
     }
 
     public Guest getGuest(Long guestID) {
@@ -80,28 +76,28 @@ public class HotelFacade {
         return roomService.getByRoomNumber(num);
     }
 
-    public void checkIn(Guest guest, Room room) {
-        roomService.checkIn(guest, room);
+    public void checkIn(Long guestId, Long roomId) {
+        roomService.checkIn(guestId, roomId);
     }
 
-    public void checkOut(Guest guest, Room room) {
-        roomService.checkOut(guest, room);
+    public void checkOut(Long guestId, Long roomId) {
+        roomService.checkOut(guestId, roomId);
     }
 
-    public List<Room> getAllFreeRooms() {
-        return roomService.getAllFreeRoom();
+    public List<Room> getAvailableRooms() {
+        return roomService.getAvailableRooms("");
     }
 
-    public Integer getNumberAllFreeRooms() {
+    public Integer getNumberAllAvailableRooms() {
         return roomService.getNumOfAvailableRooms();
     }
 
-    public List<Room> getFreeRoomsByDate(String byDate) {
-        return roomService.getFreeRoomsByDate(byDate);
+    public List<Room> getAvailableRoomsByDate(String byDate) {
+        return roomService.getAvailableRoomsByDate(byDate);
     }
 
     public double getBill(Guest guest) {
-        return roomService.getBill(guest);
+        return roomService.getBill(guest.getId());
     }
 
     public List<Guest> getLastGuestsOfRoom(Integer roomNum) {
@@ -109,15 +105,11 @@ public class HotelFacade {
     }
 
     public Set<Service> getAllGuestsServices(Guest guest) {
-        return guestService.getAllServices(guest);
+        return guestService.getAllServices(guest.getId());
     }
 
-    public List<Service> getAllServicesSortedByPrice() {
-        return serviceService.getServicesSortByPrice();
-    }
-
-    public List<Service> getAllServicesSortedByName() {
-        return serviceService.getServicesSortByName();
+    public List<Service> getAll(String name) {
+        return serviceService.getAll(name);
     }
 
     public void changeStatusByRoomNumber(Integer roomNum, RoomStatus roomStatusByNum) {
@@ -136,15 +128,15 @@ public class HotelFacade {
         return roomService.getRoomComfortByNumber(num);
     }
 
-    public List<Room> getFreeRoomSortByPrice() {
-        return roomService.getFreeRoomSortByPrice();
+    public List<Room> getAvailableRoomSortByPrice() {
+        return roomService.getAvailableRooms("price");
     }
 
-    public List<Room> getFreeRoomSortByCapacity() {
-        return roomService.getFreeRoomSortByCapacity();
+    public List<Room> getAvailableRoomSortByCapacity() {
+        return roomService.getAvailableRooms("capacity");
     }
 
-    public List<Room> getFreeRoomSortByComfort() {
-        return roomService.getFreeRoomSortByComfort();
+    public List<Room> getAvailableRoomSortByComfort() {
+        return roomService.getAvailableRooms("comfort");
     }
 }

@@ -10,6 +10,6 @@ public class GetAllServicesSortedByPrice extends AbstractAction {
 
     @Override
     public void execute() {
-        hotelFacade.getAllServicesSortedByPrice().forEach(System.out::println);
+        hotelFacade.getAll("price").forEach(System.out::println);
     }
 }

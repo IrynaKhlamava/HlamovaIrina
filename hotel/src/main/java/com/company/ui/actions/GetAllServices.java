@@ -10,6 +10,6 @@ public class GetAllServices extends AbstractAction {
 
     @Override
     public void execute() {
-        hotelFacade.getAllServices().forEach(System.out::println);
+        hotelFacade.getAll("").forEach(System.out::println);
     }
 }

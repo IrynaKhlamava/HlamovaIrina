@@ -68,7 +68,7 @@ public class RoomDao extends AbstractDao<Room> implements IRoomDao {
         }
     }
 
-    public List<Room> getAllFreeRooms(RoomFilter filter) {
+    public List<Room> getAllAvailableRooms(RoomFilter filter) {
         try {
             CriteriaBuilder builder = entityManager.getCriteriaBuilder();
             CriteriaQuery<Room> query = builder.createQuery(Room.class);
@@ -78,35 +78,35 @@ public class RoomDao extends AbstractDao<Room> implements IRoomDao {
             List<Predicate> predicatesHaving = new ArrayList<>();
             List<Order> predicatesOrder = new ArrayList<>();
             Predicate predicateId = builder.equal(gstRoot.get("roomId"), rmRoot.get("id"));
-            Predicate predicateFreeRooms = builder.or(builder.greaterThan(rmRoot.get("capacity"),
+            Predicate predicateAvailableRooms = builder.or(builder.greaterThan(rmRoot.get("capacity"),
                     builder.count(gstRoot.get("roomId"))), builder.equal(builder.count(gstRoot.get("roomId")), 0));
             Predicate predicateByDate = builder.lessThan(gstRoot.<LocalDate>get("dateCheckOut"), filter.getDate());
             Path predicateGroupBy = null;
             Order predicateSortField;
             predicates.add(predicateId);
-            if (filter.getDate() == null && filter.getSortField() == null) {
-                predicatesHaving.add(predicateFreeRooms);
+            if (filter.getDate() == null && (filter.getSortField() == null || filter.getSortField().equals(""))) {
+                predicatesHaving.add(predicateAvailableRooms);
                 predicateGroupBy = rmRoot.get("id");
             }
             if (filter.getDate() != null) {
                 predicates.add(predicateByDate);
                 predicateGroupBy = rmRoot.get("id");
             }
-            if (filter.getSortField() != null) {
+            if (filter.getSortField() != null && !filter.getSortField().equals("")) {
                 predicateGroupBy = rmRoot.get("id");
-                predicatesHaving.add(predicateFreeRooms);
+                predicatesHaving.add(predicateAvailableRooms);
                 predicateSortField = builder.asc(rmRoot.get(filter.getSortField()));
                 predicatesOrder.add(predicateSortField);
             }
             query.select(rmRoot).where(predicates.toArray(new Predicate[0])).groupBy(predicateGroupBy).having(predicatesHaving.toArray(new Predicate[0])).orderBy(predicatesOrder).distinct(true);
             return entityManager.createQuery(query).getResultList();
         } catch (Exception e) {
-            LOGGER.warn("sort free rooms failed");
-            throw new DaoException(String.format("sort free rooms failed"));
+            LOGGER.warn("sort Available rooms failed");
+            throw new DaoException(String.format("sort Available rooms failed"));
         }
     }
 
-    public double getRoomPrice(Long id) {
+    public Double getRoomPrice(Long id) {
         try {
             CriteriaBuilder builder = entityManager.getCriteriaBuilder();
             CriteriaQuery<Double> query = builder.createQuery(Double.class);
@@ -125,11 +125,11 @@ public class RoomDao extends AbstractDao<Room> implements IRoomDao {
         CriteriaQuery<Room> query = builder.createQuery(Room.class);
         Root<Room> rmRoot = query.from(Room.class);
         Root<Guest> gstRoot = query.from(Guest.class);
-        Predicate predicateFreeRooms = builder.or(builder.greaterThan(rmRoot.get("capacity"),
+        Predicate predicateAvailableRooms = builder.or(builder.greaterThan(rmRoot.get("capacity"),
                 builder.count(gstRoot.get("roomId"))), builder.equal(builder.count(gstRoot.get("roomId")), 0));
         query.select(rmRoot).where(builder.equal(gstRoot.get("roomId"), rmRoot.get("id")));
         query.groupBy(rmRoot.get("id"));
-        query.having(predicateFreeRooms);
+        query.having(predicateAvailableRooms);
         return entityManager.createQuery(query).getResultList().size();
     }
 }

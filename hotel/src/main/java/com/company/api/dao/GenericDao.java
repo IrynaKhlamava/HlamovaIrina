@@ -12,12 +12,10 @@ public interface GenericDao<T extends AEntity> {
 
     T getById(Long Id);
 
-    List<T> getAll();
-
-    void update(T entity);
+    List<T> getAll(String col);
 
     Integer getTotalNumber();
 
-    List<T> getAllSorted(String col);
+    void update(T entity);
 
 }

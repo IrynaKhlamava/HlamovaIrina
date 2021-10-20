@@ -1,7 +1,7 @@
 plugins {
     id 'java'
     id 'groovy'
-    id 'application'
+    id 'war'
 }
 
 group 'org.example'
@@ -22,6 +22,11 @@ dependencies {
     implementation group: 'org.springframework', name: 'spring-context', version: '5.3.10'
     implementation group: 'org.springframework', name: 'spring-jdbc', version: '5.3.10'
     implementation group: 'org.springframework', name: 'spring-orm', version: '5.3.10'
+    implementation group: 'org.springframework', name: 'spring-webmvc', version: '5.3.10'
+    compileOnly group: 'javax.servlet', name: 'servlet-api', version: '2.5'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.12.5'
+    implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.4.4'
+    implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.12.4'
 }
 
 

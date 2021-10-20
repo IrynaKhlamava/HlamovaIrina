@@ -4,9 +4,9 @@ import com.company.facade.HotelFacade;
 import com.company.util.ScannerUtil;
 
 
-public class GetFreeRoomsByDate extends AbstractAction {
+public class GetAvailableRoomsByDate extends AbstractAction {
 
-    public GetFreeRoomsByDate(HotelFacade facade) {
+    public GetAvailableRoomsByDate(HotelFacade facade) {
         super(facade);
     }
 
@@ -19,7 +19,7 @@ public class GetFreeRoomsByDate extends AbstractAction {
         System.out.println("введите год");
         String year = ScannerUtil.readString();
         String byDate = year + '-' + month + '-' + day;
-        hotelFacade.getFreeRoomsByDate(byDate).forEach(System.out::println);
+        hotelFacade.getAvailableRoomsByDate(byDate).forEach(System.out::println);
     }
 
 }

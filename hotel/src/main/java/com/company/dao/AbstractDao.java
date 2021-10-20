@@ -7,7 +7,6 @@ import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -28,13 +27,6 @@ public abstract class AbstractDao<T extends AEntity> implements GenericDao<T> {
 
     public T getById(Long id) {
         return entityManager.find(getClazz(), id);
-    }
-
-    public List<T> getAll() {
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<T> query = builder.createQuery(getClazz());
-        Root<T> root = query.from(getClazz());
-        return entityManager.createQuery(query).getResultList();
     }
 
     protected abstract Class<T> getClazz();
@@ -69,16 +61,13 @@ public abstract class AbstractDao<T extends AEntity> implements GenericDao<T> {
     }
 
     @Override
-    public List<T> getAllSorted(String col) {
-        try {
-            CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-            CriteriaQuery<T> query = builder.createQuery(getClazz());
-            Root<T> root = query.from(getClazz());
+    public List<T> getAll(String col) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<T> query = builder.createQuery(getClazz());
+        Root<T> root = query.from(getClazz());
+        if (!col.equals("")) {
             query.orderBy(builder.asc(root.get(col)));
-            return entityManager.createQuery(query).getResultList();
-        } catch (Exception e) {
-            LOGGER.warn("getAllSorted failed");
-            throw new DaoException(String.format("getAllSorted failed"));
         }
+        return entityManager.createQuery(query).getResultList();
     }
 }

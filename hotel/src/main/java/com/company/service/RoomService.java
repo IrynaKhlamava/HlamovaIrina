@@ -12,9 +12,13 @@ import com.company.model.*;
 import org.apache.log4j.Logger;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.List;
+
+
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 
 
 @Service
@@ -31,10 +35,13 @@ public class RoomService implements IRoomService {
 
     private final IServiceDao serviceDao;
 
-    public RoomService(IRoomDao roomDao, IGuestDao guestDao, IServiceDao serviceDao) {
+    private final ModelMapper mapper;
+
+    public RoomService(IRoomDao roomDao, IGuestDao guestDao, IServiceDao serviceDao, ModelMapper mapper) {
         this.roomDao = roomDao;
         this.guestDao = guestDao;
         this.serviceDao = serviceDao;
+        this.mapper = mapper;
     }
 
     @Override
@@ -52,18 +59,20 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public void checkIn(Guest guest, Room room) {
+    public void checkIn(Long guestId, Long roomId) {
         int count;
-        LOGGER.info(String.format("checkIn of the guest: %s to the room: %s", guest, room));
-        count = guestDao.getCountGuestsInRoomById(room.getId());
+        LOGGER.info(String.format("checkIn of the guestId: %s to the roomId: %s", guestId, roomId));
         try {
+            count = guestDao.getCountGuestsInRoomById(roomId);
+            Guest guest = guestDao.getById(guestId);
             guest.setDateCheckIn(LocalDate.now());
             guest.setDateCheckOut(guest.getDateCheckIn().plusDays(guest.getDaysOfStay()));
-            guest.setRoomId(room.getId());
+            guest.setRoomId(roomId);
+            Room room = roomDao.getById(roomId);
             if (count < room.getCapacity()) {
-                guestDao.update(guest);
+                guestDao.update(guest.getId(), guest);
             } else {
-                LOGGER.warn("No free space in the room. CheckIn failed");
+                LOGGER.warn("No Available space in the room. CheckIn failed");
             }
         } catch (DaoException e) {
             LOGGER.warn("CheckIn failed", e);
@@ -72,16 +81,23 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public void checkOut(Guest guest, Room room) {
-        LOGGER.info(String.format("checkOut of the guest: %s from the room: %s", guest, room));
+    public void checkOut(Long guestId, Long roomId) {
+        LOGGER.info(String.format("checkOut of the guestId: %s from the roomId: %s", guestId, roomId));
         try {
+            Guest guest = guestDao.getById(guestId);
             guest.setDateCheckOut(LocalDate.now());
-            guestDao.update(guest);
+            guestDao.update(guestId, guest);
         } catch (DaoException e) {
             LOGGER.warn("CheckOut failed", e);
             throw new ServiceException("CheckOut failed", e);
         }
     }
+
+    @Override
+    public Room getById(Long id) {
+        return roomDao.getById(id);
+    }
+
 
     @Override
     public Room getByRoomNumber(Integer roomNum) {
@@ -95,12 +111,14 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public List<Room> getAllFreeRoom() {
+    public List<Room> getAvailableRooms(String col) {
         try {
-            return roomDao.getAllFreeRooms(new RoomFilter());
+            RoomFilter filter = new RoomFilter();
+            filter.setSortField(col);
+            return roomDao.getAllAvailableRooms(filter);
         } catch (DaoException e) {
-            LOGGER.warn(String.format("get All FreeRoom failed"), e);
-            throw new ServiceException(String.format("get All FreeRoom failed"), e);
+            LOGGER.warn(String.format("get All AvailableRoom failed"), e);
+            throw new ServiceException(String.format("get All AvailableRoom failed"), e);
         }
     }
 
@@ -127,95 +145,29 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public List<Room> sortRoomByCapacity() {
-        LOGGER.info("sort Room By Capacity");
-        try {
-            return roomDao.getAllSorted("capacity");
-        } catch (DaoException e) {
-            LOGGER.warn("sort Room By Capacity failed", e);
-            throw new ServiceException("sort Room By Capacity failed", e);
-        }
-    }
-
-    @Override
-    public List<Room> sortRoomByComfort() {
-        LOGGER.info("sort Room By Comfort");
-        try {
-            return roomDao.getAllSorted("comfort");
-        } catch (DaoException e) {
-            LOGGER.warn("sort Room By Comfort failed", e);
-            throw new ServiceException("sort Room By Comfort failed", e);
-        }
-    }
-
-    @Override
-    public List<Room> getFreeRoomSortByPrice() {
-        LOGGER.info("Free Room Sort By Price");
+    public List<Room> getAvailableRoomsByDate(String byDate) {
+        LOGGER.info("get Available Rooms By Date");
         try {
             RoomFilter filter = new RoomFilter();
-            filter.setSortField("priceRoom");
-            return roomDao.getAllFreeRooms(filter);
+            filter.setDate(LocalDate.parse(byDate));
+            return roomDao.getAllAvailableRooms(filter);
         } catch (DaoException e) {
-            LOGGER.warn("get Free Room Sort By Price failed", e);
-            throw new ServiceException("get Free Room Sort By Price failed", e);
+            LOGGER.warn("get Available Rooms By Date failed", e);
+            throw new ServiceException("get Available Rooms By Date failed", e);
         }
     }
 
     @Override
-    public List<Room> getFreeRoomSortByCapacity() {
-        LOGGER.info("Free Room Sort By Capacity");
-        try {
-            RoomFilter filter = new RoomFilter();
-            filter.setSortField("capacity");
-            return roomDao.getAllFreeRooms(filter);
-        } catch (DaoException e) {
-            LOGGER.warn("get Free Room Sort By Capacity failed", e);
-            throw new ServiceException("get Free Room Sort By Capacity failed", e);
-        }
-    }
-
-    @Override
-    public List<Room> getFreeRoomSortByComfort() {
-        LOGGER.info("Free Room Sort By Comfort");
-        try {
-            RoomFilter filter = new RoomFilter();
-            filter.setSortField("comfort");
-            return roomDao.getAllFreeRooms(filter);
-        } catch (DaoException e) {
-            LOGGER.info("sort Free Room By Price failed", e);
-            throw new ServiceException("sort Room By Price failed", e);
-        }
-    }
-
-    @Override
-    public List<Room> sortRoomByPrice() {
-        LOGGER.info("All Rooms Sort By Price");
-        try {
-            return roomDao.getAllSorted("priceRoom");
-        } catch (DaoException e) {
-            LOGGER.info("sort Rooms By Price failed", e);
-            throw new ServiceException("sort Rooms By Price failed", e);
-        }
-    }
-
-    @Override
-    public List<Room> getFreeRoomsByDate(String byDate) {
-        LOGGER.info("get Free Rooms By Date");
-       try {
-           RoomFilter filter = new RoomFilter();
-           filter.setDate(LocalDate.parse(byDate));
-            return roomDao.getAllFreeRooms(filter);
-        } catch (DaoException e) {
-            LOGGER.warn("get Free Rooms By Date failed", e);
-            throw new ServiceException("get Free Rooms By Date failed", e);
-        }
-    }
-
-    @Override
-    public double getBill(Guest guest) {
+    public Double getBill(Long idGuest) {
         LOGGER.info("get Bill of guest");
         try {
-            return roomDao.getRoomPrice(guest.getRoomId()) * guest.getDaysOfStay() + serviceDao.getBillForGuestForServices(guest.getId());
+            Guest guest = guestDao.getById(idGuest);
+            Double billForServices = serviceDao.getBillForGuestForServices(idGuest);
+            if (billForServices != null) {
+                return roomDao.getRoomPrice(guest.getRoomId()) * guest.getDaysOfStay() + billForServices;
+            } else {
+                return roomDao.getRoomPrice(guest.getRoomId()) * guest.getDaysOfStay();
+            }
         } catch (DaoException e) {
             LOGGER.warn("get Bill of guest failed", e);
             throw new ServiceException("get Bill of guest failed", e);
@@ -226,8 +178,8 @@ public class RoomService implements IRoomService {
         roomDao.save(room);
     }
 
-    public List<Room> getAll() {
-        return roomDao.getAll();
+    public List<Room> getAll(String col) {
+        return roomDao.getAll(col);
     }
 
     public RoomStatus getRoomStatusByNumber(Integer num) {

@@ -14,4 +14,6 @@ public interface IGuestDao extends GenericDao<Guest> {
     List<Guest> getLastGuestsOfRoom(Integer roomNumber, Integer numLastGuestFromProperty);
 
     Set<Service> getGuestServices(Long guestId);
+
+    void update(Long id, Guest updateData);
 }
