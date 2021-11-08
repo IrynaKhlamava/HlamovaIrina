@@ -10,6 +10,6 @@ public class GetAllGuestsSortedByNameAction extends AbstractAction {
 
     @Override
     public void execute() {
-        hotelFacade.getAllGuestsSortedByName().forEach(System.out::println);
+        hotelFacade.getAllGuestsSortedByName();
     }
 }

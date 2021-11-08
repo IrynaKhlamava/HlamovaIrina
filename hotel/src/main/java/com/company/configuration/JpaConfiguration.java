@@ -9,17 +9,21 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
+@EnableTransactionManagement
 @PropertySource({"classpath:application.properties"})
 public class JpaConfiguration {
 
     @Value("${database.url}")
     private String databaseUrl;
+    @Value("${database.driverClassName}")
+    private String driverClassName;
     @Value("${database.username}")
     private String username;
     @Value("${database.password}")
@@ -37,7 +41,9 @@ public class JpaConfiguration {
 
     @Bean
     public DataSource dataSource() {
-        return new DriverManagerDataSource(databaseUrl, username, password);
+        DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource(databaseUrl, username, password);
+        driverManagerDataSource.setDriverClassName(driverClassName);
+        return driverManagerDataSource;
     }
 
     @Bean

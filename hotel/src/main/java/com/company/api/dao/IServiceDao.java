@@ -6,7 +6,10 @@ import java.util.List;
 
 public interface IServiceDao extends GenericDao<Service> {
 
-    List<Service> getAllGuestServicesSortByPrice(Long id);
+    List<Service> getAllGuestServicesSort(Long id, String col);
 
-    double getBillForGuestForServices(Long id);
+    Double getBillForGuestForServices(Long id);
+
+    void update(Long id, Service updateData);
+
 }

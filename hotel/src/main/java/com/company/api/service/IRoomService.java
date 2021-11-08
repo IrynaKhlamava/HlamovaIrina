@@ -8,39 +8,31 @@ public interface IRoomService {
 
     Room addRoom(Integer number, Integer capacity, Integer roomStatus, Double priceRoom, Integer comfort);
 
-    void checkIn(Guest guest, Room room);
+    void checkIn(Long guestId, Long roomId);
 
-    void checkOut(Guest guest, Room room);
+    void checkOut(Long guestId, Long roomId);
+
+    Room getById(Long id);
 
     Room getByRoomNumber(Integer roomNumber);
 
-    List<Room> getAllFreeRoom();
+    List<Room> getAvailableRooms(String col);
 
     void changeStatusByRoomNumber(Integer roomNum, RoomStatus roomStatus);
 
     void changePrice(Integer roomNum, Double newPrice);
 
-    List<Room> sortRoomByCapacity();
+    List<Room> getAvailableRoomsByDate(String byDate);
 
-    List<Room> sortRoomByPrice();
+    Double getBill(Long idGuest);
 
-    List<Room> sortRoomByComfort();
-
-    List<Room> getFreeRoomSortByPrice();
-
-    List<Room> getFreeRoomSortByCapacity();
-
-    List<Room> getFreeRoomSortByComfort();
-
-    List<Room> getFreeRoomsByDate(String byDate);
-
-    double getBill(Guest guest);
-
-    List<Room> getAll();
+    List<Room> getAll(String col);
 
     RoomStatus getRoomStatusByNumber(Integer num);
 
     RoomComfort getRoomComfortByNumber(Integer num);
 
     Integer getNumOfAvailableRooms();
+
+    void save(Room room);
 }

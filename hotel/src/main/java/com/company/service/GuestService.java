@@ -29,6 +29,12 @@ public class GuestService implements IGuestService {
     @Value("${numLastGuest}")
     private Integer numLastGuest;
 
+
+    @Override
+    public Guest getById(Long id) {
+        return guestDao.getById(id);
+    }
+
     @Override
     public Guest addGuest(String name, Integer daysOfStay) {
         try {
@@ -43,32 +49,12 @@ public class GuestService implements IGuestService {
     }
 
     @Override
-    public Set<Service> getAllServices(Guest guest) {
-        return guestDao.getGuestServices(guest.getId());
+    public Set<Service> getAllServices(Long id) {
+        return guestDao.getGuestServices(id);
     }
 
-    public List<Guest> getAll() {
-        return guestDao.getAll();
-    }
-
-    @Override
-    public List<Guest> sortGuestsByName() {
-        try {
-            return guestDao.getAllSorted("name");
-        } catch (DaoException e) {
-            LOGGER.info("sort Guests By Name failed");
-            throw new ServiceException(String.format("sort Guests By Name failed"));
-        }
-    }
-
-    @Override
-    public List<Guest> sortGuestsByDeparture() {
-        try {
-            return guestDao.getAllSorted("dateCheckOut");
-        } catch (DaoException e) {
-            LOGGER.info("sort Guests By Departure failed");
-            throw new ServiceException(String.format("sort Guests By Departure failed"));
-        }
+    public List<Guest> getAll(String col) {
+        return guestDao.getAll(col);
     }
 
     public void save(Guest guest) {
@@ -87,6 +73,16 @@ public class GuestService implements IGuestService {
             LOGGER.warn("last Guests Of Room failed", e);
             throw new ServiceException("last Guests Of Room failed", e);
         }
+    }
+
+    @Override
+    public void delete(Long id) {
+        guestDao.delete(getById(id));
+    }
+
+    @Override
+    public void update(Long id, Guest updateData) {
+        guestDao.update(id, updateData);
     }
 
 }

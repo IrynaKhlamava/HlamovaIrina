@@ -11,7 +11,7 @@ public class Service extends AEntity {
     @Column(name = "name")
     private String name;
     @Column(name = "price")
-    private double price;
+    private Double price;
     @Column(name = "guest_id")
     private Long guestId;
     @ManyToOne
@@ -48,11 +48,11 @@ public class Service extends AEntity {
         this.name = name;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 

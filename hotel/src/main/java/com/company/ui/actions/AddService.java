@@ -18,8 +18,7 @@ public class AddService extends AbstractAction {
         Double price = ScannerUtil.readDouble();
         System.out.println("введите ID гостя");
         Long guestId = ScannerUtil.readLong();
-        Guest guest = hotelFacade.getGuest(guestId);
-        hotelFacade.saveService(name, price, guest);
+        hotelFacade.saveService(name, price, guestId);
     }
 
 }

@@ -5,10 +5,10 @@ import com.company.api.dao.IServiceDao;
 import com.company.api.service.IServiceService;
 import com.company.exceptions.DaoException;
 import com.company.exceptions.ServiceException;
-import com.company.model.Guest;
 import com.company.model.Service;
 
 import org.apache.log4j.Logger;
+import org.modelmapper.ModelMapper;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -22,15 +22,21 @@ public class ServiceService implements IServiceService {
 
     private final IServiceDao serviceDao;
 
-    public ServiceService(IServiceDao serviceDao, IGuestDao guestDao) {
+    private final IGuestDao guestDao;
+
+    private final ModelMapper mapper;
+
+    public ServiceService(IServiceDao serviceDao, IGuestDao guestDao, ModelMapper mapper) {
         this.serviceDao = serviceDao;
+        this.guestDao = guestDao;
+        this.mapper = mapper;
     }
 
     @Override
-    public Service addService(String name, double price, Guest guest) {
-        LOGGER.info(String.format("AddService : %s to guest :%s", name, guest));
+    public Service addService(String name, double price, Long guestId) {
+        LOGGER.info(String.format("AddService : %s to guest :%s", name, guestId));
         try {
-            Service service = new Service(name, price, guest);
+            Service service = new Service(name, price, guestDao.getById(guestId));
             serviceDao.save(service);
             return service;
         } catch (DaoException e) {
@@ -39,41 +45,39 @@ public class ServiceService implements IServiceService {
         }
     }
 
-    @Override
-    public List<Service> getAllServicesSortByPrice(Guest guest) {
-        LOGGER.info("Services Sorted By Price");
+    public List<Service> getAll(String col) {
+        LOGGER.info("Services sorted By " + col);
         try {
-            return serviceDao.getAllGuestServicesSortByPrice(guest.getId());
+        return serviceDao.getAll(col);
         } catch (DaoException e) {
-            LOGGER.warn("Services Sorted By Price failed", e);
-            throw new ServiceException("Services Sorted By Price failed", e);
+            LOGGER.warn("getAll services Sorted failed", e);
+            throw new ServiceException("Services Sorted failed", e);
+        }
+    }
+
+    public List<Service> getAllGuestServicesSort(Long id, String col) {
+        LOGGER.info("All guest's services sorted by " + col);
+        try {
+            return serviceDao.getAllGuestServicesSort(id, col);
+        } catch (DaoException e) {
+            LOGGER.warn("getAll Guest's services sorted failed", e);
+            throw new ServiceException("getAll guest's services sorted failed", e);
         }
     }
 
     @Override
-    public List<Service> getServicesSortByName() {
-        LOGGER.info("Services Sorted By Name");
-        try {
-            return serviceDao.getAllSorted("name");
-        } catch (DaoException e) {
-            LOGGER.warn("Services Sorted By Name failed", e);
-            throw new ServiceException("Services Sorted By Name failed", e);
-        }
+    public Service getById(Long id) {
+        return serviceDao.getById(id);
     }
 
     @Override
-    public List<Service> getServicesSortByPrice() {
-        LOGGER.info("Services Sorted By Price");
-        try {
-            return serviceDao.getAllSorted("price");
-        } catch (DaoException e) {
-            LOGGER.warn("Services Sorted By Price failed", e);
-            throw new ServiceException("Services Sorted By Price failed", e);
-        }
+    public void delete(Long id) {
+        serviceDao.delete(getById(id));
     }
 
-    public List<Service> getAll() {
-        return serviceDao.getAll();
+    @Override
+    public void update(Long id, Service updateData) {
+        serviceDao.update(id, updateData);
     }
 
 }

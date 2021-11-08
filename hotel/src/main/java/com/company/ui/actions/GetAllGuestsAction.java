@@ -10,7 +10,7 @@ public class GetAllGuestsAction extends AbstractAction {
 
     @Override
     public void execute() {
-        hotelFacade.getAllGuests().forEach(System.out::println);
+        hotelFacade.getAllGuests();
     }
 
 }
