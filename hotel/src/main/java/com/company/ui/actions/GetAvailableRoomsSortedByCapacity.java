@@ -10,6 +10,6 @@ public class GetAvailableRoomsSortedByCapacity extends AbstractAction {
 
     @Override
     public void execute() {
-        hotelFacade.getAvailableRoomSortByCapacity().forEach(System.out::println);
+        hotelFacade.getAvailableRoomSortByCapacity();
     }
 }

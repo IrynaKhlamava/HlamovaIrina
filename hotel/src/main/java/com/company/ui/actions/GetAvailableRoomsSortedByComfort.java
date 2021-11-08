@@ -10,6 +10,6 @@ public class GetAvailableRoomsSortedByComfort extends AbstractAction {
 
     @Override
     public void execute() {
-        hotelFacade.getAvailableRoomSortByComfort().forEach(System.out::println);
+        hotelFacade.getAvailableRoomSortByComfort();
     }
 }

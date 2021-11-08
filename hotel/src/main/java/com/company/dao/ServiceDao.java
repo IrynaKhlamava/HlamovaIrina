@@ -3,7 +3,7 @@ package com.company.dao;
 import com.company.api.dao.IServiceDao;
 
 import com.company.exceptions.DaoException;
-import com.company.model.Guest;
+
 import com.company.model.Service;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;

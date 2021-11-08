@@ -36,7 +36,7 @@ public class GuestController {
         return ResponseEntity.ok(mapper.map(guestService.getById(id), GuestDto.class));
     }
 
-    @PostMapping(path = "/addguest")
+    @PostMapping
     public ResponseEntity<Void> addGuest(@RequestBody GuestDto request) {
         guestService.addGuest(request.getName(), request.getDaysOfStay());
         return ResponseEntity.noContent().build();
@@ -52,7 +52,7 @@ public class GuestController {
         return ResponseEntity.ok(servicesDto);
     }
 
-    @GetMapping("/lastguestsofroom/{num}")
+    @GetMapping("/last/{num}")
     public ResponseEntity<List<GuestDto>> lastGuestsOfRoom(@PathVariable Integer num) {
         LOGGER.info("received request: /guests/lastGuestsOfRoom " + num);
         List<GuestDto> list = new ArrayList<>();
@@ -62,14 +62,14 @@ public class GuestController {
         return ResponseEntity.ok(list);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         LOGGER.info("received request: /guests/delete " + id);
         guestService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody GuestDto request) {
         LOGGER.info("received request: /guests/update " + id);
         guestService.update(id, mapper.map(request, Guest.class));

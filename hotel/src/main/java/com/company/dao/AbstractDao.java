@@ -4,6 +4,8 @@ import com.company.api.dao.GenericDao;
 import com.company.exceptions.DaoException;
 import com.company.model.AEntity;
 import org.apache.log4j.Logger;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -12,6 +14,8 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public abstract class AbstractDao<T extends AEntity> implements GenericDao<T> {
 
@@ -21,8 +25,9 @@ public abstract class AbstractDao<T extends AEntity> implements GenericDao<T> {
     protected EntityManager entityManager;
 
 
-    public void save(T entity) {
+    public T save(T entity) {
         entityManager.persist(entity);
+        return entity;
     }
 
     public T getById(Long id) {

@@ -13,7 +13,7 @@ public class GetAvailableRoomsAction extends AbstractAction {
         Integer AvailableRooms = hotelFacade.getNumberAllAvailableRooms();
         if (AvailableRooms > 0) {
             System.out.println("Общее количество свободных комнат: " + AvailableRooms);
-            hotelFacade.getAvailableRooms().forEach(System.out::println);
+            hotelFacade.getAvailableRooms();
         } else {
             System.out.println("Свободных комнат нет");
         }

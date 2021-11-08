@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
-public class CustomExceptionHandler {
+public class MainExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String>unexpectedException(Exception e) {

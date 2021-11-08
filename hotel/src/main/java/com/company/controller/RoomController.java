@@ -8,10 +8,14 @@ import com.company.service.GuestService;
 import org.apache.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -70,7 +74,7 @@ public class RoomController {
         return ResponseEntity.ok(list);
     }
 
-    @GetMapping(path = "/availablerooms")
+    @GetMapping(path = "/available")
     public ResponseEntity<List<RoomDto>> getAvailableRooms(@RequestParam(defaultValue = "") String sort) {
         LOGGER.info("received request: /rooms/availablerooms ");
         List<RoomDto> list = new ArrayList<>();
@@ -80,7 +84,7 @@ public class RoomController {
         return ResponseEntity.ok(list);
     }
 
-    @GetMapping(path = "/availableroomsondate")
+    @GetMapping(path = "/availableondate")
     public ResponseEntity<List<RoomDto>> getAvailableRoomsOnDate(@RequestParam String date) {
         LOGGER.info("received request: /rooms/availableroomsondate " + date);
         List<RoomDto> list = new ArrayList<>();
@@ -90,21 +94,21 @@ public class RoomController {
         return ResponseEntity.ok(list);
     }
 
-    @PutMapping("/changestatus")
+    @PutMapping("/change/status")
     public ResponseEntity<Void> changeRoomStatus(@RequestParam Integer num, @RequestParam Integer status) {
         LOGGER.info("received request: /rooms/changeRoomStatus " + num);
         roomService.changeStatusByRoomNumber(num, RoomStatus.getRoomStatusByNum(status));
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/changeprice")
+    @PutMapping("/change/price")
     public ResponseEntity<Void> changeRoomPrice(@RequestParam Integer num, @RequestParam Double price) {
         LOGGER.info("received request: /rooms/changePrice " + num);
         roomService.changePrice(num, price);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping(path = "/guestbill")
+    @GetMapping(path = "/bill")
     public ResponseEntity<Double> getGuestBill(@RequestParam Long id) {
         LOGGER.info("received request: /rooms/getGuestBill " + id);
         return ResponseEntity.ok(roomService.getBill(id));

@@ -19,7 +19,7 @@ public class GetAvailableRoomsByDate extends AbstractAction {
         System.out.println("введите год");
         String year = ScannerUtil.readString();
         String byDate = year + '-' + month + '-' + day;
-        hotelFacade.getAvailableRoomsByDate(byDate).forEach(System.out::println);
+        hotelFacade.getAvailableRoomsByDate(byDate);
     }
 
 }

@@ -35,7 +35,6 @@ public class MenuController {
                 navigator.navigate(ScannerUtil.readInteger());
             } catch (Exception e) {
                 LOGGER.log(Level.WARNING, "last request failed", e);
-                System.out.println("Введены некорректные данные");
             }
         }
     }

@@ -14,7 +14,7 @@ public class GetAllGuestServicesSortedByPrice extends AbstractAction {
     public void execute() {
         System.out.println("введите ID гостя");
         Long guestId = ScannerUtil.readLong();
-        hotelFacade.getAllGuestServicesSortedByPrice(guestId, "price").forEach(System.out::println);
+        hotelFacade.getAllGuestServicesSortedByPrice(guestId, "price");
     }
 
 }

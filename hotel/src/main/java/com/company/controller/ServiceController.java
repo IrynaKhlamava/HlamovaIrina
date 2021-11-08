@@ -34,7 +34,7 @@ public class ServiceController {
         return ResponseEntity.ok(mapper.map(serviceService.getById(id), ServiceDto.class));
     }
 
-    @PostMapping(path = "/addservice")
+    @PostMapping
     public ResponseEntity<Void> addService(@RequestBody ServiceDto request) {
         serviceService.addService(request.getName(), request.getPrice(), request.getGuestId());
         return ResponseEntity.noContent().build();
@@ -50,7 +50,7 @@ public class ServiceController {
         return ResponseEntity.ok(list);
     }
 
-    @GetMapping(path = "/getguestservices/{id}")
+    @GetMapping(path = "/guest/{id}")
     public ResponseEntity<List<ServiceDto>> getGuestServices(@PathVariable Long id, @RequestParam(defaultValue = "") String sort) {
         LOGGER.info("received request: /services/getguestservices " + id + " sort by " + sort);
         List<ServiceDto> list = new ArrayList<>();
@@ -60,14 +60,14 @@ public class ServiceController {
         return ResponseEntity.ok(list);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         LOGGER.info("received request: /services/delete " + id);
         serviceService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody ServiceDto request) {
         LOGGER.info("received request: /services/update " + id);
         serviceService.update(id, mapper.map(request, Service.class));

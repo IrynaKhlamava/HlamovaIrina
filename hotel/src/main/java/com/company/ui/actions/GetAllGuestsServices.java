@@ -14,6 +14,6 @@ public class GetAllGuestsServices extends AbstractAction {
     public void execute() {
         System.out.println("введите ID гостя");
         Long guestId = ScannerUtil.readLong();
-        hotelFacade.getAllGuestsServices(hotelFacade.getGuest(guestId)).forEach(System.out::println);
+        hotelFacade.getAllGuestsServices(hotelFacade.getGuest(guestId));
     }
 }

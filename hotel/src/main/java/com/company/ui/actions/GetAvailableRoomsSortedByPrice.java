@@ -11,6 +11,6 @@ public class GetAvailableRoomsSortedByPrice extends AbstractAction {
 
     @Override
     public void execute() {
-        hotelFacade.getAvailableRoomSortByPrice().forEach(System.out::println);
+        hotelFacade.getAvailableRoomSortByPrice();
     }
 }
